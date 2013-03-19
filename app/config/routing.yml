@@ -1,17 +1,7 @@
-askja_manager:
-    resource: "@AskjaManagerBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 okoa:
     resource: "@OkoaBundle/Controller/"
     type:     annotation
     prefix:   /okoa
-
-tg_cms:
-    resource: "@TgCmsBundle/Controller/"
-    type:     annotation
-    prefix:   /tg-admin
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
