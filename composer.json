@@ -1,34 +1,48 @@
 {
+    "name": "",
+    "description": "",
+    "license": "proprietary",
     "autoload": {
         "psr-0": { "": "src/" }
     },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev"
+        },
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web"
+    },
+    "minimum-stability": "alpha",
     "repositories": [
         { "type": "composer", "url": "http://packages.wimbi.lan" }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "symfony/symfony": "2.2.*",
-        "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "1.2.*",
-        "twig/extensions": "1.0.*",
-        "symfony/assetic-bundle": "2.1.*",
-        "symfony/swiftmailer-bundle": "2.2.*",
-        "symfony/monolog-bundle": "2.2.*",
+        "doctrine/orm": "~2.2,>=2.2.3",
+        "jms/di-extra-bundle": "1.3.*",
+        "jms/security-extra-bundle": "1.4.*",
+        "php": ">=5.3.3",
         "sensio/distribution-bundle": "2.2.*",
         "sensio/framework-extra-bundle": "2.2.*",
         "sensio/generator-bundle": "2.2.*",
-        "jms/security-extra-bundle": "1.4.*",
-        "jms/di-extra-bundle": "1.3.*",
-        "tg/okoabundle": "dev-master",
+        "leafo/lessphp": "*",
         "stof/doctrine-extensions-bundle": "dev-master",
-
-        "sonata-project/cache-bundle": "dev-master",
-        "sonata-project/block-bundle": "dev-master",
-        "sonata-project/jquery-bundle": "1.8.x-dev",
-        "sonata-project/exporter": "1.2.0",
-        "knplabs/knp-menu-bundle": "1.1.x-dev",
-        "sonata-project/admin-bundle": "dev-master",
-        "sonata-project/doctrine-orm-admin-bundle": "dev-master"
+        "symfony/assetic-bundle": "2.1.*",
+        "symfony/monolog-bundle": "2.2.*",
+        "symfony/swiftmailer-bundle": "2.2.*",
+        "symfony/symfony": "2.2.*",
+        "tg/okoabundle": "dev-master",
+        "twig/extensions": "1.0.*",
+        "mopa/bootstrap-bundle": "dev-master",
+        "twitter/bootstrap": "dev-master",
+        "pgettext/pgettext": "0.2.*",
+        "sonata-project/intl-bundle": "2.1.*",
+        "vich/uploader-bundle": "dev-master",
+        "knplabs/knp-gaufrette-bundle" : "dev-master",
+        "knplabs/gaufrette": "0.2.*@dev"
     },
     "scripts": {
         "post-install-cmd": [
@@ -36,25 +50,16 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Tg\\OkoaBundle\\Composer\\ScriptHandler::install"
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::install",
+            "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap"
         ],
         "post-update-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Tg\\OkoaBundle\\Composer\\ScriptHandler::update"
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::update",
+            "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap"
         ]
-    },
-    "config": {
-        "bin-dir": "bin"
-    },
-    "minimum-stability": "alpha",
-    "extra": {
-        "symfony-app-dir": "app",
-        "symfony-web-dir": "web",
-        "branch-alias": {
-            "dev-master": "2.2-dev"
-        }
     }
 }

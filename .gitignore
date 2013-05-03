@@ -1,4 +1,6 @@
 web/bundles/
+web/js/
+web/css/
 app/bootstrap.php.cache
 app/cache/*
 app/logs/*
@@ -6,5 +8,4 @@ build/
 vendor/
 bin/
 composer.phar
-composer.lock
 .vagrant

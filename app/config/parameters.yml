@@ -6,3 +6,4 @@ parameters:
     locale: en
     secret: 422846ec8679fd79b8a7db0a23debd53b47f6199
     database_path: null
+    sitename: ""
