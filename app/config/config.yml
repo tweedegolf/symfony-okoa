@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
+# Framework configuration
 framework:
     #esi:             ~
     translator:      { fallback: %locale% }
@@ -82,6 +83,12 @@ doctrine:
                 alias: GedmoTree # this one is optional and will default to the name set for the mapping
                 is_bundle: false
 
+# Okoa Configuration
+okoa:
+    search:
+        enabled: false
+        type: mysql
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%
@@ -90,49 +97,20 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
-sonata_block:
-    default_contexts: [cms]
-    blocks:
-        sonata.admin.block.admin_list:
-            contexts:   [admin]
+# Gaufrette Configuration
+knp_gaufrette:
+    adapters: ~
+    filesystems: ~
 
-        sonata.block.service.text:
-        sonata.block.service.rss:
+# Vich Configuration
+vich_uploader:
+    db_driver: orm
+    gaufrette: true
+    storage: vich_uploader.storage.gaufrette
+    mappings: ~
 
-sonata_doctrine_orm_admin:
-    entity_manager: ~
-
-    templates:
-        form:
-            - SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig
-        filter:
-            - SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig
-        types:
-            list:
-                array:      SonataAdminBundle:CRUD:list_array.html.twig
-                boolean:    SonataAdminBundle:CRUD:list_boolean.html.twig
-                date:       SonataAdminBundle:CRUD:list_date.html.twig
-                time:       SonataAdminBundle:CRUD:list_time.html.twig
-                datetime:   SonataAdminBundle:CRUD:list_datetime.html.twig
-                text:       SonataAdminBundle:CRUD:base_list_field.html.twig
-                trans:      SonataAdminBundle:CRUD:list_trans.html.twig
-                string:     SonataAdminBundle:CRUD:base_list_field.html.twig
-                smallint:   SonataAdminBundle:CRUD:base_list_field.html.twig
-                bigint:     SonataAdminBundle:CRUD:base_list_field.html.twig
-                integer:    SonataAdminBundle:CRUD:base_list_field.html.twig
-                decimal:    SonataAdminBundle:CRUD:base_list_field.html.twig
-                identifier: SonataAdminBundle:CRUD:base_list_field.html.twig
-
-            show:
-                array:      SonataAdminBundle:CRUD:show_array.html.twig
-                boolean:    SonataAdminBundle:CRUD:show_boolean.html.twig
-                date:       SonataAdminBundle:CRUD:show_date.html.twig
-                time:       SonataAdminBundle:CRUD:show_time.html.twig
-                datetime:   SonataAdminBundle:CRUD:show_datetime.html.twig
-                text:       SonataAdminBundle:CRUD:base_show_field.html.twig
-                trans:      SonataAdminBundle:CRUD:show_trans.html.twig
-                string:     SonataAdminBundle:CRUD:base_show_field.html.twig
-                smallint:   SonataAdminBundle:CRUD:base_show_field.html.twig
-                bigint:     SonataAdminBundle:CRUD:base_show_field.html.twig
-                integer:    SonataAdminBundle:CRUD:base_show_field.html.twig
-                decimal:    SonataAdminBundle:CRUD:base_show_field.html.twig
+# Doctrine Extensions Configuration
+stof_doctrine_extensions:
+  orm:
+    default:
+      timestampable: true
