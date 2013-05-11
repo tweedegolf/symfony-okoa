@@ -5,6 +5,6 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: null
-    database_name: symfony
-    database_user: root
+    database_name: null
+    database_user: null
     database_password: null

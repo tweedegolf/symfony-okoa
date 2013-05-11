@@ -1,4 +1,7 @@
 {
+    "name": "",
+    "description": "",
+    "license": "proprietary",
     "autoload": {
         "psr-0": { "": "src/" }
     },
@@ -20,11 +23,14 @@
         "stof/doctrine-extensions-bundle": "dev-master",
         "symfony/assetic-bundle": "2.1.*",
         "symfony/monolog-bundle": "2.2.*",
+        "symfony/swiftmailer-bundle": "2.2.*",
         "symfony/symfony": "2.2.*",
         "symfony/swiftmailer-bundle": "2.2.*",
         "tg/okoabundle": "dev-master",
         "twig/extensions": "1.0.*",
         "twitter/bootstrap": "2.3.*",
+        "pgettext/pgettext": "0.2.*",
+        "sonata-project/intl-bundle": "2.1.*",
         "vich/uploader-bundle": "0.8.*",
         "knplabs/knp-gaufrette-bundle" : "dev-master",
         "knplabs/gaufrette": "0.2.*@dev"

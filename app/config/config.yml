@@ -2,9 +2,8 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
-# Framework configuration
+# Framework Configuration
 framework:
-    #esi:             ~
     translator:      { fallback: %locale% }
     secret:          %secret%
     router:
@@ -13,9 +12,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    templating:
-        engines: ['twig']
-        #assets_version: SomeVersionScheme
+    templating:      { engines: ['twig'] }
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:         ~
@@ -25,20 +22,19 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        sitename: %sitename%
 
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
-    #java: /usr/bin/java
+    bundles:        []
     filters:
         cssrewrite: ~
-        less: ~
-        #closure:
-        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
-        #yui_css:
-        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+        lessphp:
+            file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
+            apply_to: "\.less$"
 
 # Doctrine Configuration
 doctrine:
@@ -50,9 +46,6 @@ doctrine:
         user:     %database_user%
         password: %database_password%
         charset:  UTF8
-        # if using pdo_sqlite as your database driver, add the path in parameters.yml
-        # e.g. database_path: %kernel.root_dir%/data/data.db3
-        # path:     %database_path%
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -62,25 +55,25 @@ doctrine:
                 type: annotation
                 prefix: Gedmo\Translatable\Entity
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
-                alias: GedmoTranslatable # this one is optional and will default to the name set for the mapping
+                alias: GedmoTranslatable
                 is_bundle: false
             gedmo_translator:
                 type: annotation
                 prefix: Gedmo\Translator\Entity
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
-                alias: GedmoTranslator # this one is optional and will default to the name set for the mapping
+                alias: GedmoTranslator
                 is_bundle: false
             gedmo_loggable:
                 type: annotation
                 prefix: Gedmo\Loggable\Entity
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
-                alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
+                alias: GedmoLoggable
                 is_bundle: false
             gedmo_tree:
                 type: annotation
                 prefix: Gedmo\Tree\Entity
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
-                alias: GedmoTree # this one is optional and will default to the name set for the mapping
+                alias: GedmoTree
                 is_bundle: false
 
 # Okoa Configuration
