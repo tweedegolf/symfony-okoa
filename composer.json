@@ -33,7 +33,8 @@
         "sonata-project/intl-bundle": "2.1.*",
         "vich/uploader-bundle": "0.8.*",
         "knplabs/knp-gaufrette-bundle" : "dev-master",
-        "knplabs/gaufrette": "0.2.*@dev"
+        "knplabs/gaufrette": "0.2.*@dev",
+        "tg/okoageneratorbundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
