@@ -36,13 +36,13 @@ security:
       pattern:  ^/admin/login$
       security: false
 
-      admin_area:
-        pattern: ^/(admin|login/check$|logout$)
-        form_login:
-          check_path: _security_check
-          login_path: _login
-        logout:
-          path: _logout
+    admin_area:
+      pattern: ^/(admin|login/check$|logout$)
+      form_login:
+        check_path: _security_check
+        login_path: _login
+      logout:
+        path: _logout
 
   access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }
