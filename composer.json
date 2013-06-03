@@ -5,39 +5,34 @@
     "autoload": {
         "psr-0": { "": "src/" }
     },
-    "repositories": [
-        { "type": "composer", "url": "http://packages.wimbi.lan" }
-    ],
     "require": {
         "php": ">=5.4.0",
+        "symfony/symfony": "2.3.*",
+        "doctrine/orm": ">=2.2.3",
         "doctrine/doctrine-bundle": "1.2.*",
-        "doctrine/orm": "~2.2,>=2.2.3",
-        "jms/di-extra-bundle": "1.3.*",
-        "jms/security-extra-bundle": "1.4.*",
-        "leafo/lessphp": "0.3.*",
-        "mopa/bootstrap-bundle": "2.2.x-dev",
-        "sensio/distribution-bundle": "2.2.*",
-        "sensio/framework-extra-bundle": "2.2.*",
-        "sensio/generator-bundle": "2.2.*",
-        "sonata-project/intl-bundle": "2.1.*",
-        "stof/doctrine-extensions-bundle": "dev-master",
-        "symfony/assetic-bundle": "2.1.*",
-        "symfony/monolog-bundle": "2.2.*",
-        "symfony/swiftmailer-bundle": "2.2.*",
-        "symfony/symfony": "2.2.*",
-        "symfony/swiftmailer-bundle": "2.2.*",
-        "tg/okoabundle": "dev-master",
         "twig/extensions": "1.0.*",
+        "symfony/assetic-bundle": "2.3.*",
+        "symfony/swiftmailer-bundle": "2.3.*",
+        "symfony/monolog-bundle": "2.3.*",
+        "sensio/distribution-bundle": "2.3.*",
+        "sensio/framework-extra-bundle": "2.3.*",
+        "sensio/generator-bundle": "2.3.*",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "jms/di-extra-bundle": "1.3.x-dev",
+        "jms/security-extra-bundle": "1.4.x-dev",
+        "leafo/lessphp": "0.3.*",
+        "mopa/bootstrap-bundle": "2.3.x-dev",
+        "stof/doctrine-extensions-bundle": "dev-master",
+        "tg/okoabundle": "dev-master",
+        "tg/okoageneratorbundle": "dev-master",
         "twitter/bootstrap": "2.3.*",
-        "pgettext/pgettext": "0.2.*",
-        "sonata-project/intl-bundle": "2.1.*",
         "vich/uploader-bundle": "0.8.*",
         "knplabs/knp-gaufrette-bundle" : "dev-master",
-        "knplabs/gaufrette": "0.2.*@dev",
-        "tg/okoageneratorbundle": "dev-master"
+        "knplabs/gaufrette": "0.2.*@dev"
     },
     "scripts": {
         "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -46,6 +41,7 @@
             "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap"
         ],
         "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -61,8 +57,11 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        },
         "branch-alias": {
-            "dev-master": "2.2-dev"
+            "dev-master": "2.3-dev"
         }
     }
 }

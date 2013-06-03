@@ -1,10 +1,4 @@
 imports:
     - { resource: ../parameters.yml }
 
-parameters:
-    database_driver: pdo_mysql
-    database_host: wimbi.lan
-    database_port: null
-    database_name: null
-    database_user: tg
-    database_password: dagenham
+parameters: ~

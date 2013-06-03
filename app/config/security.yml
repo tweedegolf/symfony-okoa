@@ -1,48 +1,49 @@
 jms_security_extra:
-    secure_all_services: false
-    expressions: true
+  secure_all_services: false
+  expressions: true
 
 security:
-    encoders:
-        Tg\OkoaBundle\Entity\User:
-            algorithm: pbkdf2
-            hash_algorithm: sha512
-            encode_as_base64: true
-            iterations: 50000
-        Symfony\Component\Security\Core\User\User: plaintext
+  encoders:
+    Tg\OkoaBundle\Entity\User:
+      algorithm: pbkdf2
+      hash_algorithm: sha512
+      encode_as_base64: true
+      iterations: 50000
+    Symfony\Component\Security\Core\User\User: plaintext
 
-    role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+  role_hierarchy:
+    ROLE_ADMIN:       ROLE_USER
+    ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
-    providers:
-        default:
-            chain:
-                providers: [in_memory, doctrine]
-        in_memory:
-            memory:
-                users:
-                    user: { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
-        doctrine:
-            entity: { class: OkoaBundle:User, property: username }
+  providers:
+    default:
+      chain:
+        providers: [in_memory, doctrine]
+    in_memory:
+      memory:
+        users:
+          user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+          admin: { password: adminpass, roles: [ 'ROLE_SUPER_ADMIN' ] }
+    doctrine:
+      entity: { class: OkoaBundle:User, property: username }
 
-    firewalls:
-        dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+  firewalls:
+    dev:
+      pattern:  ^/(_(profiler|wdt)|css|images|js)/
+      security: false
 
-        login:
-            pattern:  ^/admin/login$
-            security: false
+    login:
+      pattern:  ^/admin/login$
+      security: false
 
-        admin_area:
-            pattern: ^/(admin|login/check$|logout$)
-            form_login:
-                check_path: _security_check
-                login_path: _login
-            logout:
-                path: _logout
+      admin_area:
+        pattern: ^/(admin|login/check$|logout$)
+        form_login:
+          check_path: _security_check
+          login_path: _login
+        logout:
+          path: _logout
 
-    access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
+  access_control:
+    - { path: ^/admin, roles: ROLE_ADMIN }
+
