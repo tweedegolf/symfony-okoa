@@ -85,6 +85,10 @@ doctrine:
         alias: GedmoTree
         is_bundle: false
 
+# JMS Di Extra Configuration
+jms_di_extra:
+  doctrine_integration: false # interferes with persistable
+
 # Okoa Configuration
 okoa:
   search:
