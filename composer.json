@@ -22,7 +22,7 @@
         "jms/security-extra-bundle": "1.5.*",
         "leafo/lessphp": "0.3.*",
         "mopa/bootstrap-bundle": "2.3.x-dev",
-        "stof/doctrine-extensions-bundle": "dev-master",
+        "stof/doctrine-extensions-bundle": "1.1.*",
         "tg/okoabundle": "dev-master",
         "tg/okoageneratorbundle": "dev-master",
         "twitter/bootstrap": "2.3.*",
