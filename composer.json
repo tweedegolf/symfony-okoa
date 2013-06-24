@@ -28,7 +28,8 @@
         "twitter/bootstrap": "2.3.*",
         "vich/uploader-bundle": "0.8.*",
         "knplabs/knp-gaufrette-bundle" : "dev-master",
-        "knplabs/gaufrette": "0.2.*@dev"
+        "knplabs/gaufrette": "0.2.*@dev",
+        "doctrine/doctrine-migrations-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
