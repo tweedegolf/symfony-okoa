@@ -1,7 +1,7 @@
 {
-    "name": "",
-    "description": "",
-    "license": "proprietary",
+    "name": "tweedegolf/symfony-okoa",
+    "description": "Symfony okoa base project",
+    "license": "MIT",
     "autoload": {
         "psr-0": { "": "src/" }
     },
