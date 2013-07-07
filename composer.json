@@ -3,7 +3,10 @@
     "description": "Symfony okoa base project",
     "license": "MIT",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-0": {
+            "": "src/",
+            "ScriptHandler": "app/"
+        }
     },
     "require": {
         "php": ">=5.4.0",
@@ -25,7 +28,7 @@
         "tweedegolf/okoabundle": "0.7.4",
         "tweedegolf/generatorbundle": "0.1.0",
         "vich/uploader-bundle": "0.8.*",
-        "knplabs/knp-gaufrette-bundle" : "dev-master",
+        "knplabs/knp-gaufrette-bundle": "dev-master",
         "knplabs/gaufrette": "0.2.*@dev",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "bravesheep/bootstrapify-bundle": "dev-master"
@@ -48,7 +51,7 @@
             "Tg\\OkoaBundle\\Composer\\ScriptHandler::update"
         ],
         "post-root-package-install": [
-            "Tg\\OkoaBundle\\Composer\\ScriptHandler::createProject"
+            "ScriptHandler::createProject"
         ]
     },
     "config": {
