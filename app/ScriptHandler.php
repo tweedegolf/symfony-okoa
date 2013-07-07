@@ -4,8 +4,6 @@ use Composer\Script\Event;
 use Composer\Factory;
 use Composer\Json\JsonFile;
 use Composer\Util\SpdxLicenseIdentifier;
-use Symfony\Component\Yaml\Parser;
-use Symfony\Component\Yaml\Yaml;
 
 class ScriptHandler
 {
@@ -90,34 +88,17 @@ class ScriptHandler
         if (isset($config['extra']['incenteev-parameters']['file'])) {
             $dist = $config['extra']['incenteev-parameters']['file'] . '.dist';
             if (file_exists($dist)) {
-                $parser = new Parser();
-                try {
-                    $data = $parser->parse(file_get_contents($dist));
-                    $parameters = isset($data['parameters']) ? $data['parameters'] : [];
-                    if (!is_array($parameters)) {
-                        $parameters = [];
-                    }
+                $sitename = $io->ask(self::formatQuestion("Sitename", null));
+                $secret = hash('sha1', uniqid(time(), true));
 
-                    $parameters['sitename'] = $io->askAndValidate(
-                        self::formatQuestion("Sitename", $parameters['sitename']),
-                        function ($val) {
-                            if (strlen(trim($val)) < 1) {
-                                throw new RuntimeException("Name of the site cannot be empty");
-                            }
-                            return trim($val);
-                        },
-                        false,
-                        $parameters['sitename']
-                    );
-                    if (!isset($parameters['secret']) || in_array(strtolower($parameters['secret']), ['', 'replace_me', 'change_me'])) {
-                        $parameters['secret'] = hash('sha1', uniqid(time(), true));
-                    }
-                    $io->write("<info>Updating parameters dist file</info>");
-                    file_put_contents($dist, Yaml::dump(['parameters' => $parameters]));
-
-                } catch (Exception $ex) {
-                    $io->write(sprintf("<error>Could not parse %s</error>", $dist));
-                }
+                $io->write("<info>Updating parameters dist file</info>");
+                file_put_contents($dist, str_replace([
+                    '%sitename%',
+                    '%secret%',
+                ], [
+                    $sitename,
+                    $secret,
+                ], file_get_contents($dist)));
             }
         }
     }
