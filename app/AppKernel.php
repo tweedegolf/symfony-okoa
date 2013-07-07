@@ -20,7 +20,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Tg\OkoaBundle\OkoaBundle(),
-            new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
+            new Bs\BootstrapifyBundle\BsBootstrapifyBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),

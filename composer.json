@@ -21,15 +21,14 @@
         "jms/di-extra-bundle": "1.4.*",
         "jms/security-extra-bundle": "1.5.*",
         "leafo/lessphp": "0.3.*",
-        "mopa/bootstrap-bundle": "2.3.x-dev",
         "stof/doctrine-extensions-bundle": "1.1.*",
         "tweedegolf/okoabundle": "0.7.4",
         "tweedegolf/generatorbundle": "0.1.0",
-        "twitter/bootstrap": "2.3.*",
         "vich/uploader-bundle": "0.8.*",
         "knplabs/knp-gaufrette-bundle" : "dev-master",
         "knplabs/gaufrette": "0.2.*@dev",
-        "doctrine/doctrine-migrations-bundle": "dev-master"
+        "doctrine/doctrine-migrations-bundle": "dev-master",
+        "bravesheep/bootstrapify-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -38,8 +37,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Tg\\OkoaBundle\\Composer\\ScriptHandler::install",
-            "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap"
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::install"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -47,8 +45,10 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Tg\\OkoaBundle\\Composer\\ScriptHandler::update",
-            "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap"
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::update"
+        ],
+        "post-root-package-install": [
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::createProject"
         ]
     },
     "config": {
