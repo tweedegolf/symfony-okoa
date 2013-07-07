@@ -2,9 +2,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
-parameters:
-  sitename: ""
-
 # Framework configuration
 framework:
   #esi:             ~
