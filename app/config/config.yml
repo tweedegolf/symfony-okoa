@@ -57,6 +57,7 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        entity_listener_resolver: okoa.doctrine.entity_listener_resolver
         mappings:
             gedmo_translatable:
                 type: annotation
