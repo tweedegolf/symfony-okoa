@@ -5,6 +5,7 @@
 /app/config/parameters.yml
 /app/cache/*
 /app/logs/*
+/app/sessions/*
 /build/
 /vendor/
 /bin/

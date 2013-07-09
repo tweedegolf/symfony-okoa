@@ -12,3 +12,4 @@ parameters:
   mailer_user: null
   mailer_password: null
   sitename: "%sitename%"
+  prod.admin.password: "%adminpass%"

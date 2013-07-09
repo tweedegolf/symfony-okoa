@@ -90,14 +90,17 @@ class ScriptHandler
             if (file_exists($dist)) {
                 $sitename = $io->ask(self::formatQuestion("Sitename", null));
                 $secret = hash('sha1', uniqid(time(), true));
+                $adminpass = hash('sha1', uniqid(time(), true));
 
                 $io->write("<info>Updating parameters dist file</info>");
                 file_put_contents($dist, str_replace([
                     '%sitename%',
                     '%secret%',
+                    '%adminpass%',
                 ], [
                     $sitename,
                     $secret,
+                    $adminpass,
                 ], file_get_contents($dist)));
             }
         }
