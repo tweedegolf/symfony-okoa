@@ -25,12 +25,12 @@ security:
         prod_in_memory:
             memory:
                 users:
-                    admin: { password: %prod.admin.password%, roles: [ 'ROLE_SYSTEM_PARTNER' ] }
+                    admin: { password: %prod.admin.password%, roles: [ 'ROLE_ADMIN' ] }
         dev_in_memory:
             memory:
                 users:
                     user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_SUPER_ADMIN' ] }
+                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
         doctrine:
             entity: { class: OkoaBundle:User, property: username }
 
