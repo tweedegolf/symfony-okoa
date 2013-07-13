@@ -69,6 +69,9 @@ class ScriptHandler
             $config['license']
         );
 
+        unset($config['scripts']['post-root-package-install']);
+        unlink('app/ScriptHandler.php');
+
         // save config
         $io->write("<info>Updating composer.json</info>");
         $json->write($config);
