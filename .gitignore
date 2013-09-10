@@ -3,12 +3,9 @@
 /web/js/
 /app/bootstrap.php.cache
 /app/config/parameters.yml
-/app/cache/*
-/app/logs/*
-/app/sessions/*
+/var/*
 /build/
 /vendor/
-/bin/
 /composer.phar
 .DS_Store
 ._*

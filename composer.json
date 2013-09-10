@@ -11,7 +11,7 @@
     "require": {
         "php": ">=5.4.0",
         "symfony/symfony": "2.3.*",
-        "doctrine/orm": ">=2.2.3",
+        "doctrine/orm": "2.4.*",
         "doctrine/doctrine-bundle": "dev-master",
         "twig/extensions": "1.0.*",
         "symfony/assetic-bundle": "2.3.*",
@@ -25,13 +25,14 @@
         "jms/security-extra-bundle": "1.5.*",
         "leafo/lessphp": "0.3.*",
         "stof/doctrine-extensions-bundle": "1.1.*",
-        "tweedegolf/okoabundle": ">= 0.7.5",
-        "tweedegolf/generatorbundle": ">= 0.2.1",
+        "tweedegolf/okoabundle": ">=0.8.0",
+        "tweedegolf/generatorbundle": ">=0.3.0",
         "vich/uploader-bundle": "0.8.*",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "knplabs/gaufrette": "0.2.*@dev",
         "doctrine/doctrine-migrations-bundle": "dev-master",
-        "bravesheep/bootstrapify-bundle": "dev-master"
+        "bravesheep/bootstrapify-bundle": "dev-master",
+        "nervo/yuicompressor": "2.4.*"
     },
     "scripts": {
         "post-install-cmd": [
@@ -53,9 +54,6 @@
         "post-root-package-install": [
             "ScriptHandler::createProject"
         ]
-    },
-    "config": {
-        "bin-dir": "bin"
     },
     "minimum-stability": "alpha",
     "extra": {

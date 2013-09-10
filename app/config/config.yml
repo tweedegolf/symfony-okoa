@@ -19,7 +19,7 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
-        save_path: "%kernel.root_dir%/sessions"
+        save_path: "%kernel.root_dir%/../var/sessions"
     fragments:       ~
 
 # Twig Configuration
@@ -40,9 +40,9 @@ assetic:
             file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
             apply_to: "\.less$"
         yui_css:
-            jar: "%kernel.root_dir%/Resources/java/yuicompressor.jar"
+            jar: "%kernel.root_dir%/../vendor/nervo/yuicompressor/yuicompressor.jar"
         yui_js:
-            jar: "%kernel.root_dir%/Resources/java/yuicompressor.jar"
+            jar: "%kernel.root_dir%/../vendor/nervo/yuicompressor/yuicompressor.jar"
 
 # Doctrine Configuration
 doctrine:

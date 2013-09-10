@@ -45,6 +45,7 @@ class ScriptHandler
                 if (strlen(trim($val)) < 1) {
                     throw new RuntimeException("Description may not be empty");
                 }
+
                 return trim($val);
             },
             false,
@@ -63,6 +64,7 @@ class ScriptHandler
                         "Please provide a license, either use 'proprietary' or one from http://www.spdx.org/licenses/"
                     );
                 }
+
                 return $val;
             },
             false,
@@ -96,15 +98,22 @@ class ScriptHandler
                 $adminpass = hash('sha1', uniqid(time(), true));
 
                 $io->write("<info>Updating parameters dist file</info>");
-                file_put_contents($dist, str_replace([
-                    '%sitename%',
-                    '%secret%',
-                    '%adminpass%',
-                ], [
-                    $sitename,
-                    $secret,
-                    $adminpass,
-                ], file_get_contents($dist)));
+                file_put_contents(
+                    $dist,
+                    str_replace(
+                        [
+                            '%sitename%',
+                            '%secret%',
+                            '%adminpass%',
+                        ],
+                        [
+                            $sitename,
+                            $secret,
+                            $adminpass,
+                        ],
+                        file_get_contents($dist)
+                    )
+                );
             }
         }
     }
