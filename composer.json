@@ -50,7 +50,7 @@
             "Tg\\OkoaBundle\\Composer\\ScriptHandler::installAssets",
             "Tg\\OkoaBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Tg\\OkoaBundle\\Composer\\ScriptHandler::update"
-        ]
+        ],
         "post-root-package-install": [
             "ScriptHandler::createProject"
         ]
