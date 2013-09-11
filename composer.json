@@ -25,8 +25,8 @@
         "jms/security-extra-bundle": "1.5.*",
         "leafo/lessphp": "0.3.*",
         "stof/doctrine-extensions-bundle": "1.1.*",
-        "tweedegolf/okoabundle": ">=0.8.0",
-        "tweedegolf/generatorbundle": ">=0.3.0",
+        "tweedegolf/okoabundle": "0.8.*",
+        "tweedegolf/generatorbundle": "0.3.*",
         "vich/uploader-bundle": "0.8.*",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "knplabs/gaufrette": "0.2.*@dev",
@@ -37,20 +37,20 @@
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::clearCache",
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::installAssets",
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Tg\\OkoaBundle\\Composer\\ScriptHandler::install"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::clearCache",
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::installAssets",
+            "Tg\\OkoaBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Tg\\OkoaBundle\\Composer\\ScriptHandler::update"
-        ],
+        ]
         "post-root-package-install": [
             "ScriptHandler::createProject"
         ]
