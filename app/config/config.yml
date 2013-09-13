@@ -19,7 +19,7 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
-        save_path: "%kernel.root_dir%/../var/sessions"
+        save_path: "%kernel.root_dir%/sessions"
     fragments:       ~
 
 # Twig Configuration
