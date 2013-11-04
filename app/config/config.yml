@@ -83,10 +83,25 @@ doctrine:
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
                 alias: GedmoTree
                 is_bundle: false
+            project:
+                type: annotation
+                prefix: Entity
+                dir: "%kernel.root_dir%/../src/Entity"
+                alias: Entity
+                is_bundle: false
 
 # Migrations for Doctrine
 doctrine_migrations:
     dir_name: %kernel.root_dir%/migrations
+
+# Friends of Symfony User config
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Entity\User
+    from_email:
+        address: noreply@example.com # You may want to change this
+        sender_name: %sitename%
 
 # JMS Di Extra Configuration
 jms_di_extra:

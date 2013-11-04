@@ -31,7 +31,8 @@
         "knplabs/gaufrette": "0.2.*@dev",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "bravesheep/bootstrapify-bundle": "dev-master",
-        "nervo/yuicompressor": "2.4.*"
+        "nervo/yuicompressor": "2.4.*",
+        "friendsofsymfony/user-bundle": "~2.0@dev"
     },
     "require-dev": {
         "behat/behat": "2.5.*",

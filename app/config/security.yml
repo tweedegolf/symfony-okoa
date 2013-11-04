@@ -4,7 +4,7 @@ jms_security_extra:
 
 security:
     encoders:
-        Tg\OkoaBundle\Entity\User:
+        FOS\UserBundle\Model\UserInterface:
             algorithm: pbkdf2
             hash_algorithm: sha512
             encode_as_base64: true
@@ -16,45 +16,26 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        prod:
-            chain:
-                providers: [prod_in_memory, doctrine]
-        test:
-            chain:
-                providers: [dev_in_memory, doctrine]
-        dev:
-            chain:
-                providers: [dev_in_memory, doctrine]
-        prod_in_memory:
-            memory:
-                users:
-                    admin: { password: %prod.admin.password%, roles: [ 'ROLE_ADMIN' ] }
-        dev_in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
-        doctrine:
-            entity: { class: OkoaBundle:User, property: username }
+        fos_userbundle:
+            id: fos_user.user_provider.username
 
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        login:
-            pattern:  ^/admin/login$
-            security: false
-
-        admin_area:
-            pattern: ^/(admin|login/check$|logout$)
+        main:
+            pattern:    ^/
             provider: %kernel.environment%
             form_login:
-                check_path: _security_check
-                login_path: _login
-            logout:
-                path: _logout
+                provider: fos_userbundle
+                csrf_provider: form.csrf_provider
+            logout: true
+            switch_user: true
+            anonymous: true
 
     access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
