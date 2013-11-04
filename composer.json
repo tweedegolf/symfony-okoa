@@ -40,7 +40,7 @@
         "behat/mink-browserkit-driver": "*",
         "behat/symfony2-extension": "*",
         "phpspec/phpspec2": "*"
-    }
+    },
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
