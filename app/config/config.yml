@@ -103,10 +103,6 @@ fos_user:
         address: noreply@example.com # You may want to change this
         sender_name: %sitename%
 
-# JMS Di Extra Configuration
-jms_di_extra:
-    doctrine_integration: false # interferes with persistable
-
 # Okoa Configuration
 okoa:
     search:
