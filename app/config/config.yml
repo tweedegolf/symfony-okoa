@@ -57,7 +57,6 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
-        entity_listener_resolver: okoa.doctrine.entity_listener_resolver
         mappings:
             gedmo_translatable:
                 type: annotation
@@ -102,12 +101,6 @@ fos_user:
     from_email:
         address: noreply@example.com # You may want to change this
         sender_name: %sitename%
-
-# Okoa Configuration
-okoa:
-    search:
-        enabled: false
-        type: mysql
 
 # Swiftmailer Configuration
 swiftmailer:
