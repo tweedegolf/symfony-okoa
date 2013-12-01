@@ -41,7 +41,6 @@
         "behat/mink-browserkit-driver": "*",
         "behat/mink-zombie-driver": "*",
         "behat/symfony2-extension": "*",
-        "phpspec/phpspec": "*",
         "vipsoft/doctrine-data-fixtures-extension": "*",
         "sanpi/behatch-contexts": "*",
         "phpunit/phpunit": "3.7.*",
