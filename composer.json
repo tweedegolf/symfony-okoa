@@ -11,29 +11,29 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "symfony/symfony": "2.3.*",
-        "doctrine/orm": "2.4.*",
+        "symfony/symfony": "~2.4",
+        "doctrine/orm": "~2.4.0",
         "doctrine/doctrine-bundle": "dev-master",
-        "twig/extensions": "1.0.*",
-        "symfony/assetic-bundle": "2.3.*",
-        "symfony/swiftmailer-bundle": "2.3.*",
-        "symfony/monolog-bundle": "2.3.*",
-        "sensio/distribution-bundle": "2.3.*",
-        "sensio/framework-extra-bundle": "2.3.*",
+        "twig/extensions": "~1.0",
+        "symfony/assetic-bundle": "~2.3",
+        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/monolog-bundle": "~2.4",
+        "sensio/distribution-bundle": "~2.3",
+        "sensio/framework-extra-bundle": "~3.0",
         "sensio/generator-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
-        "leafo/lessphp": "0.3.*",
-        "stof/doctrine-extensions-bundle": "1.1.*",
-        "tweedegolf/okoabundle": "0.9.*",
-        "vich/uploader-bundle": "0.8.*",
+        "leafo/lessphp": "~0.4",
+        "stof/doctrine-extensions-bundle": "~1.1",
+        "tweedegolf/okoabundle": "~0.9",
+        "vich/uploader-bundle": "~0.8",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "knplabs/gaufrette": "0.2.*@dev",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "bravesheep/bootstrapify-bundle": "dev-master",
-        "nervo/yuicompressor": "2.4.*",
+        "nervo/yuicompressor": "~2.4",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "fzaninotto/faker": "v1.2.0"
+        "fzaninotto/faker": "~1.2"
     },
     "require-dev": {
         "behat/behat": "2.5.*",
@@ -73,7 +73,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "2.3-dev"
+            "dev-master": "2.4-dev"
         }
     }
 }
