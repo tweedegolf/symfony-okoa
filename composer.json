@@ -25,7 +25,7 @@
         "leafo/lessphp": "~0.4",
         "stof/doctrine-extensions-bundle": "~1.1",
         "tweedegolf/okoabundle": "~0.9",
-        "vich/uploader-bundle": "~0.8",
+        "vich/uploader-bundle": "~0.9",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "knplabs/gaufrette": "0.2.*@dev",
         "doctrine/doctrine-migrations-bundle": "dev-master",
@@ -75,5 +75,8 @@
         "branch-alias": {
             "dev-master": "2.4-dev"
         }
+    },
+    "config": {
+        "bin-dir": "vendor/bin"
     }
 }
