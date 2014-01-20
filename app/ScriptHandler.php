@@ -16,18 +16,40 @@ class ScriptHandler
         }
     }
 
+    private static function determineProjectName()
+    {
+        if (function_exists('posix_geteuid')) {
+            $user = posix_getpwuid(posix_geteuid())['name'];
+        } else {
+            $user = get_current_user();
+        }
+        $user = strtolower($user);
+        $dir = strtolower(basename(__DIR__));
+        return "${user}/${dir}";
+    }
+
+    private static function determineProjectTitle()
+    {
+        return ucfirst(basename(__DIR__));
+    }
+
+    private static function determineDatabaseName()
+    {
+        return strtolower(basename(__DIR__));
+    }
+
     public static function createProject(Event $event)
     {
         $io = $event->getIO();
         $file = Factory::getComposerFile();
         $json = new JsonFile($file);
         $config = $json->read();
+        $name = self::determineProjectName();
         $io->write("<info>Updating project properties...</info>");
 
         // update composer project name
         $config['name'] = $io->askAndValidate(
-            self::formatQuestion("Composer project name", $config['name']),
-            function ($val) {
+            self::formatQuestion("Composer project name", $name), function ($val) {
                 $val = trim($val);
                 if (strlen($val) < 3 || substr_count($val, '/') !== 1) {
                     throw new RuntimeException("Correct project names follow the 'company/project' structure");
@@ -35,13 +57,12 @@ class ScriptHandler
                 return $val;
             },
             false,
-            $config['name']
+            $name
         );
 
         // composer project description
         $config['description'] = $io->askAndValidate(
-            self::formatQuestion("Description of the project", $config['description']),
-            function ($val) {
+            self::formatQuestion("Description of the project", ""), function ($val) {
                 if (strlen(trim($val)) < 1) {
                     throw new RuntimeException("Description may not be empty");
                 }
@@ -49,15 +70,14 @@ class ScriptHandler
                 return trim($val);
             },
             false,
-            $config['description']
+            ""
         );
 
         // composer project license
         $licenseValidator = new SpdxLicenseIdentifier();
         $oldLicense = $config['license'];
         $config['license'] = $io->askAndValidate(
-            self::formatQuestion("Project license", $config['license']),
-            function ($val) use ($licenseValidator) {
+            self::formatQuestion("Project license", $config['license']), function ($val) use ($licenseValidator) {
                 $val = trim($val);
                 if (strlen($val) < 1 || ($val !== 'proprietary' && !$licenseValidator->validate($val))) {
                     throw new RuntimeException(
@@ -93,24 +113,21 @@ class ScriptHandler
         if (isset($config['extra']['incenteev-parameters']['file'])) {
             $dist = $config['extra']['incenteev-parameters']['file'] . '.dist';
             if (file_exists($dist)) {
-                $sitename = $io->ask(self::formatQuestion("Sitename", null));
+                $sitename = self::determineProjectTitle();
+                $sitename = $io->ask(self::formatQuestion("Sitename", $sitename), false, $sitename);
+                $database_name = self::determineDatabaseName();
                 $secret = hash('sha1', uniqid(time(), true));
 
                 $io->write("<info>Updating parameters dist file</info>");
-                file_put_contents(
-                    $dist,
-                    str_replace(
-                        [
-                            '%sitename%',
-                            '%secret%',
-                        ],
-                        [
-                            $sitename,
-                            $secret,
-                        ],
-                        file_get_contents($dist)
-                    )
-                );
+                file_put_contents($dist, str_replace([
+                        '%sitename%',
+                        '%secret%',
+                        '%database_name%'
+                    ], [
+                        $sitename,
+                        $secret,
+                        $database_name,
+                    ], file_get_contents($dist)));
             }
         }
     }
