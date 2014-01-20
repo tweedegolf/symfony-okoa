@@ -24,18 +24,18 @@ class ScriptHandler
             $user = get_current_user();
         }
         $user = strtolower($user);
-        $dir = strtolower(basename(__DIR__));
+        $dir = strtolower(basename(getcwd()));
         return "${user}/${dir}";
     }
 
     private static function determineProjectTitle()
     {
-        return ucfirst(basename(__DIR__));
+        return ucfirst(basename(getcwd()));
     }
 
     private static function determineDatabaseName()
     {
-        return strtolower(basename(__DIR__));
+        return strtolower(basename(getcwd()));
     }
 
     public static function createProject(Event $event)
