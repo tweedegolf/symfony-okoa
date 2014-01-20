@@ -114,7 +114,7 @@ class ScriptHandler
             $dist = $config['extra']['incenteev-parameters']['file'] . '.dist';
             if (file_exists($dist)) {
                 $sitename = self::determineProjectTitle();
-                $sitename = $io->ask(self::formatQuestion("Sitename", $sitename), false, $sitename);
+                $sitename = $io->ask(self::formatQuestion("Sitename", $sitename), $sitename);
                 $database_name = self::determineDatabaseName();
                 $secret = hash('sha1', uniqid(time(), true));
 
