@@ -33,6 +33,10 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new Rnijveld\Sf2CodeBundle\RnijveldSf2CodeBundle();
         }
+
+        if (in_array($this->getEnvironment(), array('test'))) {
+            $bundles[] = new Liip\FunctionalTestBundle\LiipFunctionalTestBundle();
+        }
         return $bundles;
     }
 

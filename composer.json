@@ -44,7 +44,8 @@
         "vipsoft/doctrine-data-fixtures-extension": "*",
         "sanpi/behatch-contexts": "*",
         "phpunit/phpunit": "3.7.*",
-        "rnijveld/sf2code-bundle": ">=0.0.1-alpha1,<1.0.0"
+        "rnijveld/sf2code-bundle": ">=0.0.1-alpha1,<1.0.0",
+        "liip/functional-test-bundle": "~1.0"
     },
     "scripts": {
         "post-install-cmd": [
