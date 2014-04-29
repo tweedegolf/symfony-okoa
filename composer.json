@@ -4,7 +4,6 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "ScriptHandler": "app/",
             "Context\\": "features/Context/",
             "": "src/"
         }

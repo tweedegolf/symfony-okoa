@@ -92,7 +92,7 @@ class ScriptHandler
         );
 
         unset($config['scripts']['post-root-package-install']);
-        unlink('app/ScriptHandler.php');
+        unlink('./src/ScriptHandler.php');
 
         // save config
         $io->write("<info>Updating composer.json</info>");
@@ -135,15 +135,22 @@ class ScriptHandler
                 $secret = hash('sha1', uniqid(time(), true));
 
                 $io->write("<info>Updating parameters dist file</info>");
-                file_put_contents($dist, str_replace([
-                        '%sitename%',
-                        '%secret%',
-                        '%database_name%'
-                    ], [
-                        $sitename,
-                        $secret,
-                        $database_name,
-                    ], file_get_contents($dist)));
+                file_put_contents(
+                    $dist,
+                    str_replace(
+                        [
+                            '%sitename%',
+                            '%secret%',
+                            '%database_name%'
+                        ],
+                        [
+                            $sitename,
+                            $secret,
+                            $database_name,
+                        ],
+                        file_get_contents($dist)
+                    )
+                );
             }
         }
     }
