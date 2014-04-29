@@ -29,6 +29,7 @@
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "knplabs/gaufrette": "0.2.*@dev",
         "doctrine/doctrine-migrations-bundle": "dev-master",
+        "doctrine/migrations": "1.0.*@dev",
         "bravesheep/bootstrapify-bundle": "dev-master",
         "nervo/yuicompressor": "~2.4",
         "friendsofsymfony/user-bundle": "~2.0@dev",
