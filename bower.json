@@ -1,11 +1,11 @@
 {
-  "name": "symfony-okoa",
-  "private": true,
-  "dependencies": {
-    "jquery": "~1.11.0",
-    "bootstrap-sass-twbs": "~3.1.1",
-    "fontawesome": "~4.0.3",
-    "selectize": "~0.8.5",
-    "selectize-scss": "*"
-  }
+    "name": "symfony-okoa",
+    "private": true,
+    "dependencies": {
+        "jquery": "~1.11.0",
+        "bootstrap-sass-twbs": "~3.1.1",
+        "fontawesome": "~4.0.3",
+        "selectize": "~0.8.5",
+        "selectize-scss": "*"
+    }
 }

@@ -138,6 +138,13 @@ class ScriptHandler
             }
         }
 
+        $name = explode('/', $name);
+        if (count($name) > 1) {
+            $name = $name[1];
+        } else {
+            $name = $name[0];
+        }
+
         // update package.json
         $json = new JsonFile("./package.json");
         $config = $json->read();
