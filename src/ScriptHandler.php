@@ -98,22 +98,6 @@ class ScriptHandler
         $io->write("<info>Updating composer.json</info>");
         $json->write($config);
 
-        // update package.json
-        $json = new JsonFile("./package.json");
-        $config = $json->read();
-        $config['name'] = $name;
-
-        $io->write("<info>Updating package.json</info>");
-        $json->write($config);
-
-        // update bower.json
-        $json = new JsonFile("./bower.json");
-        $config = $json->read();
-        $config['name'] = $name;
-
-        $io->write("<info>Updating bower.json</info>");
-        $json->write($config);
-
         // remove license file if the license has changed
         if ($config['license'] !== $oldLicense && is_file('LICENSE')) {
             $io->write("<info>Found a LICENSE file, but you have changed the license.</info>");
@@ -153,5 +137,21 @@ class ScriptHandler
                 );
             }
         }
+
+        // update package.json
+        $json = new JsonFile("./package.json");
+        $config = $json->read();
+        $config['name'] = $name;
+
+        $io->write("<info>Updating package.json</info>");
+        $json->write($config);
+
+        // update bower.json
+        $json = new JsonFile("./bower.json");
+        $config = $json->read();
+        $config['name'] = $name;
+
+        $io->write("<info>Updating bower.json</info>");
+        $json->write($config);
     }
 }
