@@ -11,6 +11,8 @@
 !/app/logs/.gitkeep
 /build
 /vendor
+/node_modules
+/assets/vendor
 /composer.phar
 .DS_Store
 ._*

@@ -41,14 +41,13 @@ class ScriptHandler
     public static function createProject(Event $event)
     {
         $io = $event->getIO();
-        $file = Factory::getComposerFile();
-        $json = new JsonFile($file);
+        $json = new JsonFile("./composer.json");
         $config = $json->read();
         $name = self::determineProjectName();
         $io->write("<info>Updating project properties...</info>");
 
         // update composer project name
-        $config['name'] = $io->askAndValidate(
+        $name = $io->askAndValidate(
             self::formatQuestion("Composer project name", $name), function ($val) {
                 $val = trim($val);
                 if (strlen($val) < 3 || substr_count($val, '/') !== 1) {
@@ -59,6 +58,7 @@ class ScriptHandler
             false,
             $name
         );
+        $config['name'] = $name;
 
         // composer project description
         $config['description'] = $io->askAndValidate(
@@ -96,6 +96,22 @@ class ScriptHandler
 
         // save config
         $io->write("<info>Updating composer.json</info>");
+        $json->write($config);
+
+        // update package.json
+        $json = new JsonFile("./package.json");
+        $config = $json->read();
+        $config['name'] = $name;
+
+        $io->write("<info>Updating package.json</info>");
+        $json->write($config);
+
+        // update bower.json
+        $json = new JsonFile("./bower.json");
+        $config = $json->read();
+        $config['name'] = $name;
+
+        $io->write("<info>Updating bower.json</info>");
         $json->write($config);
 
         // remove license file if the license has changed

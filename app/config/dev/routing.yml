@@ -12,7 +12,3 @@ _configurator:
 
 _main:
     resource: ../routing.yml
-
-_assetic:
-    resource: .
-    type:     assetic
