@@ -45,7 +45,9 @@
         "rnijveld/sf2code-bundle": ">=0.0.1-alpha1,<1.0.0",
         "liip/functional-test-bundle": "~1.0",
         "bravesheep/phpspec-expect": "dev-master",
-        "bravesheep/phpspec-extra-matchers": "dev-master"
+        "bravesheep/phpspec-extra-matchers": "dev-master",
+        "tweedegolf/generatorbundle": "dev-master",
+        "tweedegolf/generator": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
