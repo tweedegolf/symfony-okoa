@@ -35,8 +35,6 @@ var stylishJshint = require('jshint-stylish');
 // create browserify bundle creator
 var script_bundler_index = function () {
     return browserify()
-        .add(es6ify.runtime)
-        .transform(es6ify.configure(/^(?!.*(node_modules|vendor))+.+\.js$/))
         .transform(debowerify)
         .transform(deamdify)
         .require('./assets/scripts/app.js', { entry: true })
