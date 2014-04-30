@@ -21,7 +21,6 @@ var uglify = require('gulp-uglify');
 
 // browserify
 var browserify = require('browserify');
-var es6ify = require('es6ify');
 var watchify = require('watchify');
 var debowerify = require('debowerify');
 var deamdify = require('deamdify');
