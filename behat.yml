@@ -12,6 +12,7 @@ default:
             zombie: ~
             default_session: 'symfony2'
             javascript_session: 'zombie'
+            base_url: http://127.0.0.1:8000/app_test.php
         VIPSoft\DoctrineDataFixturesExtension\Extension:
             lifetime: feature
             autoload: true

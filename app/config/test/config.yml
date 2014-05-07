@@ -4,10 +4,12 @@ imports:
 
 framework:
     test: ~
+    translator:      { fallback: en }
     session:
         storage_id: session.storage.filesystem
     profiler:
         enabled: false
+    default_locale: en
 
 web_profiler:
     toolbar: false
