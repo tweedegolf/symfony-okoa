@@ -28,6 +28,7 @@ var deamdify = require('deamdify');
 // extras
 var source = require('vinyl-source-stream');
 var stylishJshint = require('jshint-stylish');
+var child_process = require('child_process');
 
 /* Functions */
 
@@ -161,7 +162,7 @@ gulp.task('clean', function () {
 });
 
 /* Combined and advanced tasks */
-gulp.task('watch', function () {
+gulp.task('watch', function (cb) {
     var scriptBundler = watchify(script_bundler_index());
     scriptBundler.on('update', function () {
         return scripts(scriptBundler, false);
@@ -181,17 +182,45 @@ gulp.task('watch', function () {
     });
 });
 
-gulp.task('server', ['watch'], function () {
-    var serv = require('child_process').spawn('php', ['bin/symfony', 'server:run']);
-    var logger = function (data) {
-        if (data.toString().trim().length > 0) {
-            console.log(data.toString().trim("\n"));
-        }
-    };
-    serv.stdout.on('data', logger);
-    serv.stderr.on('data', logger);
-    return serv;
+gulp.task('symfony', function (cb) {
+    var argv = require('yargs')
+        .alias('b', 'bind')
+        .default('bind', '127.0.0.1:8000')
+        .argv
+    ;
+
+    var serv = child_process.spawn('php', ['bin/symfony', 'server:run', argv.bind]);
+    serv.stdout.on('data', function (d) { process.stdout.write(d); });
+    serv.stderr.on('data', function (d) { process.stderr.write(d); });
+    serv.on('edit', function () {
+        cb();
+    });
 });
+
+gulp.task('phpspec', ['build'], function (cb) {
+    var phpspec = child_process.spawn('php', ['bin/phpspec', 'run', '--ansi', '--format=dot', '--no-code-generation']);
+    phpspec.stdout.on('data', function (d) { process.stdout.write(d); });
+    phpspec.stderr.on('data', function (d) { process.stderr.write(d); });
+    phpspec.on('exit', function () {
+        cb();
+    });
+});
+
+gulp.task('behat', ['build'], function (cb) {
+    var serv = child_process.spawn('php', ['bin/symfony', 'server:run']);
+    var behat = child_process.spawn('php', ['bin/behat', '--ansi', '--no-paths', '--no-snippets']);
+    behat.stdout.on('data', function (d) { process.stdout.write(d); });
+    behat.stderr.on('data', function (d) { process.stderr.write(d); });
+    behat.on('exit', function () {
+        serv.kill();
+        cb();
+    });
+    return behat;
+});
+
+gulp.task('server', ['watch', 'symfony']);
+
+gulp.task('test', ['build', 'phpspec', 'behat']);
 
 gulp.task('build', ['scripts', 'styles', 'fonts', 'images'])
 
