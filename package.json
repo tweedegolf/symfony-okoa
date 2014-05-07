@@ -25,7 +25,8 @@
         "jshint-stylish": "0.2.0",
         "stream-combiner": "0.0.4",
         "vinyl-source-stream": "0.1.1",
-        "watchify": "0.8.2"
+        "watchify": "0.8.2",
+        "yargs": "^1.2.1"
     },
     "scripts": {
         "postinstall": "bower install"
