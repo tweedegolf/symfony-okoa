@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-This project requires several tools to get started:
+This project has several dependencies:
 
 * [PHP 5.4+](http://php.net/)
 * [Composer](https://getcomposer.org/)
@@ -11,7 +11,6 @@ This project requires several tools to get started:
 * [Bower](http://bower.io/)
 * [gulp](http://gulpjs.com/)
 
-
 ## Installing
 
 Install the project dependencies using:
@@ -19,7 +18,6 @@ Install the project dependencies using:
     composer install
     npm install
     bower install
-
 
 ## Running Tests
 
