@@ -7,10 +7,9 @@ var gulp = require('gulp');
 var activity = require('gulp-file-activity');
 var changed = require('gulp-changed');
 var clean = require('gulp-clean');
-var cssmin = require('gulp-clean-css');
+var cssmin = require('gulp-minify-css');
 var flatten = require('gulp-flatten');
 var gulpif = require('gulp-if');
-var imagemin = require('gulp-imagemin');
 var jshint = require('gulp-jshint');
 var livereload = require('gulp-livereload');
 var plumber = require('gulp-plumber');
@@ -29,6 +28,13 @@ var deamdify = require('deamdify');
 var source = require('vinyl-source-stream');
 var stylishJshint = require('jshint-stylish');
 var child_process = require('child_process');
+var es = require('event-stream');
+
+/* Directories */
+var SCRIPTS_DEST = 'web/assets/scripts';
+var STYLES_DEST = 'web/assets/styles';
+var FONTS_DEST = 'web/assets/fonts';
+var IMAGES_DEST = 'web/assets/images';
 
 /* Functions */
 
@@ -41,16 +47,31 @@ var script_bundler_index = function () {
     ;
 };
 
+// process a single script or script-bundle
+var process_script = function (stream, prod, started, checkChanged) {
+    stream = stream.pipe(plumber());    // plumber for catching errors
+
+    if (checkChanged) {
+        stream = stream.pipe(changed(SCRIPTS_DEST));    // only continue with changed files
+    }
+
+    return stream
+        .pipe(gulpif(prod, streamify(uglify())))    // minification
+        .pipe(gulp.dest(SCRIPTS_DEST))  // send to target directory
+        .pipe(streamify(activity({ since: started })))  // display output of updated files
+    ;
+};
+
 // compile scripts
 var scripts = function (bundler, prod) {
     var starting = new Date();
-    var stream = bundler.bundle({ debug: !prod })
-        .pipe(source('app.js'))
-        .pipe(plumber())
-        .pipe(gulpif(prod, streamify(uglify())))
-        .pipe(gulp.dest('web/assets/scripts'))
-        .pipe(streamify(activity({ since: starting })))
-    ;
+    var p = function (stream, checkChanged) {
+        return process_script(stream, prod, starting, checkChanged);
+    };
+
+    var stream = es.concat(
+        p(bundler.bundle({ debug: !prod }).pipe(source('app.js')), false)
+    );
 
     if (!prod) {
         stream = stream.pipe(livereload());
@@ -62,7 +83,7 @@ var scripts = function (bundler, prod) {
 var styles = function (prod) {
     var starting = new Date();
     var stream = gulp
-        .src('assets/styles/app.scss')
+        .src(['assets/styles/app.scss'])
         .pipe(plumber())
         .pipe(sass({
             sourceComments: !prod ? 'map' : null,
@@ -73,9 +94,9 @@ var styles = function (prod) {
             imagePath: '../images',
             outputStyle: 'nested'
         }))
-        .pipe(gulpif(prod, prefix(['last 2 versions', 'ie 8', 'ie 9'])))
+        .pipe(prefix(['last 2 versions', 'ie 8', 'ie 9']))
         .pipe(gulpif(prod, cssmin()))
-        .pipe(gulp.dest('web/assets/styles'))
+        .pipe(gulp.dest(STYLES_DEST))
         .pipe(activity({ since: starting }))
     ;
 
@@ -87,7 +108,6 @@ var styles = function (prod) {
 
 // copy fonts
 var fonts = function () {
-    var FONTS_DEST = 'web/assets/fonts';
     return gulp
         .src(['assets/fonts/**', 'assets/vendor/*/fonts/**'])
         .pipe(plumber())
@@ -100,12 +120,10 @@ var fonts = function () {
 
 // images and minification of images
 var images = function (prod) {
-    var IMAGES_DEST = 'web/assets/images';
     return gulp
         .src(['assets/images/**'])
         .pipe(plumber())
         .pipe(changed(IMAGES_DEST))
-        .pipe(gulpif(prod, imagemin()))
         .pipe(gulp.dest(IMAGES_DEST))
         .pipe(activity({ gzip: true }))
     ;
