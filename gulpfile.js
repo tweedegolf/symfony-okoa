@@ -17,60 +17,87 @@ var prefix = require('gulp-autoprefixer');
 var sass = require('gulp-sass');
 var streamify = require('gulp-streamify');
 var uglify = require('gulp-uglify');
+var gutil = require('gulp-util');
 
 // browserify
-var browserify = require('browserify');
 var watchify = require('watchify');
 var debowerify = require('debowerify');
 var deamdify = require('deamdify');
 
 // extras
 var source = require('vinyl-source-stream');
-var stylishJshint = require('jshint-stylish');
+var stylish_jshint = require('jshint-stylish');
 var child_process = require('child_process');
 var es = require('event-stream');
+var yargs = require('yargs');
+var moment = require('moment');
 
 /* Directories */
-var SCRIPTS_DEST = 'web/assets/scripts';
-var STYLES_DEST = 'web/assets/styles';
-var FONTS_DEST = 'web/assets/fonts';
-var IMAGES_DEST = 'web/assets/images';
+var SRC = './assets';
+
+var SCRIPTS_SRC = SRC + '/scripts';
+var STYLES_SRC = SRC + '/styles';
+var IMAGES_SRC = SRC + '/images';
+var FONTS_SRC = SRC + '/fonts';
+var VENDOR_SRC = SRC + '/vendor';
+
+var DEST = './web/assets';
+
+var SCRIPTS_DEST = DEST + '/scripts';
+var STYLES_DEST = DEST + '/styles';
+var FONTS_DEST = DEST + '/fonts';
+var IMAGES_DEST = DEST + '/images';
+
+var DEFAULT_BIND = '127.0.0.1:8080';
 
 /* Functions */
 
-// create browserify bundle creator
-var script_bundler_index = function () {
-    return browserify()
-        .transform(debowerify)
-        .transform(deamdify)
-        .require('./assets/scripts/app.js', { entry: true })
-    ;
+// function for handling errors in the bundling process
+var handle_error = function (err) {
+    var time = moment().format('YYYY-MM-DD HH:mm:ss.SSS');
+    gutil.log("[" + gutil.colors.grey(time) + "] " + gutil.colors.red(err));
 };
 
 // process a single script or script-bundle
-var process_script = function (stream, prod, started, checkChanged) {
-    stream = stream.pipe(plumber());    // plumber for catching errors
-
-    if (checkChanged) {
-        stream = stream.pipe(changed(SCRIPTS_DEST));    // only continue with changed files
-    }
-
+var process_script = function (stream, prod) {
+    var started = new Date();
     return stream
+        .pipe(plumber()) // catch errors
         .pipe(gulpif(prod, streamify(uglify())))    // minification
         .pipe(gulp.dest(SCRIPTS_DEST))  // send to target directory
         .pipe(streamify(activity({ since: started })))  // display output of updated files
     ;
 };
 
-// compile scripts
-var scripts = function (bundler, prod) {
-    var starting = new Date();
-    var p = function (stream, checkChanged) {
-        return process_script(stream, prod, starting, checkChanged);
-    };
+// generic function to create a browserify bundler
+var create_bundler = function (entry, name, prod, opts) {
+    if (opts === undefined) {
+        opts = {};
+    }
+    opts.entries = entry;
+    var bundler = watchify(opts)
+        .transform(debowerify)  // resolve bower paths
+        .transform(deamdify)    // resolve AMD modules as CommonJS modules
+    ;
 
+    // function that gets called every time a bundle needs to be created
+    var process = function () {
+        return process_script(
+            bundler.bundle({ debug: !prod }).on('error', handle_error).pipe(source(name)),
+            prod
+        );
+    };
+    process.bundler = bundler;  // allow access to bundler
+    bundler.on('update', process);
+    bundler.on('error', handle_error);
+    return process;
+};
+
+// compile scripts
+var scripts = function (prod) {
+    var index_bundler = create_bundler(SCRIPTS_SRC + '/app.js', 'app.js', prod);
     var stream = es.concat(
-        p(bundler.bundle({ debug: !prod }).pipe(source('app.js')), false)
+        index_bundler()
     );
 
     if (!prod) {
@@ -83,18 +110,15 @@ var scripts = function (bundler, prod) {
 var styles = function (prod) {
     var starting = new Date();
     var stream = gulp
-        .src(['assets/styles/app.scss'])
+        .src([STYLES_SRC + '/app.scss'])
         .pipe(plumber())
         .pipe(sass({
             sourceComments: !prod ? 'map' : null,
-            includePaths: [
-                'assets/styles',
-                'assets/vendor'
-            ],
+            includePaths: [STYLES_SRC, VENDOR_SRC],
             imagePath: '../images',
             outputStyle: 'nested'
         }))
-        .pipe(prefix(['last 2 versions', 'ie 8', 'ie 9']))
+        .pipe(prefix(['last 2 versions', 'ie 8', 'ie 9'], {map: false}))
         .pipe(gulpif(prod, cssmin()))
         .pipe(gulp.dest(STYLES_DEST))
         .pipe(activity({ since: starting }))
@@ -109,23 +133,27 @@ var styles = function (prod) {
 // copy fonts
 var fonts = function () {
     return gulp
-        .src(['assets/fonts/**', 'assets/vendor/*/fonts/**'])
+        .src([
+            FONTS_SRC + '/**',
+            VENDOR_SRC + '/*/fonts/**',
+            VENDOR_SRC + '/bootstrap-sass-twbs/vendor/assets/fonts/bootstrap/**'
+        ])
         .pipe(plumber())
         .pipe(flatten())
         .pipe(changed(FONTS_DEST))
         .pipe(gulp.dest(FONTS_DEST))
-        .pipe(activity({ gzip: true }))
+        .pipe(activity())
     ;
 };
 
 // images and minification of images
 var images = function (prod) {
     return gulp
-        .src(['assets/images/**'])
+        .src([IMAGES_SRC + '/**'])
         .pipe(plumber())
         .pipe(changed(IMAGES_DEST))
         .pipe(gulp.dest(IMAGES_DEST))
-        .pipe(activity({ gzip: true }))
+        .pipe(activity())
     ;
 
     if (!prod) {
@@ -137,17 +165,17 @@ var images = function (prod) {
 // jshint for scripts
 var lint_scripts = function () {
     return gulp
-        .src('assets/scripts/**/*.js')
+        .src([SCRIPTS_SRC + '/**/*.js'])
         .pipe(plumber())
         .pipe(jshint())
-        .pipe(jshint.reporter(stylishJshint))
+        .pipe(jshint.reporter(stylish_jshint))
     ;
 };
 
 // clean generated files
 var clean = function () {
     return gulp
-        .src(['web/assets', '.sass-cache'], {read: false})
+        .src([DEST, '.sass-cache'], {read: false})
         .pipe(plumber())
         .pipe(clean())
     ;
@@ -155,8 +183,7 @@ var clean = function () {
 
 /* Basic tasks */
 gulp.task('scripts', function() {
-    var bundler = script_bundler_index();
-    return scripts(bundler, true);
+    return scripts(true);
 });
 
 gulp.task('styles', function () {
@@ -181,29 +208,24 @@ gulp.task('clean', function () {
 
 /* Combined and advanced tasks */
 gulp.task('watch', function (cb) {
-    var scriptBundler = watchify(script_bundler_index());
-    scriptBundler.on('update', function () {
-        return scripts(scriptBundler, false);
-    });
-
-    scripts(scriptBundler, false);
+    scripts(false);
     styles(false);
     fonts();
     images(false);
 
-    gulp.watch('assets/styles/**/*.scss', function () {
+    gulp.watch(STYLES_SRC + '/**/*.scss', function () {
         return styles(false);
     });
 
-    gulp.watch('assets/images/**', function () {
+    gulp.watch(IMAGES_SRC + '/**', function () {
         return images(false);
     });
 });
 
 gulp.task('symfony', function (cb) {
-    var argv = require('yargs')
+    var argv = yargs
         .alias('b', 'bind')
-        .default('bind', '127.0.0.1:8000')
+        .default('bind', DEFAULT_BIND)
         .argv
     ;
 
@@ -212,6 +234,9 @@ gulp.task('symfony', function (cb) {
     serv.stderr.on('data', function (d) { process.stderr.write(d); });
     serv.on('edit', function () {
         cb();
+    });
+    process.on('exit', function () {
+        serv.kill();
     });
 });
 
