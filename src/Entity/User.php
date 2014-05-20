@@ -13,6 +13,7 @@ use FOS\UserBundle\Model\User as BaseUser;
  * config.yml. Do not forget to adjust the fos_user config to reflect your
  * own user class.
  * @ORM\Entity
+ * @ORM\Table(name="users")
  */
 class User extends BaseUser
 {
