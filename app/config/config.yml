@@ -38,6 +38,8 @@ doctrine:
         dbname:   %database_name%
         user:     %database_user%
         password: %database_password%
+        path:     %database_path%
+        memory:   %database_memory%
         charset:  UTF8
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -89,10 +91,13 @@ fos_user:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
+    transport:  %mailer_transport%
+    host:       %mailer_host%
+    port:       %mailer_port%
+    username:   %mailer_user%
+    password:   %mailer_password%
+    encryption: %mailer_encryption%
+    auth_mode:  %mailer_auth_mode%
     spool:     { type: memory }
 
 # Gaufrette Configuration
@@ -112,3 +117,17 @@ stof_doctrine_extensions:
     orm:
         default:
             timestampable: true
+
+# Database url config
+bravesheep_database_url:
+    urls:
+        default:
+            url: %database_url%
+            prefix: database_
+
+# Mailer url config
+bravesheep_mailer_url:
+    urls:
+        default:
+            url: %mailer_url%
+            prefix: mailer_

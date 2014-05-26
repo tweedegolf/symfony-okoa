@@ -35,7 +35,7 @@ class ScriptHandler
 
     private static function determineDatabaseName()
     {
-        return strtolower(basename(getcwd()));
+        return str_replace('-', '_', strtolower(basename(getcwd())));
     }
 
     public static function createProject(Event $event)
