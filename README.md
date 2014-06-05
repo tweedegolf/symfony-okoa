@@ -1,7 +1,6 @@
 # A Symfony and Okoa Project
 
 ## Dependencies
-
 This project has several dependencies:
 
 * [PHP 5.4+](http://php.net/)
@@ -12,7 +11,6 @@ This project has several dependencies:
 * [gulp](http://gulpjs.com/)
 
 ## Installing
-
 Install the project dependencies using:
 
     composer install
@@ -20,13 +18,10 @@ Install the project dependencies using:
     bower install
 
 ## Running Tests
-
-* PHPSpec tests can be run using `bin/phpspec run` or `gulp phpspec`
-* Behat tests can be run using `bin/behat` or `gulp behat`
-* Running all tests sequentially can be done using `gulp test`
+* PHPSpec tests can be run using `bin/phpspec run`
+* Behat tests can be run using `bin/behat`
 
 ## Running a server
-
 A server can be started using `gulp server`. This will start both a livereload server as well
 as a server for the Symfony application. A simple Symfony application server can be started
-using `bin/symfony server:run`
+using `bin/symfony server:run` or `gulp symfony`.

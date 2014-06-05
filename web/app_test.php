@@ -11,7 +11,6 @@ use Symfony\Component\Debug\Debug;
 // Feel free to remove this, extend it, or make something more sophisticated.
 $i = "(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
 if (isset($_SERVER['HTTP_CLIENT_IP'])
-    || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     || preg_match("@192\\.168\\.$i\\.$i|10\\.$i\\.$i\\.$i|127\\.0\\.0\\.1|fe80::1|::1@", @$_SERVER['REMOTE_ADDR']) !== 1
 ) {
     header('HTTP/1.0 403 Forbidden');
