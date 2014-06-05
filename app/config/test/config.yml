@@ -22,5 +22,3 @@ doctrine:
     dbal:
         driver: pdo_sqlite
         path: %kernel.cache_dir%/test.db
-
-liip_functional_test: ~

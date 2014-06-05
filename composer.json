@@ -41,7 +41,6 @@
         "behat/symfony2-extension": "*",
         "vipsoft/doctrine-data-fixtures-extension": "*",
         "rnijveld/sf2code-bundle": "dev-master",
-        "liip/functional-test-bundle": "~1.0",
         "bravesheep/phpspec-expect": "dev-master",
         "bravesheep/phpspec-extra-matchers": "dev-master",
         "tweedegolf/generatorbundle": "dev-master",
