@@ -12,21 +12,8 @@ default:
             zombie: ~
             default_session: 'symfony2'
             javascript_session: 'zombie'
-            base_url: http://127.0.0.1:8000/app_test.php
+            base_url: http://127.0.0.1:8080/app_test.php
         VIPSoft\DoctrineDataFixturesExtension\Extension:
             lifetime: feature
             autoload: true
-            directories: ~
-            fixtures: ~
-        Sanpi\Behatch\Extension:
-            contexts:
-                # browser: ~
-                # debug: ~
-                # system: ~
-                # json: ~
-                # table: ~
-                # rest: ~
-                # xml: ~
-wip:
-    filters:
-        tags: "@wip"
+            migrations: ~

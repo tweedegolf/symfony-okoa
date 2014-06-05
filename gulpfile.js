@@ -7,6 +7,7 @@ var gulp = require('gulp');
 var activity = require('gulp-file-activity');
 var changed = require('gulp-changed');
 var clean = require('gulp-clean');
+var cssimport = require('gulp-cssimport');
 var cssmin = require('gulp-minify-css');
 var flatten = require('gulp-flatten');
 var gulpif = require('gulp-if');
@@ -75,7 +76,7 @@ var create_bundler = function (entry, name, prod, opts) {
         opts = {};
     }
     opts.entries = entry;
-    var bundler = watchify(opts)
+    var bundler = (prod ? watchify.browserify(opts) : watchify(opts))
         .transform(debowerify)  // resolve bower paths
         .transform(deamdify)    // resolve AMD modules as CommonJS modules
     ;
@@ -118,6 +119,7 @@ var styles = function (prod) {
             imagePath: '../images',
             outputStyle: 'nested'
         }))
+        .pipe(cssimport())
         .pipe(prefix(['last 2 versions', 'ie 8', 'ie 9'], {map: false}))
         .pipe(gulpif(prod, cssmin()))
         .pipe(gulp.dest(STYLES_DEST))
@@ -148,7 +150,7 @@ var fonts = function () {
 
 // images and minification of images
 var images = function (prod) {
-    return gulp
+    var stream = gulp
         .src([IMAGES_SRC + '/**'])
         .pipe(plumber())
         .pipe(changed(IMAGES_DEST))
@@ -173,7 +175,7 @@ var lint_scripts = function () {
 };
 
 // clean generated files
-var clean = function () {
+var clean_files = function () {
     return gulp
         .src([DEST, '.sass-cache'], {read: false})
         .pipe(plumber())
@@ -203,7 +205,7 @@ gulp.task('lint', function () {
 });
 
 gulp.task('clean', function () {
-    return clean();
+    return clean_files();
 });
 
 /* Combined and advanced tasks */
@@ -240,31 +242,8 @@ gulp.task('symfony', function (cb) {
     });
 });
 
-gulp.task('phpspec', ['build'], function (cb) {
-    var phpspec = child_process.spawn('php', ['bin/phpspec', 'run', '--ansi', '--format=dot', '--no-code-generation']);
-    phpspec.stdout.on('data', function (d) { process.stdout.write(d); });
-    phpspec.stderr.on('data', function (d) { process.stderr.write(d); });
-    phpspec.on('exit', function () {
-        cb();
-    });
-});
-
-gulp.task('behat', ['build'], function (cb) {
-    var serv = child_process.spawn('php', ['bin/symfony', 'server:run']);
-    var behat = child_process.spawn('php', ['bin/behat', '--ansi', '--no-paths', '--no-snippets']);
-    behat.stdout.on('data', function (d) { process.stdout.write(d); });
-    behat.stderr.on('data', function (d) { process.stderr.write(d); });
-    behat.on('exit', function () {
-        serv.kill();
-        cb();
-    });
-    return behat;
-});
-
 gulp.task('server', ['watch', 'symfony']);
 
-gulp.task('test', ['build', 'phpspec', 'behat']);
-
-gulp.task('build', ['scripts', 'styles', 'fonts', 'images'])
+gulp.task('build', ['scripts', 'styles', 'fonts', 'images']);
 
 gulp.task('default', ['build']);
