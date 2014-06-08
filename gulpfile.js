@@ -4,7 +4,6 @@
 
 // gulp and plugins
 var gulp = require('gulp');
-var activity = require('gulp-file-activity');
 var changed = require('gulp-changed');
 var clean = require('gulp-clean');
 var cssimport = require('gulp-cssimport');
@@ -16,6 +15,7 @@ var livereload = require('gulp-livereload');
 var plumber = require('gulp-plumber');
 var prefix = require('gulp-autoprefixer');
 var sass = require('gulp-sass');
+var size = require('gulp-size');
 var streamify = require('gulp-streamify');
 var uglify = require('gulp-uglify');
 var gutil = require('gulp-util');
@@ -31,7 +31,6 @@ var stylish_jshint = require('jshint-stylish');
 var child_process = require('child_process');
 var es = require('event-stream');
 var yargs = require('yargs');
-var moment = require('moment');
 
 /* Directories */
 var SRC = './assets';
@@ -53,20 +52,37 @@ var DEFAULT_BIND = '127.0.0.1:8080';
 
 /* Functions */
 
+// function for handling data for output
+var write_output = function (data) {
+    if (Buffer.isBuffer(data)) {
+        data = data.toString();
+    }
+
+    if (typeof data === 'string') {
+        data = data.trim();
+    }
+    gutil.log(data);
+};
+
 // function for handling errors in the bundling process
 var handle_error = function (err) {
-    var time = moment().format('YYYY-MM-DD HH:mm:ss.SSS');
-    gutil.log("[" + gutil.colors.grey(time) + "] " + gutil.colors.red(err));
+    if (err.message) {
+        err = err.message;
+    }
+
+    if (typeof err === 'string') {
+        err = err.trim();
+    }
+    write_output(gutil.colors.red(err));
 };
 
 // process a single script or script-bundle
 var process_script = function (stream, prod) {
-    var started = new Date();
     return stream
         .pipe(plumber()) // catch errors
         .pipe(gulpif(prod, streamify(uglify())))    // minification
         .pipe(gulp.dest(SCRIPTS_DEST))  // send to target directory
-        .pipe(streamify(activity({ since: started })))  // display output of updated files
+        .pipe(streamify(size({showFiles: true, title: 'Scripts'})))  // display output of updated files
     ;
 };
 
@@ -109,7 +125,6 @@ var scripts = function (prod) {
 
 // compile styles
 var styles = function (prod) {
-    var starting = new Date();
     var stream = gulp
         .src([STYLES_SRC + '/app.scss'])
         .pipe(plumber())
@@ -119,11 +134,13 @@ var styles = function (prod) {
             imagePath: '../images',
             outputStyle: 'nested'
         }))
+        .on('error', handle_error)
         .pipe(cssimport())
+        .on('error', handle_error)
         .pipe(prefix(['last 2 versions', 'ie 8', 'ie 9'], {map: false}))
         .pipe(gulpif(prod, cssmin()))
         .pipe(gulp.dest(STYLES_DEST))
-        .pipe(activity({ since: starting }))
+        .pipe(size({showFiles: true, title: 'Styles'}))
     ;
 
     if (!prod) {
@@ -144,7 +161,7 @@ var fonts = function () {
         .pipe(flatten())
         .pipe(changed(FONTS_DEST))
         .pipe(gulp.dest(FONTS_DEST))
-        .pipe(activity())
+        .pipe(size({showFiles: true, title: 'Fonts'}))
     ;
 };
 
@@ -155,7 +172,7 @@ var images = function (prod) {
         .pipe(plumber())
         .pipe(changed(IMAGES_DEST))
         .pipe(gulp.dest(IMAGES_DEST))
-        .pipe(activity())
+        .pipe(size({showFiles: true, title: 'Images'}))
     ;
 
     if (!prod) {
@@ -232,8 +249,8 @@ gulp.task('symfony', function (cb) {
     ;
 
     var serv = child_process.spawn('php', ['bin/symfony', 'server:run', argv.bind]);
-    serv.stdout.on('data', function (d) { process.stdout.write(d); });
-    serv.stderr.on('data', function (d) { process.stderr.write(d); });
+    serv.stdout.on('data', write_output);
+    serv.stderr.on('data', handle_error);
     serv.on('edit', function () {
         cb();
     });
