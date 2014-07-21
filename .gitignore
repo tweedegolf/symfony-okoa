@@ -15,7 +15,12 @@
 /node_modules
 /assets/vendor
 /composer.phar
+/behat.yml
+/phpspec.yml
 .DS_Store
 ._*
 *.orig
 *~
+/phantomjsdriver.log
+/web/files/*
+/web/media/*

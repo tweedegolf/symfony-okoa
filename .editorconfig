@@ -1,0 +1,25 @@
+# coding standards, see http://EditorConfig.org
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# code files
+[*.php,*.js]
+indent_style = space
+indent_size = 4
+
+# markup files
+[*.twig,*.html,*.css,*.scss]
+indent_style = space
+indent_size = 2
+
+# config files
+[*.yml]
+indent_style = space
+indent_size = 4
+
+[*.json]
+indent_style = space
+indent_size = 2

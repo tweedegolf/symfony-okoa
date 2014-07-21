@@ -9,11 +9,13 @@ default:
         Behat\Symfony2Extension\Extension:
             mink_driver: true
         Behat\MinkExtension\Extension:
-            zombie: ~
+            selenium2: ~
             default_session: 'symfony2'
-            javascript_session: 'zombie'
+            javascript_session: 'selenium2'
+            browser_name: phantomjs
             base_url: http://127.0.0.1:8080/app_test.php
         VIPSoft\DoctrineDataFixturesExtension\Extension:
-            lifetime: feature
-            autoload: true
+            lifetime: scenario
+            autoload: false
             migrations: ~
+
