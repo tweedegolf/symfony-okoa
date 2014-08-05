@@ -156,14 +156,17 @@ var styles = function (prod) {
 
 // copy fonts
 var fonts = function () {
-    return gulp
-        .src([
-            FONTS_SRC + '/**',
-            VENDOR_SRC + '/*/fonts/**',
-            VENDOR_SRC + '/bootstrap-sass-twbs/vendor/assets/fonts/bootstrap/**'
-        ])
+    return es.concat
+        (
+            gulp.src([
+                FONTS_SRC + '/**',
+                VENDOR_SRC + '/*/fonts/**'
+            ]).pipe(flatten()),
+            gulp.src([
+                VENDOR_SRC + '/bootstrap-sass-twbs/assets/fonts/**'
+            ])
+        )
         .pipe(plumber())
-        .pipe(flatten())
         .pipe(changed(FONTS_DEST))
         .pipe(gulp.dest(FONTS_DEST))
         .pipe(size({showFiles: true, title: 'Fonts'}))
