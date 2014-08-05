@@ -3,12 +3,12 @@
   "private": true,
   "dependencies": {
     "jquery": "1.11.1",
-    "bootstrap-sass-twbs": "3.1.1+2",
+    "bootstrap-sass-twbs": "3.2.0+1",
     "fontawesome": "4.1.0",
-    "selectize": "0.10.1",
+    "selectize": "0.11.0",
     "selectize-scss": "0.8.7"
   },
   "resolutions": {
-    "selectize": "0.10.1"
+    "selectize": "0.11.0"
   }
 }

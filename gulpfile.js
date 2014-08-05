@@ -22,6 +22,7 @@ var uglify = require('gulp-uglify');
 var gutil = require('gulp-util');
 
 // browserify
+var browserify = require('browserify');
 var watchify = require('watchify');
 var debowerify = require('debowerify');
 var deamdify = require('deamdify');
@@ -30,6 +31,7 @@ var deamdify = require('deamdify');
 var source = require('vinyl-source-stream');
 var stylish_jshint = require('jshint-stylish');
 var child_process = require('child_process');
+var extend = require('extend');
 var es = require('event-stream');
 var yargs = require('yargs');
 var path = require('path');
@@ -95,7 +97,8 @@ var create_bundler = function (entry, name, prod, opts) {
         opts = {};
     }
     opts.entries = entry;
-    var bundler = (prod ? watchify.browserify(opts) : watchify(opts))
+    opts = extend({}, opts, {debug: !prod});
+    var bundler = (prod ? browserify(opts) : watchify(browserify(opts)))
         .transform(debowerify)  // resolve bower paths
         .transform(deamdify)    // resolve AMD modules as CommonJS modules
     ;
@@ -103,7 +106,7 @@ var create_bundler = function (entry, name, prod, opts) {
     // function that gets called every time a bundle needs to be created
     var process = function () {
         return process_script(
-            bundler.bundle({ debug: !prod }).on('error', handle_error).pipe(source(name)),
+            bundler.bundle().on('error', handle_error).pipe(source(name)),
             prod
         );
     };
@@ -117,7 +120,7 @@ var create_bundler = function (entry, name, prod, opts) {
 var scripts = function (prod) {
     var index_bundler = create_bundler(SCRIPTS_SRC + '/app.js', 'app.js', prod);
     var stream = es.concat(
-        index_bundler(),
+        index_bundler()
     );
 
     if (!prod) {
@@ -132,7 +135,6 @@ var styles = function (prod) {
         .src([STYLES_SRC + '/app.scss'])
         .pipe(plumber())
         .pipe(sass({
-            sourceComments: null,
             includePaths: [STYLES_SRC, VENDOR_SRC],
             imagePath: '../images',
             outputStyle: 'nested'
@@ -233,7 +235,6 @@ gulp.task('watch', function (cb) {
     scripts(false);
     styles(false);
     fonts();
-    tinymce();
     images(false);
 
     gulp.watch(STYLES_SRC + '/**/*.scss', function () {
