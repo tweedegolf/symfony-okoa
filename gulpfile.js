@@ -97,7 +97,7 @@ var create_bundler = function (entry, name, prod, opts) {
         opts = {};
     }
     opts.entries = entry;
-    opts = extend({}, opts, {debug: !prod});
+    opts = extend({}, watchify.args, opts, {debug: !prod});
     var bundler = (prod ? browserify(opts) : watchify(browserify(opts)))
         .transform(debowerify)  // resolve bower paths
         .transform(deamdify)    // resolve AMD modules as CommonJS modules
