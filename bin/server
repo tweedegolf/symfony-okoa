@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT=$(dirname "$DIR")
+PID_FILE="${PROJECT_ROOT}/app/cache/server.pid"
+LOG_FILE="${PROJECT_ROOT}/app/logs/server.log"
+PORT="8080"
+HOST="127.0.0.1"
+
+start() {
+  if [ -f "$PID_FILE" ]; then
+    echo $"Found existing server process file, exiting..."
+    exit 1
+  fi
+  "${PROJECT_ROOT}/bin/symfony" server:run --verbose "$HOST:$PORT" > "$LOG_FILE" 2>&1 &
+  PID=$!
+  echo $PID > "$PID_FILE"
+  echo $"Server started, visit at http://$HOST:$PORT/"
+}
+
+stop() {
+  if [ ! -f "$PID_FILE" ]; then
+    echo $"Found no process file, cannot stop..."
+    exit 1
+  fi
+  PID=$(cat "$PID_FILE")
+  pkill -INT -P $PID
+  rm "$PID_FILE"
+  echo "Server stopped..."
+}
+
+status() {
+  if [ ! -f "$PID_FILE" ]; then
+    echo $"Process not active, no PID file found..."
+    exit 0
+  else
+    PID=$(cat "$PID_FILE")
+    if ps -p $PID > /dev/null; then
+      echo $"Process running..."
+    else
+      rm "$PID_FILE"
+      echo $"Process not active. removed PID file..."
+    fi
+  fi
+}
+
+args=`getopt p:h: $*`
+set -- $args
+
+# Parse optional command line args
+while true ; do
+  case "$1" in
+    -p) PORT=$2; shift 2 ;;
+    -h) HOST=$2; shift 2 ;;
+    --) shift; break ;;
+    *)  echo "Parsing command line error"; exit 1 ;;
+  esac
+done
+
+# Run action
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  status)
+    status
+    ;;
+  *)
+    echo $"Usage: $0 [-pPORT] [-hHOST] {start|stop|restart|status}"
+    exit 1
+esac
+exit 0
