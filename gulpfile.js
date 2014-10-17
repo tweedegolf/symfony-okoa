@@ -14,7 +14,6 @@ var livereload = require('gulp-livereload');
 var plumber = require('gulp-plumber');
 var prefix = require('gulp-autoprefixer');
 var rename = require('gulp-rename');
-var rimraf = require('gulp-rimraf');
 var sass = require('gulp-sass');
 var size = require('gulp-size');
 var streamify = require('gulp-streamify');
@@ -36,6 +35,7 @@ var es = require('event-stream');
 var yargs = require('yargs');
 var path = require('path');
 var fs = require('fs');
+var del = require('del');
 
 /* Directories */
 var SRC = './assets';
@@ -87,6 +87,7 @@ var process_script = function (stream, prod) {
         .pipe(plumber()) // catch errors
         .pipe(gulpif(prod, streamify(uglify())))    // minification
         .pipe(gulp.dest(SCRIPTS_DEST))  // send to target directory
+        .pipe(gulpif(!prod, livereload()))
         .pipe(streamify(size({showFiles: true, title: 'Scripts'})))  // display output of updated files
     ;
 };
@@ -199,15 +200,6 @@ var lint_scripts = function () {
     ;
 };
 
-// clean generated files
-var clean_files = function () {
-    return gulp
-        .src([DEST, '.sass-cache', 'phantomjsdriver.log', 'shippable'], {read: false})
-        .pipe(plumber())
-        .pipe(rimraf())
-    ;
-};
-
 /* Basic tasks */
 gulp.task('scripts', function() {
     return scripts(true);
@@ -229,8 +221,13 @@ gulp.task('lint', function () {
     return lint_scripts();
 });
 
-gulp.task('clean', function () {
-    return clean_files();
+gulp.task('clean', function (cb) {
+    del([
+        DEST,
+        '.sass-cache',
+        'phantomjsdriver.log',
+        'shippable'
+    ], cb);
 });
 
 /* Combined and advanced tasks */
