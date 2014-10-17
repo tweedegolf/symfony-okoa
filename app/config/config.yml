@@ -69,12 +69,6 @@ doctrine:
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
                 alias: GedmoTree
                 is_bundle: false
-            project:
-                type: annotation
-                prefix: Entity
-                dir: "%kernel.root_dir%/../src/Entity"
-                alias: Entity
-                is_bundle: false
 
 # Migrations for Doctrine
 doctrine_migrations:
@@ -84,7 +78,7 @@ doctrine_migrations:
 fos_user:
     db_driver: orm
     firewall_name: main
-    user_class: Entity\User
+    user_class: AppBundle\Entity\User
     from_email:
         address: noreply@example.com # You may want to change this
         sender_name: %sitename%

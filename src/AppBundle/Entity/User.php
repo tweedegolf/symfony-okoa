@@ -1,17 +1,15 @@
 <?php
 
-namespace Entity;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * NOTE: This is only an example implementation.
- * You may remove this implementation and add your own. If you remove
- * this implementation and don't use the Entity namespace it resides in,
- * you should remove that mapping from the application configuration in
- * config.yml. Do not forget to adjust the fos_user config to reflect your
- * own user class.
+ * You may remove this implementation and add your own. Do not forget to adjust the
+ * fos_user config to reflect your own user class.
+ *
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
