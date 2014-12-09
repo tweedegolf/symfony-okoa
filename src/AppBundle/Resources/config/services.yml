@@ -1,4 +1,0 @@
-# services:
-#     app.twig.base_extension:
-#         class: AppBundle\Twig\BaseExtension
-#         arguments: []

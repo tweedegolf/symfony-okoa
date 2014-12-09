@@ -3,9 +3,9 @@
   "private": true,
   "dependencies": {
     "jquery": "1.11.1",
-    "bootstrap-sass-twbs": "3.2.0+2",
+    "bootstrap-sass-twbs": "3.3.1",
     "fontawesome": "4.2.0",
     "selectize": "0.11.2",
-    "selectize-scss": "0.8.8"
+    "selectize-scss": "0.8.9"
   }
 }

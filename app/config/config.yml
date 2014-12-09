@@ -1,6 +1,7 @@
 imports:
         - { resource: parameters.yml }
         - { resource: security.yml }
+        - { resource: services.yml }
 
 # Framework configuration
 framework:
@@ -17,15 +18,20 @@ framework:
         engines: ['twig']
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
+    trusted_hosts:   ~
     trusted_proxies: ~
     session:
+        handler_id: ~
         save_path: "%kernel.root_dir%/sessions"
     fragments:       ~
+    http_method_override: true
 
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    form:
+        resources: ['bootstrap_3_layout.html.twig']
     globals:
         sitename: %sitename%
 
@@ -103,8 +109,7 @@ knp_gaufrette:
 # Vich Configuration
 vich_uploader:
     db_driver: orm
-    gaufrette: true
-    storage: vich_uploader.storage.gaufrette
+    storage: gaufrette
     mappings: ~
 
 # Doctrine Extensions Configuration
