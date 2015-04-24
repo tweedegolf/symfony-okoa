@@ -11,8 +11,8 @@
     "require": {
         "php": ">=5.4.0",
         "symfony/symfony": "~2.6.0",
-        "doctrine/orm": "~2.4",
-        "doctrine/doctrine-bundle": "~1.3",
+        "doctrine/orm": "~2.5",
+        "doctrine/doctrine-bundle": "~1.4",
         "twig/extensions": "~1.2",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.7",
@@ -20,32 +20,23 @@
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.1",
         "stof/doctrine-extensions-bundle": "~1.1",
-        "vich/uploader-bundle": "~0.14",
+        "vich/uploader-bundle": "~0.14.0",
         "knplabs/knp-gaufrette-bundle": "~0.1.7",
-        "doctrine/doctrine-migrations-bundle": "~1.0.0",
+        "doctrine/doctrine-migrations-bundle": "~1.0",
         "doctrine/migrations": "~1.0@dev",
         "friendsofsymfony/user-bundle": "~2.0@dev",
-        "doctrine/doctrine-fixtures-bundle": "~2.2.0",
-        "bravesheep/database-url-bundle": "~0.1",
-        "bravesheep/mailer-url-bundle": "~0.1"
+        "bravesheep/database-url-bundle": "~0.1.0",
+        "bravesheep/mailer-url-bundle": "~0.1.0"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
         "sensio/generator-bundle": "~2.5",
-        "behat/behat": "~3.0",
-        "behat/mink": "~1.6",
-        "behat/mink-extension": "~2.0",
-        "behat/mink-browserkit-driver": "~1.2",
-        "behat/mink-selenium2-driver": "~1.2",
-        "behat/symfony2-extension": "~2.0@dev",
-        "vipsoft/doctrine-data-fixtures-extension": "~3.0@dev",
         "rnijveld/sf2code-bundle": "~0.0.1",
-        "phpspec/phpspec": "~2.1",
-        "bravesheep/phpspec-expect": "~0.1",
-        "bravesheep/phpspec-extra-matchers": "~0.1",
-        "henrikbjorn/phpspec-code-coverage": "dev-master",
-        "tweedegolf/generator": "dev-master",
-        "tweedegolf/generatorbundle": "dev-master"
+        "fzaninotto/faker": "~1.4",
+        "behat/mink": "~1.6",
+        "behat/mink-selenium2-driver": "~1.2",
+        "behat/mink-goutte-driver": "~1.1",
+        "crysalead/kahlan": "~1.1",
+        "doctrine/doctrine-fixtures-bundle": "~2.2"
     },
     "scripts": {
         "post-install-cmd": [
