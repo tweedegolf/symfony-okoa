@@ -1,8 +1,6 @@
-var $ = require('jquery');
-window.jQuery = window.$ = $; // required for bootstrap/selectize etc
+import 'libs/browser-polyfill';
+import * as $ from 'libs/jquery';
+window.jQuery = window.$ = $;
 
-var MicroPlugin = require('microplugin');
-window.MicroPlugin = MicroPlugin;   // required for selectize
-
-require('bootstrap-sass-twbs/assets/javascripts/bootstrap');
-require('selectize');
+import 'libs/bootstrap';
+import 'libs/selectize';

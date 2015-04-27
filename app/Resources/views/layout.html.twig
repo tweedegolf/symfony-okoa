@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+  <script src="{{ asset('assets/scripts/libs/require.js') }}"></script>
+  <script>
+    require(['{{ asset('assets/scripts/setup.js') }}'], function () {
+      require(['app']);
+    });
+  </script>
+{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('/assets/styles/app.css') }}">
+{% endblock %}

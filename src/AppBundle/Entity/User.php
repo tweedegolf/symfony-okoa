@@ -10,13 +10,13 @@ use FOS\UserBundle\Model\User as BaseUser;
  * You may remove this implementation and add your own. Do not forget to adjust the
  * fos_user config to reflect your own user class.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\EntityRepository\UserRepository")
  * @ORM\Table(name="users")
  */
 class User extends BaseUser
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -25,7 +25,7 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * Construct a new user
+     * Construct a new user.
      */
     public function __construct()
     {
@@ -33,8 +33,9 @@ class User extends BaseUser
     }
 
     /**
-     * Retrieve the identifier
-     * @return integer
+     * Retrieve the identifier.
+     *
+     * @return int
      */
     public function getId()
     {

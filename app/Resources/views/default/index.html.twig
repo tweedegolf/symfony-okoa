@@ -1,5 +1,5 @@
-{% extends 'default/layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block body %}
-  Hello World!
+  Hello {{ app.user ?: 'world' }}!
 {% endblock %}

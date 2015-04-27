@@ -4,7 +4,6 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Context\\": "features/bootstrap/Context/",
             "": "src/"
         }
     },
@@ -30,13 +29,15 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.5",
-        "rnijveld/sf2code-bundle": "~0.0.1",
-        "fzaninotto/faker": "~1.4",
         "behat/mink": "~1.6",
-        "behat/mink-selenium2-driver": "~1.2",
         "behat/mink-goutte-driver": "~1.1",
+        "behat/mink-selenium2-driver": "~1.2",
+        "bravesheep/dogmatist": "dev-master",
         "crysalead/kahlan": "~1.1",
-        "doctrine/doctrine-fixtures-bundle": "~2.2"
+        "doctrine/doctrine-fixtures-bundle": "~2.2",
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "~0.9",
+        "rnijveld/sf2code-bundle": "~0.0.1"
     },
     "scripts": {
         "post-install-cmd": [

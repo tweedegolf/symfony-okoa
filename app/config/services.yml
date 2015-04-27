@@ -1,4 +1,5 @@
 parameters:
+    sitename: "__sitename__"
 #    parameter_name: value
 
 services:

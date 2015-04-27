@@ -1,0 +1,53 @@
+#!/usr/bin/env php
+<?php
+
+$paramFile = __DIR__ . "/../app/config/parameters.yml";
+$distParamFile = $paramFile . ".dist";
+
+$content = file($distParamFile);
+
+$params = [];
+if (count($content) > 1 && 1 === preg_match("/^(\\s+).*/", $content[1], $match)) {
+    array_shift($content);
+    $indent = $match[1];
+    $ilen = strlen($indent);
+
+    foreach ($content as $line) {
+        if (strlen($line) < $ilen || substr($line, 0, $ilen) !== $indent) {
+            continue;
+        }
+
+        if (ctype_space($line[$ilen + 1])) {
+            print "Could not parse yaml, expected only one level of key: value constructs";
+            exit(1);
+        }
+
+        list($key, $value) = explode(':', $line, 2);
+        $key = trim($key);
+        $value = ltrim($value);
+
+        $env = 'CONFIG_' . str_replace('.', '__', strtoupper($key));
+        $envval = getenv($env);
+
+        if ($envval !== false) {
+            $value = $envval . "\n";
+        }
+
+        $params[] = [$key, $value];
+    }
+} else {
+    $indent = "    ";
+    $ilen = strlen($indent);
+}
+
+$lines = ["parameters:\n"];
+foreach ($params as $param) {
+    $lines[] = $indent . $param[0] . ': ' . $param[1];
+}
+
+if (count($lines) === 1) {
+    $lines = ["parameters: ~\n"];
+}
+
+$lines = implode('', $lines);
+file_put_contents($paramFile, $lines);

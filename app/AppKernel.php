@@ -33,7 +33,6 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new Rnijveld\Sf2CodeBundle\RnijveldSf2CodeBundle();
-            $bundles[] = new TweedeGolf\GeneratorBundle\TweedeGolfGeneratorBundle();
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 

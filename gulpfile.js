@@ -1,306 +1,281 @@
-'use strict';
-
-/* Dependencies */
-
-// gulp and plugins
 var gulp = require('gulp');
-var changed = require('gulp-changed');
-var cssimport = require('gulp-cssimport');
-var cssmin = require('gulp-minify-css');
-var flatten = require('gulp-flatten');
-var gulpif = require('gulp-if');
-var jshint = require('gulp-jshint');
-var livereload = require('gulp-livereload');
-var plumber = require('gulp-plumber');
-var prefix = require('gulp-autoprefixer');
-var rename = require('gulp-rename');
-var sass = require('gulp-sass');
-var size = require('gulp-size');
-var streamify = require('gulp-streamify');
-var uglify = require('gulp-uglify');
 var gutil = require('gulp-util');
 
-// browserify
-var browserify = require('browserify');
-var watchify = require('watchify');
-var debowerify = require('debowerify');
-var deamdify = require('deamdify');
+var autoprefixer = require('gulp-autoprefixer');
+var babel = require('gulp-babel');
+var changed = require('gulp-changed');
+var cssimport = require('gulp-cssimport');
+var livereload = require('gulp-livereload');
+var minify_css = require('gulp-minify-css');
+var plumber = require('gulp-plumber');
+var rename = require('gulp-rename');
+var requirejs_optimize = require('gulp-requirejs-optimize');
+var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 
-// extras
-var source = require('vinyl-source-stream');
-var stylish_jshint = require('jshint-stylish');
 var child_process = require('child_process');
-var extend = require('extend');
+var del = require('del');
 var es = require('event-stream');
 var yargs = require('yargs');
-var path = require('path');
-var fs = require('fs');
-var del = require('del');
 
-/* Directories */
-var SRC = './assets';
+var config = {
+    src: { // source folders
+        scripts: 'assets/scripts',
+        scripts_plain: [ // paths that should not be compiled
+            'assets/scripts/setup.js'
+        ],
 
-var SCRIPTS_SRC = SRC + '/scripts';
-var STYLES_SRC = SRC + '/styles';
-var IMAGES_SRC = SRC + '/images';
-var FONTS_SRC = SRC + '/fonts';
-var VENDOR_SRC = SRC + '/vendor';
+        styles_path: 'assets/styles',
+        styles: [ // entry points for styles
+            'assets/styles/app.scss'
+        ],
 
-var DEST = './web/assets';
+        libs_path: 'assets/vendor',
+        libs: [ // javascript libraries
+            'assets/vendor/jquery/dist/jquery.js',
+            'assets/vendor/bootstrap-sass-twbs/assets/javascripts/bootstrap.js',
+            'assets/vendor/selectize/dist/js/standalone/selectize.js',
+            'assets/vendor/requirejs/require.js',
+            'node_modules/gulp-babel/node_modules/babel-core/browser-polyfill.js'
+        ],
 
-var SCRIPTS_DEST = DEST + '/scripts';
-var STYLES_DEST = DEST + '/styles';
-var FONTS_DEST = DEST + '/fonts';
-var IMAGES_DEST = DEST + '/images';
+        static: { // static files (fonts, images etc)
+            'assets/images/**': 'images',
+            'assets/fonts/**': 'fonts',
+            'assets/vendor/bootstrap-sass-twbs/assets/fonts/bootstrap/**': 'fonts',
+            'assets/vendor/fontawesome/fonts/**': 'fonts'
+        }
+    },
 
-var DEFAULT_BIND = '127.0.0.1:8080';
+    dest: { // destination folders
+        path: 'web/assets',
+        scripts: 'web/assets/scripts',
+        styles: 'web/assets/styles',
+        libs: 'web/assets/scripts/libs',
+        images: 'web/assets/images',
+        fonts: 'web/assets/fonts',
+        script_entries: [
+            'web/assets/scripts/app.js'
+        ]
+    }
+};
 
-/* Functions */
+// send the correct exit code by setting the exit_code global
+var exit_code = 0;
+process.once('exit', function () {
+    process.exit(exit_code);
+});
 
 // function for handling data for output
-var write_output = function (data) {
+function write_output(data) {
     if (Buffer.isBuffer(data)) {
         data = data.toString();
     }
-
     if (typeof data === 'string') {
         data = data.trim();
     }
-    gutil.log(data);
-};
+
+    data.split("\n").forEach(function (line) {
+        gutil.log(line);
+    });
+}
 
 // function for handling errors in the bundling process
-var handle_error = function (err) {
+function handle_error(err) {
     if (err.message) {
         err = err.message;
+    }
+
+    if (Buffer.isBuffer(err)) {
+        err = err.toString();
     }
 
     if (typeof err === 'string') {
         err = err.trim();
     }
-    write_output(gutil.colors.red(err));
-};
+    err.split("\n").forEach(function (line) {
+        write_output(gutil.colors.red(line));
+    });
+}
 
-// process a single script or script-bundle
-var process_script = function (stream, prod) {
-    return stream
-        .pipe(plumber()) // catch errors
-        .pipe(gulpif(prod, streamify(uglify())))    // minification
-        .pipe(gulp.dest(SCRIPTS_DEST))  // send to target directory
-        .pipe(gulpif(!prod, livereload()))
-        .pipe(streamify(size({showFiles: true, title: 'Scripts'})))  // display output of updated files
-    ;
-};
+// function that sets up kill handlers for a child process
+function on_kill(proc, cb) {
+    proc.on('exit', function (code) { exit_code = code; cb(); });
+    process.once('exit', proc.kill);
+    process.once('SIGINT', function () {
+        proc.kill();
+        setTimeout(process.exit, 400);
+    });
+}
 
-// generic function to create a browserify bundler
-var create_bundler = function (entry, name, prod, opts) {
-    if (opts === undefined) {
-        opts = {};
-    }
-    opts.entries = entry;
-    opts = extend({}, watchify.args, opts, {debug: !prod});
-    var bundler = (prod ? browserify(opts) : watchify(browserify(opts)))
-        .transform(debowerify)  // resolve bower paths
-        .transform(deamdify)    // resolve AMD modules as CommonJS modules
-    ;
-
-    // function that gets called every time a bundle needs to be created
-    var process = function () {
-        return process_script(
-            bundler.bundle().on('error', handle_error).pipe(source(name)),
-            prod
-        );
-    };
-    process.bundler = bundler;  // allow access to bundler
-    bundler.on('update', process);
-    bundler.on('error', handle_error);
-    return process;
-};
-
-// compile scripts
-var scripts = function (prod) {
-    var index_bundler = create_bundler(SCRIPTS_SRC + '/app.js', 'app.js', prod);
-    var stream = es.concat(
-        index_bundler()
-    );
-
-    if (!prod) {
-        stream = stream.pipe(livereload());
-    }
-    return stream;
-};
-
-// compile styles
-var styles = function (prod) {
-    var stream = gulp
-        .src([STYLES_SRC + '/app.scss'])
+// move library scripts to target directory
+gulp.task('libs', function () {
+    return gulp.src(config.src.libs)
         .pipe(plumber())
+        .pipe(changed(config.dest.libs))
+        .pipe(gulp.dest(config.dest.libs))
+        .pipe(livereload());
+});
+
+// compile scripts and move to target directory
+gulp.task('scripts', function () {
+    return gulp.src([config.src.scripts + '/**/*.js'])
+        .pipe(plumber())
+        .pipe(changed(config.dest.scripts))
+        .pipe(sourcemaps.init())
+        .pipe(babel({
+            modules: 'amd',
+            ignore: config.src.scripts_plain.map(function (item) {
+                return '**/' + item;
+            })
+        }))
+        .pipe(sourcemaps.write('./maps'))
+        .pipe(gulp.dest(config.dest.scripts))
+        .pipe(livereload());
+});
+
+// compile stylesheets and move to target directory
+gulp.task('styles', function () {
+    return gulp.src(config.src.styles)
+        .pipe(plumber())
+        .pipe(sourcemaps.init())
         .pipe(sass({
-            includePaths: [STYLES_SRC, VENDOR_SRC],
+            includePaths: [config.src.styles_path, config.src.libs_path],
             imagePath: '../images',
             outputStyle: 'nested'
         }))
-        .on('error', handle_error)
         .pipe(cssimport())
-        .on('error', handle_error)
-        .pipe(prefix(['last 2 versions', 'ie 8', 'ie 9'], {map: false}))
-        .pipe(gulpif(prod, cssmin()))
-        .pipe(gulp.dest(STYLES_DEST))
-        .pipe(size({showFiles: true, title: 'Styles'}))
-    ;
-
-    if (!prod) {
-        stream = stream.pipe(livereload());
-    }
-    return stream;
-};
-
-// copy fonts
-var fonts = function () {
-    return es.concat
-        (
-            gulp.src([
-                FONTS_SRC + '/**',
-                VENDOR_SRC + '/*/fonts/**'
-            ]).pipe(flatten()),
-            gulp.src([
-                VENDOR_SRC + '/bootstrap-sass-twbs/assets/fonts/**'
-            ])
-        )
-        .pipe(plumber())
-        .pipe(changed(FONTS_DEST))
-        .pipe(gulp.dest(FONTS_DEST))
-        .pipe(size({showFiles: true, title: 'Fonts'}))
-    ;
-};
-
-// images and minification of images
-var images = function (prod) {
-    var stream = gulp
-        .src([IMAGES_SRC + '/**'])
-        .pipe(plumber())
-        .pipe(changed(IMAGES_DEST))
-        .pipe(gulp.dest(IMAGES_DEST))
-        .pipe(size({showFiles: true, title: 'Images'}))
-    ;
-
-    if (!prod) {
-        stream = stream.pipe(livereload());
-    }
-    return stream;
-};
-
-// jshint for scripts
-var lint_scripts = function () {
-    return gulp
-        .src([SCRIPTS_SRC + '/**/*.js'])
-        .pipe(plumber())
-        .pipe(jshint())
-        .pipe(jshint.reporter(stylish_jshint))
-    ;
-};
-
-/* Basic tasks */
-gulp.task('scripts', function() {
-    return scripts(true);
+        .pipe(autoprefixer(['last 2 versions', 'ie 9'], {map: false}))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest(config.dest.styles))
+        .pipe(livereload());
 });
 
-gulp.task('styles', function () {
-    return styles(true);
+// move static files to their target directories
+gulp.task('static', function () {
+    var streams = [];
+
+    Object.keys(config.src.static).forEach(function (key) {
+        var dest = config.src.static[key];
+        var base = typeof dest === 'object' ? dest.base : null;
+        dest = config.dest[typeof dest === 'object' ? dest.target : dest];
+
+        streams.push(gulp.src(key, {base: base})
+            .pipe(plumber())
+            .pipe(changed(dest))
+            .pipe(gulp.dest(dest))
+            .pipe(livereload())
+        );
+    });
+
+    return es.concat.apply(es, streams);
 });
 
-gulp.task('fonts', function () {
-    return fonts();
+// create compiled minified versions
+gulp.task('minify', ['libs', 'scripts', 'styles'], function () {
+    return es.concat(
+        gulp.src(config.dest.script_entries)
+            .pipe(plumber())
+            .pipe(requirejs_optimize())
+            .pipe(rename({suffix: '.min'}))
+            .pipe(gulp.dest(config.dest.scripts))
+            .pipe(livereload())
+        ,
+        gulp.src([config.dest.styles + "/**/*.css", '!' + config.dest.styles + "/**/*.min.css"])
+            .pipe(plumber())
+            .pipe(minify_css())
+            .pipe(rename({suffix: '.min'}))
+            .pipe(gulp.dest(config.dest.styles))
+            .pipe(livereload())
+    );
 });
 
-gulp.task('images', function () {
-    return images(true);
+// watch for changes in asset files
+gulp.task('watch', ['libs', 'scripts', 'styles', 'static'], function () {
+    livereload.listen();
+    gulp.watch(config.src.scripts + '/**/*.js', ['scripts']);
+    gulp.watch(Object.keys(config.src.static), ['static']);
+    gulp.watch(config.src.styles_path + '/**/*.scss', ['styles']);
 });
 
-gulp.task('lint', function () {
-    return lint_scripts();
+// start a symfony server
+gulp.task('server', function (cb) {
+    var argv = yargs(process.argv.slice(3))
+        .alias('p', 'port').default('port', 8080)
+        .alias('h', 'host').default('host', '127.0.0.1')
+        .argv;
+    var serv = child_process.spawn('php', [
+        'bin/symfony', 'server:run',
+        '--ansi',
+        argv.host + ':' + argv.port
+    ]);
+    serv.stdout.on('data', write_output);
+    serv.stderr.on('data', handle_error);
+    on_kill(serv, cb);
+});
+
+// start an elasticsearch server
+gulp.task('elasticsearch', function (cb) {
+    var argv = yargs(process.argv.slice(3))
+        .default('es-bin', 'elasticsearch')
+        .default('es-port', 9200)
+        .default('es-host', '127.0.0.1')
+        .boolean('verbose').alias('v', 'verbose')
+        .argv;
+    var serv = child_process.spawn(argv['es-bin'], [
+        '-Des.http.port=' + argv['es-port'],
+        '-Des.network.host=' + argv['es-host']
+    ]);
+    serv.stderr.on('data', handle_error);
+
+    serv.stdout.on('data', function (data) {
+        var msg = data.toString();
+        if (msg.indexOf(" started") >= 0) {
+            gutil.log(
+                "Elasticsearch started, listening on " +
+                gutil.colors.green("http://127.0.0.1:" + argv['es-port']) +
+                "..."
+            );
+        }
+
+        if (argv.verbose) {
+            write_output(data);
+        }
+    });
+    on_kill(serv, cb);
+});
+
+// start a selenium standalone server
+gulp.task('selenium', function (cb) {
+    var argv = yargs(process.argv.slice(3))
+        .default('selenium-bin', 'selenium-server')
+        .default('selenium-port', 4444)
+        .boolean('verbose').alias('v', 'verbose')
+        .argv;
+    var serv = child_process.spawn(argv['selenium-bin'], [
+        '-port', argv['selenium-port']
+    ]);
+    serv.stderr.on('data', function (data) {
+        data = data.toString();
+        if (argv.verbose) {
+            write_output(data);
+        }
+    });
+    serv.stdout.on('data', write_output);
+    gutil.log(
+        "Selenium started, listening on port " +
+        gutil.colors.green(argv['selenium-port']) +
+        "..."
+    );
+    on_kill(serv, cb);
 });
 
 gulp.task('clean', function (cb) {
-    del([
-        DEST,
-        '.sass-cache',
-        'phantomjsdriver.log',
-        'shippable'
-    ], cb);
+    del([config.dest.path], cb);
 });
 
-/* Combined and advanced tasks */
-gulp.task('watch', function (cb) {
-    scripts(false);
-    styles(false);
-    fonts();
-    images(false);
+gulp.task('run', ['watch', 'server']);
 
-    gulp.watch(STYLES_SRC + '/**/*.scss', function () {
-        return styles(false);
-    });
+gulp.task('dev', ['run', 'selenium']);
 
-    gulp.watch(IMAGES_SRC + '/**', function () {
-        return images(false);
-    });
-});
-
-gulp.task('symfony', function (cb) {
-    var argv = yargs
-        .alias('b', 'bind')
-        .default('bind', DEFAULT_BIND)
-        .argv
-    ;
-
-    var serv = child_process.spawn('php', ['bin/symfony', 'server:run', argv.bind]);
-    serv.stdout.on('data', write_output);
-    serv.stderr.on('data', handle_error);
-    serv.on('edit', function () {
-        cb();
-    });
-    process.on('exit', function () {
-        serv.kill();
-    });
-});
-
-// a task that watches for changes in the php files for source and spec, and runs the specs on changes
-gulp.task('phpspec', function (cb) {
-    var test_spec = function (spec) {
-        if (!fs.existsSync('phpspec.yml')) {    // just to make sure there is at least an empty config
-            fs.writeFileSync('phpspec.yml', '');
-        }
-
-        var source_file = spec.replace(/Spec\.php$/, '.php');
-        gutil.log("Running tests for " + gutil.colors.blue(path.basename(source_file)) + "...");
-        var phpspec_args = [
-            'bin/phpspec', 'run',
-            '--ansi',
-            '--no-code-generation',
-            '--format', 'dot',
-            '--config', 'phpspec.yml',
-            '--no-interaction',
-            spec
-        ];
-        var phpspec = child_process.spawn('php', phpspec_args);
-        phpspec.stdout.on('data', function (event) { process.stdout.write(event.toString()); });
-        phpspec.stderr.on('data', function (event) { process.stderr.write(event.toString()); });
-    };
-
-    var src_path = process.cwd() + '/src';
-    var specs_path = process.cwd() + '/spec';
-
-    gulp.watch(src_path + '/**/*.php', function (event) {
-        test_spec(event.path.replace(src_path, specs_path).replace(/\.php$/, 'Spec.php'));
-    });
-
-    gulp.watch(specs_path + '/**/*Spec.php', function (event) {
-        test_spec(event.path);
-    });
-});
-
-gulp.task('server', ['watch', 'symfony']);
-
-gulp.task('build', ['scripts', 'styles', 'fonts', 'images']);
-
-gulp.task('default', ['build']);
+gulp.task('build', ['libs', 'scripts', 'styles', 'static', 'minify']);
