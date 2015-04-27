@@ -2,7 +2,7 @@
 
 use Composer\Script\Event;
 use Composer\Json\JsonFile;
-use Composer\Util\SpdxLicenseIdentifier;
+use Composer\Util\SpdxLicense;
 
 class ScriptHandler
 {
@@ -75,7 +75,7 @@ class ScriptHandler
         );
 
         // composer project license
-        $licenseValidator = new SpdxLicenseIdentifier();
+        $licenseValidator = new SpdxLicense();
         $oldLicense = $config['license'];
         $config['license'] = $io->askAndValidate(
             self::formatQuestion('Project license', $config['license']), function ($val) use ($licenseValidator) {
