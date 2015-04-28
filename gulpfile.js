@@ -5,6 +5,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var babel = require('gulp-babel');
 var changed = require('gulp-changed');
 var cssimport = require('gulp-cssimport');
+var gzip = require('gulp-gzip');
 var livereload = require('gulp-livereload');
 var minify_css = require('gulp-minify-css');
 var plumber = require('gulp-plumber');
@@ -12,6 +13,7 @@ var rename = require('gulp-rename');
 var requirejs_optimize = require('gulp-requirejs-optimize');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
+var uglify = require('gulp-uglify');
 
 var child_process = require('child_process');
 var del = require('del');
@@ -42,6 +44,8 @@ var config = {
         static: { // static files (fonts, images etc)
             'assets/images/**': 'images',
             'assets/fonts/**': 'fonts',
+            'assets/robots.txt': 'web',
+            'assets/favicon.ico': 'web',
             'assets/vendor/bootstrap-sass-twbs/assets/fonts/bootstrap/**': 'fonts',
             'assets/vendor/fontawesome/fonts/**': 'fonts'
         }
@@ -49,6 +53,7 @@ var config = {
 
     dest: { // destination folders
         path: 'web/assets',
+        web: 'web',
         scripts: 'web/assets/scripts',
         styles: 'web/assets/styles',
         libs: 'web/assets/scripts/libs',
@@ -181,6 +186,13 @@ gulp.task('minify', ['libs', 'scripts', 'styles'], function () {
             .pipe(gulp.dest(config.dest.scripts))
             .pipe(livereload())
         ,
+        gulp.src(config.dest.libs + "/*.js")
+            .pipe(plumber())
+            .pipe(uglify())
+            .pipe(rename({suffix: '.min'}))
+            .pipe(gulp.dest(config.dest.libs))
+            .pipe(livereload())
+        ,
         gulp.src([config.dest.styles + "/**/*.css", '!' + config.dest.styles + "/**/*.min.css"])
             .pipe(plumber())
             .pipe(minify_css())
@@ -188,6 +200,16 @@ gulp.task('minify', ['libs', 'scripts', 'styles'], function () {
             .pipe(gulp.dest(config.dest.styles))
             .pipe(livereload())
     );
+});
+
+gulp.task('gzip', ['minify'], function () {
+    return gulp.src([config.dest.path + "/**/*"])
+        .pipe(plumber())
+        .pipe(gzip({
+            append: true
+        }))
+        .pipe(gulp.dest(config.dest.path))
+        .pipe(livereload());
 });
 
 // watch for changes in asset files
@@ -271,11 +293,15 @@ gulp.task('selenium', function (cb) {
 });
 
 gulp.task('clean', function (cb) {
-    del([config.dest.path], cb);
+    del([
+        config.dest.path,
+        config.dest.web + '/*.*',
+        '!' + config.dest.web + '/*.php'
+    ], cb);
 });
 
 gulp.task('run', ['watch', 'server']);
 
 gulp.task('dev', ['run', 'selenium']);
 
-gulp.task('build', ['libs', 'scripts', 'styles', 'static', 'minify']);
+gulp.task('build', ['libs', 'scripts', 'styles', 'static', 'minify', 'gzip']);

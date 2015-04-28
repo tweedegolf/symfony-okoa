@@ -24,3 +24,5 @@
 /phantomjsdriver.log
 /web/files/*
 /web/media/*
+/web/favicon.ico
+/web/robots.txt
