@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var gulpif = require('gulp-if');
 
 var autoprefixer = require('gulp-autoprefixer');
 var babel = require('gulp-babel');
@@ -33,13 +34,13 @@ var config = {
         ],
 
         libs_path: 'assets/vendor',
-        libs: [ // javascript libraries
-            'assets/vendor/jquery/dist/jquery.js',
-            'assets/vendor/bootstrap-sass-twbs/assets/javascripts/bootstrap.js',
-            'assets/vendor/selectize/dist/js/standalone/selectize.js',
-            'assets/vendor/requirejs/require.js',
-            'node_modules/gulp-babel/node_modules/babel-core/browser-polyfill.js'
-        ],
+        libs: { // javascript libraries
+            'node_modules/gulp-babel/node_modules/babel-core/browser-polyfill.js': true,
+            'assets/vendor/jquery/dist/jquery.js': true,
+            'assets/vendor/bootstrap-sass-twbs/assets/javascripts/bootstrap.js': true,
+            'assets/vendor/selectize/dist/js/standalone/selectize.js': true,
+            'assets/vendor/requirejs/require.js': true
+        },
 
         static: { // static files (fonts, images etc)
             'assets/images/**': 'images',
@@ -115,11 +116,19 @@ function on_kill(proc, cb) {
 
 // move library scripts to target directory
 gulp.task('libs', function () {
-    return gulp.src(config.src.libs)
-        .pipe(plumber())
-        .pipe(changed(config.dest.libs))
-        .pipe(gulp.dest(config.dest.libs))
-        .pipe(livereload());
+    var streams = [];
+
+    Object.keys(config.src.libs).forEach(function (key) {
+        var name = config.src.libs[key];
+        streams.push(gulp.src(key)
+            .pipe(plumber())
+            .pipe(gulpif(name !== true, rename(name)))
+            .pipe(changed(config.dest.libs))
+            .pipe(gulp.dest(config.dest.libs))
+            .pipe(livereload()));
+    });
+
+    return es.concat.apply(es, streams);
 });
 
 // compile scripts and move to target directory
