@@ -19,7 +19,7 @@ before_script:
     - service php5-fpm start
     - service nginx start
 
-kahlan_phantomjs:
+kahlan:
     script:
         - export MINK_DEFAULT_BROWSER=firefox
         - bin/kahlan
