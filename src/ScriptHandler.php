@@ -78,7 +78,8 @@ class ScriptHandler
         $licenseValidator = new SpdxLicense();
         $oldLicense = $config['license'];
         $config['license'] = $io->askAndValidate(
-            self::formatQuestion('Project license', $config['license']), function ($val) use ($licenseValidator) {
+            self::formatQuestion('Project license', $config['license']),
+            function ($val) use ($licenseValidator) {
                 $val = trim($val);
                 if (strlen($val) < 1 || ($val !== 'proprietary' && !$licenseValidator->validate($val))) {
                     throw new RuntimeException(
@@ -88,7 +89,7 @@ class ScriptHandler
 
                 return $val;
             },
-            false,
+            null,
             $config['license']
         );
 
