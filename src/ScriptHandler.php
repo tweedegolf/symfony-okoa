@@ -48,7 +48,8 @@ class ScriptHandler
 
         // update composer project name
         $name = $io->askAndValidate(
-            self::formatQuestion('Composer project name', $name), function ($val) {
+            self::formatQuestion('Composer project name', $name),
+            function ($val) {
                 $val = trim($val);
                 if (strlen($val) < 3 || substr_count($val, '/') !== 1) {
                     throw new RuntimeException("Correct project names follow the 'company/project' structure");
@@ -56,21 +57,22 @@ class ScriptHandler
 
                 return $val;
             },
-            false,
+            null,
             $name
         );
         $config['name'] = $name;
 
         // composer project description
         $config['description'] = $io->askAndValidate(
-            self::formatQuestion('Description of the project', ''), function ($val) {
+            self::formatQuestion('Description of the project', ''),
+            function ($val) {
                 if (strlen(trim($val)) < 1) {
                     throw new RuntimeException('Description may not be empty');
                 }
 
                 return trim($val);
             },
-            false,
+            null,
             ''
         );
 
