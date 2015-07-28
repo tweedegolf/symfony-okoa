@@ -5,13 +5,11 @@ require_once __DIR__ . '/../app/AppKernel.php';
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/matchers.php';
 
-use Behat\Mink\Driver\GoutteDriver;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use filter\Filter;
-use Behat\Mink\Driver\Goutte\Client as GoutteClient;
 use jit\Interceptor;
 use kahlan\Matcher;
 use kahlan\Suite;
@@ -71,13 +69,23 @@ Filter::register('symfony.register', function ($chain) {
 });
 
 Filter::register('mink.register', function ($chain) {
+    $default_browser = getenv('MINK_DEFAULT_BROWSER') !== false ? getenv('MINK_DEFAULT_BROWSER') : 'chrome';
+    $firefox_location = getenv('SELENIUM_FIREFOX_HOST') !== false ? getenv('SELENIUM_FIREFOX_HOST') : 'localhost';
+    $chrome_location = getenv('SELENIUM_CHROME_HOST') !== false ? getenv('SELENIUM_CHROME_HOST') : 'localhost';
+
+    $firefox_selenium_host = "http://{$firefox_location}:4444/wd/hub";
+    $chrome_selenium_host = "http://{$chrome_location}:4444/wd/hub";
+
     $mink = new Mink([
-        'selenium' => new Session(new Selenium2Driver('phantomjs', [
-            'browserName' => 'phantomjs',
-        ])),
-        'goutte' => new Session(new GoutteDriver(new GoutteClient())),
+        'firefox' => new Session(new Selenium2Driver('firefox', [
+            'browserName' => 'firefox',
+        ], $firefox_selenium_host)),
+        'chrome' => new Session(new Selenium2Driver('chrome', [
+            'browserName' => 'chrome',
+        ], $chrome_selenium_host)),
     ]);
-    $mink->setDefaultSessionName('selenium');
+
+    $mink->setDefaultSessionName($default_browser);
 
     /** @var Suite $root */
     $root = $this->suite();
