@@ -1,12 +1,10 @@
 imports:
-    - { resource: ../parameters.yml }
     - { resource: ../dev/config.yml }
 
 framework:
     test: ~
-    translator:      { fallback: en }
     session:
-        storage_id: session.storage.filesystem
+        storage_id: session.storage.mock_file
     profiler:
         collect: false
     default_locale: en

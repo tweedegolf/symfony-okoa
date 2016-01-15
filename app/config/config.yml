@@ -1,12 +1,18 @@
 imports:
-        - { resource: parameters.yml }
-        - { resource: security.yml }
-        - { resource: services.yml }
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+    sitename: __sitename__
 
 # Framework configuration
 framework:
     #esi:             ~
-    translator:      { fallback: %locale% }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -21,17 +27,19 @@ framework:
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
-        handler_id: ~
-        save_path: "%kernel.root_dir%/sessions"
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: "%kernel.root_dir%/../var/sessions/%kernel.environment%"
     fragments:       ~
     http_method_override: true
+    assets: ~
 
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
-    form:
-        resources: ['bootstrap_3_layout.html.twig']
+    form_themes:
+        - 'bootstrap_3_layout.html.twig'
     globals:
         sitename: %sitename%
 
@@ -50,6 +58,7 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
         mappings:
             gedmo_translatable:
                 type: annotation
@@ -100,16 +109,20 @@ swiftmailer:
     auth_mode:  %mailer_auth_mode%
     spool:     { type: memory }
 
-# Gaufrette Configuration
-knp_gaufrette:
-    stream_wrapper: ~
-    adapters: ~
-    filesystems: ~
+# Flysystem Configuration
+oneup_flysystem:
+    adapters:
+        media:
+            local:
+                directory: %kernel.root_dir%/../web/media
+    filesystems:
+        media:
+            adapter: media
 
 # Vich Configuration
 vich_uploader:
     db_driver: orm
-    storage: gaufrette
+    storage: flysystem
     mappings: ~
 
 # Doctrine Extensions Configuration

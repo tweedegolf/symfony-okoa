@@ -1,19 +1,17 @@
 imports:
-    - { resource: ../parameters.yml }
     - { resource: ../config.yml }
 
 framework:
-   validation:
-       cache: apc
+    validation:
+        cache: serializer.mapping.cache.apc
+    serializer:
+        cache: serializer.mapping.cache.apc
 
 doctrine:
    orm:
-       metadata_cache_driver:
-           type: apc
-       result_cache_driver:
-           type: apc
-       query_cache_driver:
-           type: apc
+       metadata_cache_driver: apc
+       result_cache_driver: apc
+       query_cache_driver: apc
 
 monolog:
     handlers:

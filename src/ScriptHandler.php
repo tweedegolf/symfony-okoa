@@ -131,9 +131,9 @@ class ScriptHandler
         $sitename = self::determineProjectTitle();
         $sitename = $io->ask(self::formatQuestion('Sitename', $sitename), $sitename);
 
-        $io->write('<info>Updating app/config/services.yml</info>');
-        $services = 'app/config/services.yml';
-        file_put_contents($services, str_replace('__sitename__', $sitename, file_get_contents($services)));
+        $io->write('<info>Updating app/config/config.yml</info>');
+        $configfile = 'app/config/config.yml';
+        file_put_contents($configfile, str_replace('__sitename__', $sitename, file_get_contents($configfile)));
 
         $name = explode('/', $name);
         $name = count($name) > 1 ? $name[1] : $name[0];
