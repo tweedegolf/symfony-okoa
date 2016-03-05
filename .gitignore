@@ -26,3 +26,4 @@
 /web/media/*
 /web/favicon.ico
 /web/robots.txt
+/.vagrant
