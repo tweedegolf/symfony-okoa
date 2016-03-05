@@ -42,13 +42,24 @@ class AppKernel extends Kernel
         return __DIR__;
     }
 
+    private function isVagrantEnv()
+    {
+        return getenv('VAGRANT') === '1';
+    }
+
     public function getCacheDir()
     {
+        if ($this->isVagrantEnv()) {
+            return '/dev/shm/cache/' .  $this->environment;
+        }
         return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
     }
 
     public function getLogDir()
     {
+        if ($this->isVagrantEnv()) {
+            return '/dev/shm/logs';
+        }
         return dirname(__DIR__).'/var/logs';
     }
 
