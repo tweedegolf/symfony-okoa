@@ -1,0 +1,96 @@
+- hosts: all
+  become: yes
+  tags: [setup]
+  tasks:
+    # Install dependencies
+    - apt: name={{item}} state=latest update_cache=yes
+      with_items:
+        - php5-fpm
+        - php5-cli
+        - php5-curl
+        - php5-mysqlnd
+        - php5-gd
+        - php5-intl
+        - php5-imagick
+        - php5-mcrypt
+        - php5-memcache
+        - php5-sqlite
+        - php5-xmlrpc
+        - php5-dev
+        - php-pear
+        - openjdk-7-jre-headless
+        - ruby
+        - ruby-dev
+        - libsqlite3-dev
+        - sqlite3
+        - python-mysqldb
+        - nginx-full
+        - git
+        - htop
+        - dnsutils
+        - tmux
+        - screen
+        - curl
+        - wget
+        - apt-transport-https
+        - python-pip
+        - postgresql
+        - postgresql-client
+        - python-psycopg2
+
+    # Remove default nginx site
+    - file: path=/etc/nginx/sites-enabled/default state=absent
+
+    # Install nodejs
+    - apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key id=9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280
+    - apt_repository: repo="deb https://deb.nodesource.com/node_4.x jessie main" state=present
+    - apt_repository: repo="deb-src https://deb.nodesource.com/node_4.x jessie main" state=present
+    - apt: name=nodejs state=latest update_cache=yes
+
+    # Install composer
+    - shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin creates=/usr/local/bin/composer.phar warn=no
+    - file: path=/usr/local/bin/composer.phar mode=a+x state=file
+    - file: path=/usr/local/bin/composer src=/usr/local/bin/composer.phar state=link
+
+    # Update npm and install gulp and bower
+    - shell: npm install -g npm
+    - shell: npm install -g gulp
+    - shell: npm install -g bower
+
+    # Install mailcatcher
+    - gem: name=mailcatcher state=latest
+    - copy: src=files/mailcatcher.service dest=/etc/systemd/system/mailcatcher.service owner=root group=root mode=0644
+    - service: name=mailcatcher enabled=yes
+
+    # Install sphinx documentation tool
+    - pip: name={{item}} state=latest
+      with_items: [sphinx, sphinx_rtd_theme, sphinx-autobuild]
+
+    # Add role and db for vagrant in postgresql
+    - postgresql_user: name=vagrant role_attr_flags=SUPERUSER state=present
+      become: yes
+      become_user: postgres
+    - postgresql_db: name=vagrant owner=vagrant
+      become: yes
+      become_user: postgres
+
+    # Copy updated config files
+    - copy: src=files/php.ini dest=/etc/php5/cli/php.ini owner=root group=root mode=0644
+    - copy: src=files/php.ini dest=/etc/php5/fpm/php.ini owner=root group=root mode=0644
+    - copy: src=files/php_fpm.conf dest=/etc/php5/fpm/pool.d/www.conf owner=root group=root mode=0644
+    - copy: src=files/nginx.dev.conf dest=/etc/nginx/sites-enabled/dev.conf owner=root group=root mode=0644
+    - copy: src=files/nginx.prod.conf dest=/etc/nginx/sites-enabled/prod.conf owner=root group=root mode=0644
+    - copy: src=files/bash_profile.sh dest=/home/vagrant/.bash_profile owner=vagrant group=vagrant mode=0644
+    - copy: src=files/profile.sh dest=/etc/profile.d/vagrant.sh owner=root group=root mode=0644
+    - copy: src=files/postgresql.conf dest=/etc/postgresql/9.4/main/postgresql.conf owner=postgres group=postgres mode=0644
+    - copy: src=files/pg_hba.conf dest=/etc/postgresql/9.4/main/pg_hba.conf owner=postgres group=postgres mode=0644
+    - copy: src={{ item }} dest=/home/vagrant/.gitconfig owner=vagrant group=vagrant mode=0644
+      with_first_found:
+        - ~/.gitconfig
+        - files/.gitconfig
+
+    # Restart services
+    - service: name=nginx state=restarted
+    - service: name=php5-fpm state=restarted
+    - service: name=mailcatcher state=restarted
+    - service: name=postgresql state=restarted
