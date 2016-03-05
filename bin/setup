@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+bin/fill_parameters
+
+DATABASE_NAME=`cat app/config/parameters.yml | grep database_url | awk -F "/" '{print $NF}' | sed -e 's/"*//' | tr -d \'\"`
+
+psql --command="DROP DATABASE IF EXISTS $DATABASE_NAME" > /dev/null 2>&1
+psql --command="CREATE DATABASE $DATABASE_NAME" > /dev/null 2>&1
+composer install --no-interaction
+npm install
+bower install
+bin/symfony doctrine:schema:create --no-interaction
