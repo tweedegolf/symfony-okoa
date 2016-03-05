@@ -1,8 +1,15 @@
+# Installation specific parameters
 /app/config/parameters.yml
+
+# Build artifacts and assets
 /web/bundles/
 /web/css/
 /web/js/
 /web/assets/
+/web/favicon.ico
+/web/robots.txt
+
+# Caches, logs and sessions
 /var/bootstrap.php.cache
 /var/cache/*
 /var/logs/*
@@ -10,20 +17,22 @@
 !/var/cache/.gitkeep
 !/var/sessions/.gitkeep
 !/var/logs/.gitkeep
-/build
+
+# Dependency manager folders
 /vendor
 /node_modules
 /assets/vendor
-/composer.phar
-/behat.yml
-/phpspec.yml
+
+# Uploads
+/web/files/*
+/web/media/*
+
+# Utility and OS files
+/tasks/ansible/playbook.retry
+/phantomjsdriver.log
+/.vagrant
+/.idea
 .DS_Store
 ._*
 *.orig
 *~
-/phantomjsdriver.log
-/web/files/*
-/web/media/*
-/web/favicon.ico
-/web/robots.txt
-/.vagrant

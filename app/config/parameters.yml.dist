@@ -1,4 +1,4 @@
 parameters:
-    database_url: postgresql://user@localhost/__database_name__
+    database_url: postgresql://postgres@localhost/__database_name__
     mailer_url: smtp://127.0.0.1:1025
     secret: "__secret__"

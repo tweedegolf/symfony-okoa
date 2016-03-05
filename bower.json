@@ -2,10 +2,9 @@
   "name": "symfony-okoa",
   "private": true,
   "dependencies": {
-    "jquery": "^1.11.3",
-    "bootstrap-sass-twbs": "^3.3.5",
-    "fontawesome": "^4.3.0",
-    "selectize": "^0.12.1",
-    "requirejs": "~2.1.20"
+    "jquery": "^1.12.1",
+    "bootstrap-sass": "^3.3.6",
+    "fontawesome": "^4.5.0",
+    "selectize": "^0.12.1"
   }
 }
