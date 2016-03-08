@@ -32,6 +32,28 @@ services:
 - *Production website*: http://app.dev/ (running using nginx and php-fpm)
 - *Development website*: http://app.dev:8080/ (running using nginx and php-fpm)
 
+### Asset compilation
+To build assets, you can run the command `gulp build`. This will generate all
+assets and minified versions, and place them inside the `web/assets` folder.
+
+When working on assets you can use a watch command to automatically recompile
+scripts and stylesheets on changes. This will also start a livereload server
+allowing pages to be automatically refreshed when the updated assets are
+available. To run the watch command you must use `gulp watch`. Note that this
+command is not automatically started with the vagrant machine, to run it inside
+vagrant use:
+
+    vagrant ssh
+    gulp watch
+    
+Or alternatively:
+
+    vagrant ssh -c 'gulp watch'
+
+To clean previous versions of assets you may run `gulp clean`, this will ensure
+that any old assets are removed before generating new ones. A full list of
+available tasks can be shown with `gulp -T`.
+
 ## Setup
 When the virtual machine is first started the project is not yet setup properly.
 To setup the machine, simply run `bin/setup` inside the virtual machine. If the

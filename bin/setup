@@ -14,3 +14,4 @@ composer install --no-interaction
 npm install
 bower install
 bin/symfony doctrine:schema:create --no-interaction
+gulp build
