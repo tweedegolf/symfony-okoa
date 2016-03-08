@@ -1,14 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
-  <script src="{{ asset('assets/scripts/libs/require.js') }}"></script>
-  <script>
-    require(['{{ asset('assets/scripts/setup.js') }}'], function () {
-      require(['app']);
-    });
-  </script>
+  <script src="{{ app.debug ? asset('assets/scripts/libs/babel-polyfill.js') : asset('assets/scripts/libs/babel-polyfill.min.js') }}"></script>
+  <script src="{{ app.debug ? asset('assets/scripts/app.js') : asset('assets/scripts/app.min.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
-  <link rel="stylesheet" href="{{ asset('/assets/styles/app.css') }}">
+  <link rel="stylesheet" href="{{ app.debug ? asset('assets/styles/app.css') : asset('assets/styles/app.min.css') }}">
 {% endblock %}
