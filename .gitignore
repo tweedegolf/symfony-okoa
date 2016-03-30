@@ -28,7 +28,7 @@
 /web/media/*
 
 # Utility and OS files
-/tasks/ansible/playbook.retry
+/tasks/ansible/*.retry
 /phantomjsdriver.log
 /.vagrant
 /.idea

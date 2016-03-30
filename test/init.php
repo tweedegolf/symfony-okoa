@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../app/bootstrap.php.cache";
+require_once __DIR__ . "/../var/bootstrap.php.cache";
 require_once __DIR__ . '/../app/AppKernel.php';
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/matchers.php';
@@ -9,8 +9,8 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use filter\Filter;
-use jit\Interceptor;
+use Kahlan\Filter\Filter;
+use Kahlan\Jit\Interceptor;
 use kahlan\Matcher;
 use kahlan\Suite;
 use Symfony\Component\Debug\Debug;
@@ -70,8 +70,8 @@ Filter::register('symfony.register', function ($chain) {
 
 Filter::register('mink.register', function ($chain) {
     $default_browser = getenv('MINK_DEFAULT_BROWSER') !== false ? getenv('MINK_DEFAULT_BROWSER') : 'chrome';
-    $firefox_location = getenv('SELENIUM_FIREFOX_HOST') !== false ? getenv('SELENIUM_FIREFOX_HOST') : 'localhost';
-    $chrome_location = getenv('SELENIUM_CHROME_HOST') !== false ? getenv('SELENIUM_CHROME_HOST') : 'localhost';
+    $firefox_location = getenv('SELENIUM_FIREFOX_HOST') !== false ? getenv('SELENIUM_FIREFOX_HOST') : 'selenium.dev';
+    $chrome_location = getenv('SELENIUM_CHROME_HOST') !== false ? getenv('SELENIUM_CHROME_HOST') : 'selenium.dev';
 
     $firefox_selenium_host = "http://{$firefox_location}:4444/wd/hub";
     $chrome_selenium_host = "http://{$chrome_location}:4444/wd/hub";

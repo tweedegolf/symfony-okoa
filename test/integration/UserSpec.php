@@ -21,7 +21,7 @@ describe('User interactions', function () {
             browser()->visit(base() . '/login');
             page()->fillField('Username', 'test');
             page()->fillField('Password', 'test');
-            page()->pressButton('Login');
+            page()->pressButton('Log in');
 
             expect(page())->toContainText('Hello test!');
         });

@@ -1,0 +1,12 @@
+[Unit]
+Description=Chromedriver Service
+After=network.service
+
+[Service]
+User=vagrant
+WorkingDirectory=/home/vagrant/chromedriver
+ExecStart=/usr/local/bin/chromedriver
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

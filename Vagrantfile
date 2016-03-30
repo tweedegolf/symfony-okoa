@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
         node.vm.box = "debian/jessie64"
         node.vm.hostname = "app"
         node.hostmanager.aliases = ["app.dev", "admin.dev"]
-        node.vm.network "private_network", ip: '192.168.142.101'
+        node.vm.network :private_network, ip: '192.168.142.101'
         node.vm.synced_folder ".", "/vagrant", disabled: true
         node.vm.synced_folder ".", "/app", type: "nfs", mount_options: ["nolock", "vers=3", "udp", "noatime", "actimeo=1"]
 
@@ -19,6 +19,17 @@ Vagrant.configure(2) do |config|
 
         node.vm.provision "ansible" do |ansible|
             ansible.playbook = "tasks/ansible/playbook.yml"
+        end
+    end
+
+    config.vm.define "selenium" do |node|
+        node.vm.box = "ubuntu/wily64"
+        node.vm.hostname = "selenium"
+        node.hostmanager.aliases = ["selenium.dev"]
+        node.vm.network :private_network, ip: '192.168.142.254'
+
+        node.vm.provision "ansible" do |ansible|
+            ansible.playbook = "tasks/ansible/selenium.yml"
         end
     end
 end

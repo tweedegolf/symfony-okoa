@@ -143,7 +143,7 @@ function probable_expression_type($selector)
  */
 function base($type = null) {
     switch ($type) {
-        default: return 'http://localhost.dev:8080/app_test.php';
+        default: return 'http://app.dev:8080';
     }
 }
 

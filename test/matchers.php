@@ -2,8 +2,8 @@
 
 use Behat\Mink\Element\Element;
 use Behat\Mink\Session;
-use kahlan\Matcher;
-use kahlan\util\Str;
+use Kahlan\Matcher;
+use Kahlan\Util\Text;
 
 class ElementNotFound {
     public $selector;
@@ -40,7 +40,7 @@ class ToHaveElement {
         }
 
         if (!$actual instanceof Element) {
-            $repr = Str::toString($actual);
+            $repr = Text::toString($actual);
             throw new \Exception("Not a valid Mink DOM Element: {$repr}");
         }
 
@@ -69,7 +69,7 @@ class ToContainText {
         }
 
         if (!$actual instanceof Element) {
-            $repr = Str::toString($actual);
+            $repr = Text::toString($actual);
             throw new \Exception("Not a valid Mink DOM Element: {$repr}");
         }
 

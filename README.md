@@ -31,6 +31,12 @@ services:
 - *Mailcatcher*: http://app.dev:1080/ (SMTP is listening on localhost:1025)
 - *Production website*: http://app.dev/ (running using nginx and php-fpm)
 - *Development website*: http://app.dev:8080/ (running using nginx and php-fpm)
+- *Selenium server (firefox and chrome)*: http://selenium.dev:4444/wd/hub
+
+If the selenium server is not required while developing, you can also choose to
+just start the application server using `vagrant up app`, in which case the
+virtual machine containing all the selenium related applications will not be 
+started.
 
 ### Asset compilation
 To build assets, you can run the command `gulp build`. This will generate all
@@ -43,12 +49,12 @@ available. To run the watch command you must use `gulp watch`. Note that this
 command is not automatically started with the vagrant machine, to run it inside
 vagrant use:
 
-    vagrant ssh
+    vagrant ssh app
     gulp watch
     
 Or alternatively:
 
-    vagrant ssh -c 'gulp watch'
+    vagrant ssh app -c 'gulp watch'
 
 To clean previous versions of assets you may run `gulp clean`, this will ensure
 that any old assets are removed before generating new ones. A full list of
