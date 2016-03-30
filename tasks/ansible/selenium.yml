@@ -11,11 +11,6 @@
         - vim
         - default-jre
 
-    # Login as vagrant and open xorg on startup
-    #- file: path=/etc/systemd/system/getty@tty1.service.d state=directory mode=0755
-    #- copy: src=files/selenium/autologin.conf dest=/etc/systemd/system/getty@tty1.service.d/autologin.conf owner=root group=root mode=0777
-    #- copy: src=files/selenium/.profile dest=/home/vagrant/.profile owner=vagrant group=vagrant mode=0644
-
     # Install firefox
     - apt: name=firefox state=latest update_cache=yes
 
