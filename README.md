@@ -28,7 +28,7 @@ services:
 - *PostgreSQL*: configured to allow access by any user defined (by default
   the `postgres` and `vagrant` usernames are available. The PostgreSQL instance
   is also available from outside the VM on port 5432.
-- *Mailcatcher*: http://app.dev:1080/ (SMTP is listening on localhost:1025)
+- *MailHog*: http://app.dev:1080/ (SMTP is listening on localhost:1025)
 - *Production website*: http://app.dev/ (running using nginx and php-fpm)
 - *Development website*: http://app.dev:8080/ (running using nginx and php-fpm)
 - *Selenium server (firefox and chrome)*: http://selenium.dev:4444/wd/hub
