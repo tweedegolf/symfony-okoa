@@ -128,7 +128,7 @@ gulp.task('styles', function () {
             includePaths: [config.src.styles_path, config.src.libs_path],
             imagePath: '../images',
             outputStyle: 'nested'
-        }))
+        }).on('error', sass.logError))
         .pipe(cssimport())
         .pipe(autoprefixer(['last 2 versions', 'ie 9'], {map: false}))
         .pipe(sourcemaps.write())
