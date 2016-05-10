@@ -4,7 +4,9 @@
   tasks:
     # Update sshd so no locales are used from the host
     - copy: src=files/sshd_config dest=/etc/ssh/sshd_config owner=root group=root mode=0644
+      when: not docker|default(False)
     - service: name=ssh state=restarted
+      when: not docker|default(False)
 
     # Update locales
     - shell: grep LANGUAGE /etc/default/locale > /dev/null && echo 'yes' || echo 'no'
@@ -51,6 +53,7 @@
         - postgresql
         - postgresql-client
         - python-psycopg2
+        - sudo
 
     # Add role and db for vagrant in postgresql
     - service: name=postgresql state=started

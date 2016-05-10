@@ -27,7 +27,7 @@ Vagrant.configure(2) do |config|
         if is_windows
             node.vm.provision "shell" do |sh|
                 sh.path = "tasks/ansible/ansible.sh"
-                sh.args = "tasks/ansible/playbook.yml"
+                sh.args = "/app/tasks/ansible/playbook.yml"
             end
         else
             node.vm.provision "ansible" do |ansible|
