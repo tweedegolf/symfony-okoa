@@ -139,7 +139,7 @@ gulp.task('gzip', ['minify'], function () {
 });
 
 // watch for changes in asset files
-gulp.task('watch', ['libs', 'scripts', 'styles', 'static'], function (cb) {
+gulp.task('watch', ['libs', 'styles', 'static'], function (cb) {
     var opts = {
         mode: process.env.USE_POLLING_WATCHES ? 'poll' : 'auto'
     };
