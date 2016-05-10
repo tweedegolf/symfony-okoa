@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var gutil = require('gulp-util');
 var gulpif = require('gulp-if');
 
 var autoprefixer = require('gulp-autoprefixer');
@@ -29,60 +28,7 @@ var yargs = require('yargs');
 var _ = require('lodash');
 
 var config = require('./tasks/gulp/config');
-
-function bundle(source_file, watch) {
-    var bundle;
-    var opts = {
-        debug: true,
-        paths: ['./node_modules', './assets/vendor', './assets/scripts']
-    };
-
-    if (watch) {
-        opts = _.assign(watchify.args, opts);
-        if (process.env.USE_POLLING_WATCHES) {
-            opts.usePolling = true;
-        }
-        bundle = watchify(browserify(opts));
-        bundle.on('update', function () {
-            rebundle(bundle);
-        });
-    } else {
-        bundle = orig = browserify(opts);
-    }
-
-    bundle.add(source_file);
-    bundle.transform(babelify.configure({
-        compact: false,
-        presets: ['es2015', 'react']
-    }));
-    bundle.transform('brfs');
-    bundle.transform('debowerify');
-    bundle.transform('deamdify');
-
-    function rebundle(bundler) {
-        return bundler.bundle()
-            .on('error', function (e) {
-                gutil.log(gutil.colors.red(e.message));
-                if (e.codeFrame) {
-                    if (_.startsWith(e.codeFrame, 'false')) {
-                        console.log(e.codeFrame.substr(5));
-                    } else {
-                        console.log(e.codeFrame);
-                    }
-                }
-            })
-            .pipe(source(path.basename(source_file)))
-            .pipe(buffer())
-            .pipe(sourcemaps.init({
-                loadMaps: true
-            }))
-            .pipe(sourcemaps.write('./maps'))
-            .pipe(gulp.dest(config.dest.scripts))
-            .pipe(livereload());
-    }
-
-    return rebundle(bundle);
-}
+var bundle = require('./tasks/gulp/bundle');
 
 // move library scripts to target directory
 gulp.task('libs', function () {
