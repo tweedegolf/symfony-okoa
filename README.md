@@ -41,11 +41,12 @@ localhost.
 - *MailHog*: http://localhost:1080/ (SMTP is listening on mailhog:1025 for the
   app container)
 - *Production website*: http://localhost:80/ (running using nginx and php-fpm)
+  Note when running on vagrant this address is http://localhost:8880 instead.
 - *Development website*: http://localhost:8080/ (running using nginx and 
   php-fpm)
 - *Selenium grid*: http://localhost:4444/
-- *Chrome debug*: http://localhost:15900/ (password `secret`)
-- *Firefox debug*: http://localhost:15901/ (password `secret`)
+- *Chrome debug*: vnc://localhost:15900/ (password `secret`)
+- *Firefox debug*: vnc://localhost:15901/ (password `secret`)
 
 To run commands inside of the app container you can either use
 `docker-compose run app [command]` or `bin/run [command]`.

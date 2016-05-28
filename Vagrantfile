@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
         node.vm.synced_folder ".", "/app", type: "nfs", mount_options: mount_options
 
         node.vm.network :private_network, type: "dhcp"
-        node.vm.network :forwarded_port, guest: 80, host: 80
+        node.vm.network :forwarded_port, guest: 80, host: 8880
         node.vm.network :forwarded_port, guest: 8080, host: 8080
         node.vm.network :forwarded_port, guest: 1080, host: 1080
         node.vm.network :forwarded_port, guest: 5432, host: 5432
