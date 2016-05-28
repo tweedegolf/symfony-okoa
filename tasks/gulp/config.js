@@ -11,7 +11,7 @@ var config = {
             'assets/styles/admin.scss'
         ],
 
-        libs_path: 'assets/vendor',
+        node_modules: 'node_modules',
         libs: { // javascript libraries not in the bundle
             'node_modules/babel-polyfill/dist/polyfill.js': 'babel-polyfill.js'
             // 'path/to/library.js': true

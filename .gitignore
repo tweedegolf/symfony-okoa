@@ -14,9 +14,11 @@
 /var/cache/*
 /var/logs/*
 /var/sessions/*
+/var/run/*
 !/var/cache/.gitkeep
 !/var/sessions/.gitkeep
 !/var/logs/.gitkeep
+!/var/run/.gitkeep
 
 # Dependency manager folders
 /vendor

@@ -1,2 +1,0 @@
-export VAGRANT=1
-export USE_POLLING_WATCHES=1

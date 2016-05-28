@@ -6,52 +6,30 @@ if is_windows
 end
 
 Vagrant.configure(2) do |config|
-    config.hostmanager.enabled = true
-    config.hostmanager.manage_host = true
-    config.hostmanager.manage_guest = true
-    config.hostmanager.include_offline = true
     config.ssh.forward_agent = true
 
     config.vm.define "app" do |node|
         node.vm.box = "debian/jessie64"
-        node.vm.hostname = "app"
-        node.hostmanager.aliases = ["app.dev", "admin.dev"]
         node.vm.network :private_network, ip: '192.168.142.101'
         node.vm.synced_folder ".", "/vagrant", disabled: true
         node.vm.synced_folder ".", "/app", type: "nfs", mount_options: mount_options
 
+        node.vm.network :forwarded_port, guest: 80, host: 80
+        node.vm.network :forwarded_port, guest: 8080, host: 8080
+        node.vm.network :forwarded_port, guest: 1080, host: 1080
+        node.vm.network :forwarded_port, guest: 5432, host: 5432
+
         node.vm.provider "virtualbox" do |virtualbox|
-            virtualbox.memory = 2048
+            virtualbox.cpus = 2
+            virtualbox.memory = 4096
         end
 
-        if is_windows
-            node.vm.provision "shell" do |sh|
-                sh.path = "tasks/ansible/ansible.sh"
-                sh.args = "/app/tasks/ansible/playbook.yml"
-            end
-        else
-            node.vm.provision "ansible" do |ansible|
-                ansible.playbook = "tasks/ansible/playbook.yml"
-            end
-        end
-    end
-
-    config.vm.define "selenium" do |node|
-        node.vm.box = "ubuntu/wily64"
-        node.vm.hostname = "selenium"
-        node.hostmanager.aliases = ["selenium.dev"]
-        node.vm.network :private_network, ip: '192.168.142.254'
-        node.vm.synced_folder ".", "/app", type: "nfs", mount_options: mount_options
-
-        if is_windows
-            node.vm.provision "shell" do |sh|
-                sh.path = "tasks/ansible/ansible.sh"
-                sh.args = "tasks/ansible/selenium.yml"
-            end
-        else
-            node.vm.provision "ansible" do |ansible|
-                ansible.playbook = "tasks/ansible/selenium.yml"
-            end
-        end
+        node.vm.provision :shell,
+            inline: "echo 'export USER_ID=$UID' | sudo tee /etc/profile.d/user_id.sh > /dev/null"
+        node.vm.provision :shell,
+            inline: "grep -q -F 'cd /app' /home/vagrant/.bashrc || echo 'cd /app' >> /home/vagrant/.bashrc"
+        node.vm.provision :docker
+        node.vm.provision :docker_compose,
+            compose_version: "1.7.1"
     end
 end

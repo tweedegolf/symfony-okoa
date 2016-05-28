@@ -71,7 +71,7 @@ gulp.task('styles', function () {
         .pipe(sourcemaps.init())
         //.pipe(changed(config.dest.styles, {extension: '.css'}))
         .pipe(sass({
-            includePaths: [config.src.styles_path, config.src.libs_path],
+            includePaths: [config.src.styles_path, config.src.node_modules],
             imagePath: '../images',
             outputStyle: 'nested'
         }).on('error', sass.logError))

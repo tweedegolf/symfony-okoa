@@ -1,42 +1,48 @@
 # A Symfony and Okoa Project
 
 ## Dependencies
-To use this project install [virtualbox](https://www.virtualbox.org) and 
-[vagrant](https://www.vagrantup.com). Additionaly at least the vagrant plugin
-`vagrant-hostmanager` is required for setting up your hostsfile. Additionally
-it is recommended to use the `vagrant-vbguest` plugin to ensure your virtualbox
-guest additions are up to date. To install all these on a Mac with homebrew and
-brew-cask, you can use the following commands:
+This project runs via [docker](https://www.docker.com/), specifically using
+[docker-compose](https://docs.docker.com/compose/). To run the project make sure
+you have the docker client and docker-compose installed and then simply run
+`docker-compose up` to start it.
+
+If your platform is not Linux, you can use the specially configured vagrant box
+also available. This will start up a linux machine that allows you to run
+docker-compose as best as possible for this project. To use that simply run
+`vagrant up` and login to the virtual machine using `vagrant ssh`. You can then
+use `docker-compose up` as if it was your local machine.
+
+When using vagrant, this vagrantfile is setup to use `vagrant-hostmanager` and
+the `vagrant-docker-compose` plugins. To install vagrant, virtualbox and the
+required plugins on OSX you can use:
 
     brew cask install vagrant virtualbox
-    vagrant plugin install vagrant-hostmanager vagrant-vbguest
-
-All dependencies for the project will be installed inside a vagrant virtual 
-machine. Note that the VM installed is not safe by default and is only for usage
-in development environments. The ansible playbook `tasks/ansible/playbook.yml` 
-provides information that can be used to setup a production ready machine that 
-can run a project based on Symfony Okoa.
+    vagrant plugin install vagrant-hostmanager vagrant-docker-compose vagrant-vbguest 
 
 ## Running
 A vagrant virtual machine may be started by running
     
-    vagrant up
+    docker-compose up
     
-Issueing this command will start up a virtual machine with the following
-services:
+If working on Windows and/or OSX and the available docker does not work 
+sufficiently or you don't want to install docker, you can use
+
+    vagrant up
+    vagrant ssh
+    docker-compose up
+    
+   
+Issueing these commands will start up all required services and forward ports to
+localhost.
 
 - *PostgreSQL*: configured to allow access by any user defined (by default
-  the `postgres` and `vagrant` usernames are available. The PostgreSQL instance
-  is also available from outside the VM on port 5432.
-- *MailHog*: http://app.dev:1080/ (SMTP is listening on localhost:1025)
-- *Production website*: http://app.dev/ (running using nginx and php-fpm)
-- *Development website*: http://app.dev:8080/ (running using nginx and php-fpm)
-- *Selenium server (firefox and chrome)*: http://selenium.dev:4444/wd/hub
-
-If the selenium server is not required while developing, you can also choose to
-just start the application server using `vagrant up app`, in which case the
-virtual machine containing all the selenium related applications will not be 
-started.
+  the `tg` username is available). The PostgreSQL instance is available on 
+  port 5432.
+- *MailHog*: http://localhost:1080/ (SMTP is listening on mailhog:1025 for the
+  app container)
+- *Production website*: http://localhost:80/ (running using nginx and php-fpm)
+- *Development website*: http://localhost:8080/ (running using nginx and 
+  php-fpm)
 
 ### Asset compilation
 To build assets, you can run the command `gulp build`. This will generate all

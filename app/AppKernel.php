@@ -50,7 +50,7 @@ class AppKernel extends Kernel
     public function getCacheDir()
     {
         if ($this->isVagrantEnv()) {
-            return '/dev/shm/cache/' .  $this->environment;
+            return '/tmp/symfony/cache/' .  $this->environment;
         }
         return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
     }
@@ -58,7 +58,7 @@ class AppKernel extends Kernel
     public function getLogDir()
     {
         if ($this->isVagrantEnv()) {
-            return '/dev/shm/logs';
+            return '/tmp/symfony/logs';
         }
         return dirname(__DIR__).'/var/logs';
     }
@@ -67,8 +67,8 @@ class AppKernel extends Kernel
     {
         $loader->load(__DIR__ . '/config/' . $this->getEnvironment() . '/config.yml');
 
-        if ($this->isVagrantEnv()) {
-            $loader->load(__DIR__ . '/config/vagrant.php');
-        }
+//        if ($this->isVagrantEnv()) {
+//            $loader->load(__DIR__ . '/config/vagrant.php');
+//        }
     }
 }

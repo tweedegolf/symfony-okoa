@@ -1,10 +1,48 @@
 version: '2'
 services:
-  app:
-    build:
-      context: .
-      args:
-        USER_ID: $USER_ID
-    ports: [80, 8080, 35729, 1080, 5432]
-    volumes:
-      - ".:/app"
+    app:
+        build:
+            context: .
+            args:
+                USER_ID: $USER_ID
+        depends_on:
+            - psql
+            - mailhog
+        volumes:
+            - ".:/app"
+            - "./tasks/files/php.ini:/etc/php5/cli/php.ini"
+            - "./tasks/files/php.ini:/etc/php5/fpm/php.ini"
+            - "./tasks/files/php-fpm.conf:/etc/php5/fpm/php-fpm.conf"
+        command: /usr/sbin/php5-fpm
+        environment:
+            USE_POLLING_WATCHES: 1
+            VAGRANT: 1
+            PGHOST: psql
+
+    psql:
+        image: postgres:9.4
+        environment:
+            POSTGRES_USER: tg
+        ports:
+            - "5432:5432"
+
+    mailhog:
+        image: mailhog/mailhog:latest
+        environment:
+            MH_API_BIND_ADDR: 0.0.0.0:1080
+            MH_UI_BIND_ADDR: 0.0.0.0:1080
+            MH_SMTP_BIND_ADDR: 0.0.0.0:1025
+        ports:
+            - "1080:1080"
+
+    nginx:
+        image: nginx:latest
+        depends_on:
+            - app
+        volumes:
+            - ".:/app"
+            - "./tasks/files/nginx.dev.conf:/etc/nginx/conf.d/dev.conf"
+            - "./tasks/files/nginx.prod.conf:/etc/nginx/conf.d/prod.conf"
+        ports:
+            - "80:80"
+            - "8080:8080"

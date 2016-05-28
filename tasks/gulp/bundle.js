@@ -45,7 +45,6 @@ module.exports = function bundle(source_file, watch) {
         presets: ['es2015']
     }));
     bundle.transform('brfs');
-    bundle.transform('debowerify');
 
     function rebundle(bundler) {
         return bundler.bundle()

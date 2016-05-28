@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 composer install --no-interaction
 npm install
-bower install
 bin/symfony doctrine:schema:update --no-interaction --force
 gulp clean
 gulp build
