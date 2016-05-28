@@ -1,5 +1,6 @@
 # Installation specific parameters
 /app/config/parameters.yml
+/phpunit.xml
 
 # Build artifacts and assets
 /web/bundles/
@@ -30,8 +31,6 @@
 /web/media/*
 
 # Utility and OS files
-/tasks/ansible/*.retry
-/phantomjsdriver.log
 /.vagrant
 /.idea
 .DS_Store

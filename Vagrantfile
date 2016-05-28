@@ -12,6 +12,7 @@ Vagrant.configure(2) do |config|
         node.vm.box = "debian/jessie64"
         node.vm.synced_folder ".", "/vagrant", disabled: true
         node.vm.synced_folder ".", "/app", type: "nfs", mount_options: mount_options
+        node.vm.synced_folder "~/.composer", "/home/vagrant/.composer", type: "nfs", mount_options: mount_options
 
         node.vm.network :private_network, type: "dhcp"
         node.vm.network :forwarded_port, guest: 80, host: 8880
@@ -28,7 +29,7 @@ Vagrant.configure(2) do |config|
         end
 
         node.vm.provision :shell,
-            inline: "echo 'export USER_ID=$UID' > /etc/profile.d/user_id.sh"
+            inline: "echo 'export USER_ID=`stat -c '%u' /app`' > /etc/profile.d/user_id.sh"
         node.vm.provision :shell,
             inline: "grep -q -F 'cd /app' /home/vagrant/.bashrc || echo 'cd /app' >> /home/vagrant/.bashrc"
         node.vm.provision :docker
