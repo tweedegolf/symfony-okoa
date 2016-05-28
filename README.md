@@ -12,12 +12,10 @@ docker-compose as best as possible for this project. To use that simply run
 `vagrant up` and login to the virtual machine using `vagrant ssh`. You can then
 use `docker-compose up` as if it was your local machine.
 
-When using vagrant, this vagrantfile is setup to use `vagrant-hostmanager` and
-the `vagrant-docker-compose` plugins. To install vagrant, virtualbox and the
-required plugins on OSX you can use:
+To install vagrant, virtualbox and the required plugins on OSX you can use:
 
     brew cask install vagrant virtualbox
-    vagrant plugin install vagrant-hostmanager vagrant-docker-compose vagrant-vbguest 
+    vagrant plugin install vagrant-vbguest
 
 ## Running
 A vagrant virtual machine may be started by running
@@ -31,7 +29,9 @@ sufficiently or you don't want to install docker, you can use
     vagrant ssh
     docker-compose up
     
-   
+Alternatively you can use `bin/vagrant` to start the VM, login to the VM
+and start the containers at the same time.
+
 Issueing these commands will start up all required services and forward ports to
 localhost.
 
@@ -43,6 +43,12 @@ localhost.
 - *Production website*: http://localhost:80/ (running using nginx and php-fpm)
 - *Development website*: http://localhost:8080/ (running using nginx and 
   php-fpm)
+- *Selenium grid*: http://localhost:4444/
+- *Chrome debug*: http://localhost:15900/ (password `secret`)
+- *Firefox debug*: http://localhost:15901/ (password `secret`)
+
+To run commands inside of the app container you can either use
+`docker-compose run app [command]` or `bin/run [command]`.
 
 ### Asset compilation
 To build assets, you can run the command `gulp build`. This will generate all
@@ -55,10 +61,9 @@ available. To run the watch command you must use `gulp watch`. Note that this
 command is not automatically started with the vagrant machine, to run it inside
 vagrant use:
 
-    vagrant ssh app
-    gulp watch
+    bin/run gulp watch
     
-Or alternatively:
+Or alternatively when using vagrant:
 
     vagrant ssh app -c 'gulp watch'
 

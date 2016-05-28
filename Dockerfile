@@ -20,11 +20,12 @@ RUN apt-get update && \
     php5-memcached php5-sqlite php5-pgsql php5-dev php-pear php5-apcu
 
 RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
-    echo 'deb https://deb.nodesource.com/node_6.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
+    echo 'deb https://deb.nodesource.com/node_4.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
+    DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs && \
+    npm install -g 'npm@3.9.*'
 
-RUN npm install -g gulp-cli@1.2.1
+RUN npm install -g 'gulp-cli@1.2.*'
 
 RUN curl -o /usr/local/bin/composer https://getcomposer.org/download/1.1.1/composer.phar && \
     chmod a+x /usr/local/bin/composer

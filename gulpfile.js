@@ -105,14 +105,14 @@ gulp.task('static', function () {
 // create compiled minified versions
 gulp.task('minify', ['libs', 'scripts', 'styles'], function () {
     return es.concat(
-        gulp.src(config.dest.scripts + "/*.js")
+        gulp.src([config.dest.scripts + "/*.js", '!' + config.dest.scripts + "/*.min.js"])
             .pipe(plumber())
             .pipe(uglify())
             .pipe(rename({suffix: '.min'}))
             .pipe(gulp.dest(config.dest.scripts))
             .pipe(livereload())
         ,
-        gulp.src(config.dest.libs + "/*.js")
+        gulp.src([config.dest.libs + "/*.js", '!' + config.dest.libs + "/*.min.js"])
             .pipe(plumber())
             .pipe(uglify())
             .pipe(rename({suffix: '.min'}))
@@ -129,7 +129,7 @@ gulp.task('minify', ['libs', 'scripts', 'styles'], function () {
 });
 
 gulp.task('gzip', ['minify'], function () {
-    return gulp.src([config.dest.path + "/**/*"])
+    return gulp.src([config.dest.path + "/**/*", '!' + config.dest.path + "/**/*.gz"])
         .pipe(plumber())
         .pipe(gzip({
             append: true

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+command -v vagrant > /dev/null
+if [ ! $? ]; then
+    echo "Please install vagrant on this machine"
+    exit 1
+fi
+
+vagrant status | grep -q 'running (virtualbox)'
+if [ ! $? ]; then
+    vagrant up
+fi
+
+if [ $# -gt 0 ]; then
+    command="cd /app && bin/run $@"
+    vagrant ssh -c "$command"
+else
+    vagrant ssh -c "cd /app && docker-compose up -d && bash"
+fi

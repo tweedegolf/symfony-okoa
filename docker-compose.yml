@@ -8,6 +8,9 @@ services:
         depends_on:
             - psql
             - mailhog
+            - selenium
+            - chrome
+            - firefox
         volumes:
             - ".:/app"
             - "./tasks/files/php.ini:/etc/php5/cli/php.ini"
@@ -46,3 +49,30 @@ services:
         ports:
             - "80:80"
             - "8080:8080"
+
+    selenium:
+        image: selenium/hub
+        ports:
+            - "4444:4444"
+
+    chrome:
+        image: selenium/node-chrome-debug
+        # See: https://github.com/SeleniumHQ/docker-selenium/issues/91
+        command: bash -c "sed -e '19a\echo no_proxy >> asseluser' /opt/bin/entry_point.sh | bash"
+        environment:
+             HUB_PORT_4444_TCP_ADDR: selenium
+        depends_on:
+            - selenium
+        ports:
+            - "15900:5900"
+
+    firefox:
+        image: selenium/node-firefox-debug
+        # See: https://github.com/SeleniumHQ/docker-selenium/issues/91
+        command: bash -c "sed -e '19a\echo no_proxy >> asseluser' /opt/bin/entry_point.sh | bash"
+        environment:
+            HUB_PORT_4444_TCP_ADDR: selenium
+        depends_on:
+            - selenium
+        ports:
+            - "15901:5900"
