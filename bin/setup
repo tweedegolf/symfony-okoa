@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-#if [ -f src/ScriptHandler.php ]; then
-#    composer run-script post-root-package-install
-#fi
+if [ -f src/ScriptHandler.php ]; then
+    composer run-script post-root-package-install
+fi
 
 bin/fill_parameters
 

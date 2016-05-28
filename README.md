@@ -6,34 +6,30 @@ This project runs via [docker](https://www.docker.com/), specifically using
 you have the docker client and docker-compose installed and then simply run
 `docker-compose up` to start it.
 
-If your platform is not Linux, you can use the specially configured vagrant box
-also available. This will start up a linux machine that allows you to run
+If you have a configuration for which it is not possible to run docker (or for
+which docker is too slow to run this project), you can choose to run this
+project using vagrant. This will start up a linux machine that allows you to run
 docker-compose as best as possible for this project. To use that simply run
 `vagrant up` and login to the virtual machine using `vagrant ssh`. You can then
 use `docker-compose up` as if it was your local machine.
 
-To install vagrant, virtualbox and the required plugins on OSX you can use:
+To install vagrant and virtualbox on OSX you can use:
 
     brew cask install vagrant virtualbox
-    vagrant plugin install vagrant-vbguest
 
 ## Running
-A vagrant virtual machine may be started by running
+You can start the containers by running
     
     docker-compose up
     
-If working on Windows and/or OSX and the available docker does not work 
-sufficiently or you don't want to install docker, you can use
+Alternatively when using vagrant, you can use
 
-    vagrant up
-    vagrant ssh
-    docker-compose up
+    bin/vagrant
     
-Alternatively you can use `bin/vagrant` to start the VM, login to the VM
-and start the containers at the same time.
-
-Issueing these commands will start up all required services and forward ports to
-localhost.
+This will start the VM, log you in to the VM and run `docker-compose up` to
+start the services. Issueing either of these commands will start up all required 
+services and forward ports to localhost (all these services are available on
+localhost):
 
 - *PostgreSQL*: configured to allow access by any user defined (by default
   the `tg` username is available). The PostgreSQL instance is available on 
@@ -66,7 +62,7 @@ vagrant use:
     
 Or alternatively when using vagrant:
 
-    vagrant ssh app -c 'gulp watch'
+    bin/vagrant gulp watch
 
 To clean previous versions of assets you may run `gulp clean`, this will ensure
 that any old assets are removed before generating new ones. A full list of
@@ -74,7 +70,7 @@ available tasks can be shown with `gulp -T`.
 
 ## Setup
 When the virtual machine is first started the project is not yet setup properly.
-To setup the machine, simply run `bin/setup` inside the virtual machine. If the
+To setup the machine, simply run `bin/setup` inside the app container. If the
 project was not previously configured an installation wizzard should start
 automatically. 
 
