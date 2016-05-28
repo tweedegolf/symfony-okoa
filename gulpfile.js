@@ -167,4 +167,8 @@ gulp.task('clean', function (cb) {
     ], cb);
 });
 
-gulp.task('build', ['libs', 'scripts', 'styles', 'static', 'minify', 'gzip']);
+gulp.task('prod-env', function () {
+    return process.env.NODE_ENV = 'production';
+});
+
+gulp.task('build', ['prod-env', 'libs', 'scripts', 'styles', 'static', 'minify', 'gzip']);
