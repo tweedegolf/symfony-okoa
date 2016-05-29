@@ -18,24 +18,11 @@ services:
         command: /usr/sbin/php5-fpm
         environment:
             USE_POLLING_WATCHES: 1
-            VAGRANT: 1
             PGHOST: psql
-
-    psql:
-        image: postgres:9.4
-        environment:
-            POSTGRES_USER: tg
-        ports:
-            - "5432:5432"
-
-    mailhog:
-        image: mailhog/mailhog:latest
-        environment:
-            MH_API_BIND_ADDR: 0.0.0.0:1080
-            MH_UI_BIND_ADDR: 0.0.0.0:1080
-            MH_SMTP_BIND_ADDR: 0.0.0.0:1025
-        ports:
-            - "1080:1080"
+            SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache
+            SYMFONY_OKOA_LOG_DIR: /tmp/symfony/logs
+        networks:
+            - default
 
     nginx:
         image: nginx:latest
@@ -48,11 +35,39 @@ services:
         ports:
             - "80:80"
             - "8080:8080"
+        networks:
+            default:
+                aliases:
+                    - web.dev
+                    - app.dev
+                    - admin.dev
+
+    psql:
+        image: postgres:9.4
+        environment:
+            POSTGRES_USER: tg
+        ports:
+            - "5432:5432"
+        networks:
+            - default
+
+    mailhog:
+        image: mailhog/mailhog:latest
+        environment:
+            MH_API_BIND_ADDR: 0.0.0.0:1080
+            MH_UI_BIND_ADDR: 0.0.0.0:1080
+            MH_SMTP_BIND_ADDR: 0.0.0.0:1025
+        ports:
+            - "1080:1080"
+        networks:
+            - default
 
     selenium:
         image: selenium/hub
         ports:
             - "4444:4444"
+        networks:
+            - default
 
     chrome:
         image: selenium/node-chrome-debug
@@ -65,6 +80,8 @@ services:
             - app
         ports:
             - "15900:5900"
+        networks:
+            - default
 
     firefox:
         image: selenium/node-firefox-debug
@@ -77,3 +94,7 @@ services:
             - app
         ports:
             - "15901:5900"
+        networks:
+            - default
+networks:
+    default: ~

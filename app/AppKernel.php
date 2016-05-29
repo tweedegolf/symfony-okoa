@@ -42,24 +42,23 @@ class AppKernel extends Kernel
         return __DIR__;
     }
 
-    private function isVagrantEnv()
-    {
-        return getenv('VAGRANT') === '1';
-    }
-
     public function getCacheDir()
     {
-        if ($this->isVagrantEnv()) {
-            return '/tmp/symfony/cache/' .  $this->environment;
+        $env = getenv('SYMFONY_OKOA_CACHE_DIR');
+        if ($env !== false) {
+            return $env;
         }
+
         return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
     }
 
     public function getLogDir()
     {
-        if ($this->isVagrantEnv()) {
-            return '/tmp/symfony/logs';
+        $env = getenv('SYMFONY_OKOA_LOG_DIR');
+        if ($env !== false) {
+            return $env;
         }
+
         return dirname(__DIR__).'/var/logs';
     }
 
