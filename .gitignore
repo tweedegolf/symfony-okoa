@@ -9,6 +9,7 @@
 /web/assets/
 /web/favicon.ico
 /web/robots.txt
+/docs/_build
 
 # Caches, logs and sessions
 /var/bootstrap.php.cache

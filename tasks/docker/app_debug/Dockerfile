@@ -19,12 +19,12 @@ RUN apt-get update \
         vim \
         postgresql-client-9.4
 
+# Install nodejs, update npm and install gulp-cli
 RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
     && echo 'deb https://deb.nodesource.com/node_4.x jessie main' > /etc/apt/sources.list.d/nodesource.list \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         nodejs
-
 RUN npm install -g 'npm@3.9.*'
 RUN npm install -g 'gulp-cli@1.2.*'
 
@@ -64,9 +64,22 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include --with-jpeg-dir
         imagick \
         apcu
 
-
+# Install composer
 RUN curl -o /usr/local/bin/composer https://getcomposer.org/download/1.1.1/composer.phar \
     && chmod a+x /usr/local/bin/composer
+
+# Install sphinx-doc
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        python \
+        python-dev \
+        python-pip \
+        libyaml-dev \
+    && pip install \
+        sphinx \
+        sphinx-autobuild \
+        sphinx-rtd-theme \
+        recommonmark
 
 # Setup tg user and sudo access
 ARG USER_ID=1000

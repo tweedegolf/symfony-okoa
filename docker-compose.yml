@@ -16,6 +16,7 @@ services:
         command: bash
         ports:
             - "35729:35729"
+            - "2080:2080"
         environment:
             USE_POLLING_WATCHES: 1
             PGHOST: psql
