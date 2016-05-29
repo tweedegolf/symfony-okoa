@@ -1,25 +1,45 @@
 imports:
     - { resource: ../config.yml }
 
+services:
+    validator_mapping_cache:
+        class: Doctrine\Common\Cache\ApcuCache
+        calls:
+            - [setNamespace, ["%validator.mapping.cache.prefix%"]]
+
+    serializer_mapping_cache:
+        class: Doctrine\Common\Cache\ApcuCache
+        calls:
+            - [setNamespace, ["%serializer.mapping.cache.prefix%"]]
+
 framework:
     validation:
-        cache: validator.mapping.cache.doctrine.apc
+        cache: validator_mapping_cache
     serializer:
-        cache: serializer.mapping.cache.apc
+        cache: serializer_mapping_cache
 
 doctrine:
    orm:
-       metadata_cache_driver: apc
-       result_cache_driver: apc
-       query_cache_driver: apc
+       metadata_cache_driver: apcu
+       result_cache_driver: apcu
+       query_cache_driver: apcu
 
 monolog:
+    use_microseconds: false
     handlers:
         main:
             type:         fingers_crossed
             action_level: error
-            handler:      nested
-        nested:
+            handler:      nested_errorlog
+
+        # uses PHP error log
+        nested_errorlog:
+            type: error_log
+            message_type: 0
+            level: debug
+
+        # uses a file in the logs dir
+        nested_file:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug

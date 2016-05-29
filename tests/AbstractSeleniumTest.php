@@ -4,6 +4,8 @@ namespace Test;
 
 abstract class AbstractSeleniumTest extends \PHPUnit_Extensions_Selenium2TestCase
 {
+    use SymfonyAppTrait;
+
     public function setUp()
     {
         $this->setHost(SYMFONY_OKOA_TESTSUITE_SELENIUM_HOST);

@@ -8,7 +8,9 @@ class UserLoginTest extends AbstractSeleniumTest
 {
     public function testLogin()
     {
-        $this->url('http://nginx/login');
+        $this->getDoctrine();
+
+        $this->url('/login');
         // $this->assertSame('Some title', $this->title());
         $this->byId('username')->value('admin');
         $this->byId('password')->value('admin');

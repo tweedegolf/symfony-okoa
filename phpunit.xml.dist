@@ -13,7 +13,7 @@
         <const name="SYMFONY_OKOA_TESTSUITE_SELENIUM_HOST" value="selenium" />
         <const name="SYMFONY_OKOA_TESTSUITE_SELENIUM_PORT" value="4444" />
         <const name="SYMFONY_OKOA_TESTSUITE_SELENIUM_BROWSER" value="firefox" />
-        <const name="SYMFONY_OKOA_TESTSUITE_SELENIUM_URL" value="http://nginx" />
+        <const name="SYMFONY_OKOA_TESTSUITE_SELENIUM_URL" value="http://app.dev" />
     </php>
 
     <testsuites>

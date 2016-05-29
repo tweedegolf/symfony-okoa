@@ -47,7 +47,7 @@ class AppKernel extends Kernel
     {
         $env = getenv('SYMFONY_OKOA_CACHE_DIR');
         if ($env !== false) {
-            return $env;
+            return str_replace('__ENV__', $this->getEnvironment(), $env);
         }
 
         return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
@@ -57,7 +57,7 @@ class AppKernel extends Kernel
     {
         $env = getenv('SYMFONY_OKOA_LOG_DIR');
         if ($env !== false) {
-            return $env;
+            return str_replace('__ENV__', $this->getEnvironment(), $env);
         }
 
         return dirname(__DIR__).'/var/logs';
