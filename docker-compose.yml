@@ -57,9 +57,9 @@ services:
     chrome:
         image: selenium/node-chrome-debug
         # See: https://github.com/SeleniumHQ/docker-selenium/issues/91
-        command: bash -c "sed -e '19a\echo no_proxy >> asseluser' /opt/bin/entry_point.sh | bash"
         environment:
              HUB_PORT_4444_TCP_ADDR: selenium
+             no_proxy: "*.local,169.254/16"
         depends_on:
             - selenium
             - app
@@ -69,9 +69,9 @@ services:
     firefox:
         image: selenium/node-firefox-debug
         # See: https://github.com/SeleniumHQ/docker-selenium/issues/91
-        command: bash -c "sed -e '19a\echo no_proxy >> asseluser' /opt/bin/entry_point.sh | bash"
         environment:
             HUB_PORT_4444_TCP_ADDR: selenium
+            no_proxy: "*.local,169.254/16"
         depends_on:
             - selenium
             - app
