@@ -2,7 +2,7 @@ version: '2'
 services:
     app:
         build:
-            context: .
+            context: ./tasks/docker/app_debug
             args:
                 USER_ID: $USER_ID
         depends_on:
@@ -11,11 +11,33 @@ services:
             - selenium
         volumes:
             - ".:/app"
-            - "./tasks/files/php.ini:/etc/php5/cli/php.ini"
-            - "./tasks/files/php.ini:/etc/php5/fpm/php.ini"
-            - "./tasks/files/php-fpm.conf:/etc/php5/fpm/php-fpm.conf"
+            - "./tasks/files/php.ini:/usr/local/etc/php/php.ini"
             - "~/.composer:/home/tg/.composer"
-        command: /usr/sbin/php5-fpm
+        command: bash
+        ports:
+            - "35729:35729"
+        environment:
+            USE_POLLING_WATCHES: 1
+            PGHOST: psql
+            SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache
+            SYMFONY_OKOA_LOG_DIR: /tmp/symfony/logs
+        networks:
+            - default
+
+    php:
+        build:
+            context: ./tasks/docker/php_fpm
+            args:
+                USER_ID: $USER_ID
+        depends_on:
+            - psql
+            - mailhog
+        volumes:
+            - ".:/app"
+            - "./tasks/files/php.ini:/usr/local/etc/php/php.ini"
+            - "./tasks/files/php-fpm.conf:/usr/local/etc/php-fpm.conf"
+            - "~/.composer:/home/tg/.composer"
+        command: /usr/local/sbin/php-fpm
         environment:
             USE_POLLING_WATCHES: 1
             PGHOST: psql
@@ -77,7 +99,6 @@ services:
              no_proxy: "*.local,169.254/16"
         depends_on:
             - selenium
-            - app
         ports:
             - "15900:5900"
         networks:
@@ -91,7 +112,6 @@ services:
             no_proxy: "*.local,169.254/16"
         depends_on:
             - selenium
-            - app
         ports:
             - "15901:5900"
         networks:

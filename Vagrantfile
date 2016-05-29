@@ -22,6 +22,7 @@ Vagrant.configure(2) do |config|
         node.vm.network :forwarded_port, guest: 4444, host: 4444
         node.vm.network :forwarded_port, guest: 15900, host: 15900
         node.vm.network :forwarded_port, guest: 15901, host: 15901
+        node.vm.network :forwarded_port, guest: 35729, host: 35729
 
         node.vm.provider "virtualbox" do |virtualbox|
             virtualbox.cpus = 2
