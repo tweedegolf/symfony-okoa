@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "59aff53dbc5e8024d7f500ec8f75dc69",
-    "content-hash": "fe685476e75aeaa4f5e40eaf9a531c15",
+    "hash": "b51877b8d276cf84c2897b977e752b62",
+    "content-hash": "18a99f1394863f38791a556ecadd2702",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -87,6 +87,52 @@
             ],
             "description": "Determine Symfony2 database settings from a single URL-based parameter",
             "time": "2016-01-15 13:10:38"
+        },
+        {
+            "name": "bravesheep/flysystem-url-bundle",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bravesheep/flysystem-url-bundle.git",
+                "reference": "4c7cd1cb5dfdef40f4b2eba028250c18ec456750"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bravesheep/flysystem-url-bundle/zipball/4c7cd1cb5dfdef40f4b2eba028250c18ec456750",
+                "reference": "4c7cd1cb5dfdef40f4b2eba028250c18ec456750",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0",
+                "symfony/config": "^2.3|^3.0",
+                "symfony/dependency-injection": "^2.3|^3.0",
+                "symfony/http-kernel": "^2.3|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.3"
+            },
+            "suggest": {
+                "league/flysystem": "^1.0.0",
+                "oneup/flysystem-bundle": "^1.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bravesheep\\FlysystemUrlBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ruben Nijveld",
+                    "email": "ruben@gewooniets.nl"
+                }
+            ],
+            "description": "FlySystem URL bundle generates services for flysystem by specifying a url parameter",
+            "time": "2016-05-24 15:43:37"
         },
         {
             "name": "bravesheep/mailer-url-bundle",

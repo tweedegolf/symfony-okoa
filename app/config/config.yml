@@ -113,9 +113,7 @@ swiftmailer:
 # Flysystem Configuration
 oneup_flysystem:
     adapters:
-        media:
-            local:
-                directory: %kernel.root_dir%/../web/media
+        media: %media.oneup_adapter_params%
     filesystems:
         media:
             adapter: media
@@ -145,3 +143,10 @@ bravesheep_mailer_url:
         default:
             url: %mailer_url%
             prefix: mailer_
+
+# Flysystem url config
+bravesheep_flysystem_url:
+    urls:
+        default:
+            url: %media_url%
+            prefix: media

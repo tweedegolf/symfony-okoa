@@ -14,6 +14,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Bravesheep\DatabaseUrlBundle\BravesheepDatabaseUrlBundle(),
             new Bravesheep\MailerUrlBundle\BravesheepMailerUrlBundle(),
+            new Bravesheep\FlysystemUrlBundle\BravesheepFlysystemUrlBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
