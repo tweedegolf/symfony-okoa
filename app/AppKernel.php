@@ -66,9 +66,5 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__ . '/config/' . $this->getEnvironment() . '/config.yml');
-
-//        if ($this->isVagrantEnv()) {
-//            $loader->load(__DIR__ . '/config/vagrant.php');
-//        }
     }
 }
