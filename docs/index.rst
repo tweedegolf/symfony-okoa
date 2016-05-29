@@ -1,22 +1,15 @@
-.. Symfony-okoa documentation master file, created by
-   sphinx-quickstart on Sun May 29 19:55:08 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Symfony-Okoa Documentation
+==========================
 
-Welcome to Symfony-okoa's documentation!
-========================================
 
-Contents:
+Welcome to a Symfony-Okoa project! In this documentation we'll help you get on
+your way. The Symfony-Okoa project is mostly based upon the Symfony-Standard
+project but we've chosen to do a few things a little different. The
+documentation will mostly describe these changes and how to work with the
+project.
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+    setup_and_running
+    servers
