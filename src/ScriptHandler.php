@@ -145,13 +145,5 @@ class ScriptHandler
 
         $io->write('<info>Updating package.json</info>');
         $json->write($config);
-
-        // update bower.json
-        $json = new JsonFile('./bower.json');
-        $config = $json->read();
-        $config['name'] = $name;
-
-        $io->write('<info>Updating bower.json</info>');
-        $json->write($config);
     }
 }
