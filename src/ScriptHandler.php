@@ -113,6 +113,14 @@ class ScriptHandler
             }
         }
 
+        // remove git
+        if (is_dir(".git")) {
+            if ($io->askConfirmation('<question>Found git, reset repository for new project?</question>', false)) {
+                exec("rm -rf .git");
+                exec("git init");
+            }
+        }
+
         // update parameters.yml.dist
         if (isset($config['extra']['incenteev-parameters']['file'])) {
             $dist = $config['extra']['incenteev-parameters']['file'].'.dist';
