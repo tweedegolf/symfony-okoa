@@ -3,7 +3,7 @@ cd docs
 
 case "$1" in
     "server")
-        sphinx-autobuild --poll -H 0.0.0.0 -p 2080 . _build
+        sphinx-autobuild --poll -H 0.0.0.0 -p 2080 . _build/html
         ;;
     "build")
         make html

@@ -13,3 +13,5 @@ project.
 
     setup_and_running
     servers
+    commands_and_tasks
+    terminology

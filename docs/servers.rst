@@ -1,5 +1,5 @@
-Servers
-=======
+Servers/containers
+==================
 In this document we'll take a brief tour of the services required to run the
 project and the packages available for us.
 
