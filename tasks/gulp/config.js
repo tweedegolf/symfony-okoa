@@ -22,8 +22,8 @@ var config = {
             'assets/fonts/**': 'fonts',
             'assets/robots.txt': 'web',
             'assets/favicon.ico': 'web',
-            'assets/vendor/bootstrap-sass/assets/fonts/bootstrap/**': 'fonts_bootstrap',
-            'assets/vendor/fontawesome/fonts/**': 'fonts'
+            'node_modules/bootstrap-sass/assets/fonts/bootstrap/**': 'fonts_bootstrap',
+            'node_modules/font-awesome/fonts/**': 'fonts'
         }
     },
 
