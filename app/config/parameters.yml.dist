@@ -2,4 +2,5 @@ parameters:
     database_url: postgresql://tg@psql/__database_name__
     mailer_url: smtp://mailhog:1025
     media_url: 'local://%kernel.root_dir%/../web/media'
+    redis_session_url: 'redis://redis'
     secret: "__secret__"

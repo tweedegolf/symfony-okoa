@@ -29,7 +29,7 @@ framework:
     trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id: session.handler.native_file
+        handler_id: snc_redis.session.handler
         save_path: "%session_path%"
     fragments:       ~
     http_method_override: true
@@ -129,6 +129,17 @@ stof_doctrine_extensions:
     orm:
         default:
             timestampable: true
+
+# Redis configuration
+snc_redis:
+    clients:
+        session:
+            type: predis
+            alias: session
+            dsn: %redis_session_url%
+    session:
+        client: session
+        prefix: session
 
 # Database url config
 bravesheep_database_url:
