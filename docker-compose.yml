@@ -3,12 +3,8 @@ services:
     app:
         build:
             context: ./tasks/docker/app_debug
-            args:
-                USER_ID: $USER_ID
-        depends_on:
-            - psql
-            - mailhog
-            - selenium
+            args: {USER_ID: $USER_ID}
+        depends_on: [psql, mailhog, selenium]
         volumes:
             - ".:/app"
             - "./tasks/files/php.ini:/usr/local/etc/php/php.ini"
@@ -19,51 +15,41 @@ services:
             PGHOST: psql
             SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache/__ENV__
             # SYMFONY_OKOA_LOG_DIR: /tmp/symfony/logs
-        networks:
-            - default
+        networks: [default]
 
     gulp_watch:
         build:
             context: ./tasks/docker/app_debug
-            args:
-                USER_ID: $USER_ID
+            args: {USER_ID: $USER_ID}
         volumes:
             - ".:/app"
             - "./tasks/files/php.ini:/usr/local/etc/php/php.ini"
             - "~/.composer:/home/tg/.composer"
         command: gulp watch
-        ports:
-            - "35729:35729"
+        ports: ["35729:35729"]
         environment:
             USE_POLLING_WATCHES: 1
             PGHOST: psql
             SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache/__ENV__
-        networks:
-            - default
+        networks: [default]
         stop_signal: SIGKILL
 
     sphinx:
         build:
             context: ./tasks/docker/app_debug
-            args:
-                USER_ID: $USER_ID
+            args: {USER_ID: $USER_ID}
         volumes:
             - ".:/app"
-        ports:
-            - "2080:2080"
+        ports: ["2080:2080"]
         command: /usr/local/bin/sphinx-autobuild -H 0.0.0.0 -p 2080 --poll /app/docs /app/docs/_build/html
-        networks:
-            - default
+        networks: [default]
         stop_signal: SIGINT
 
     php:
         build:
             context: ./tasks/docker/php_fpm
-            args:
-                USER_ID: $USER_ID
-        depends_on:
-            - psql
-            - mailhog
+            args: {USER_ID: $USER_ID}
+        depends_on: [psql, mailhog]
         volumes:
             - ".:/app"
             - "./tasks/files/php.ini:/usr/local/etc/php/php.ini"
@@ -73,20 +59,16 @@ services:
         environment:
             SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache/__ENV__
             # SYMFONY_OKOA_LOG_DIR: /tmp/symfony/logs
-        networks:
-            - default
+        networks: [default]
 
     nginx:
         image: nginx:latest
-        depends_on:
-            - php
+        depends_on: [php]
         volumes:
             - ".:/app"
             - "./tasks/files/nginx.dev.conf:/etc/nginx/conf.d/dev.conf"
             - "./tasks/files/nginx.prod.conf:/etc/nginx/conf.d/default.conf"
-        ports:
-            - "80:80"
-            - "8080:8080"
+        ports: ["80:80", "8080:8080"]
         networks:
             default:
                 aliases:
@@ -98,15 +80,13 @@ services:
         image: postgres:9.4
         environment:
             POSTGRES_USER: tg
-        ports:
-            - "5432:5432"
-        networks:
-            - default
+        ports: ["5432:5432"]
+        networks: [default]
 
     redis:
         image: redis:3.2
-        ports:
-            - "6379:6379"
+        ports: ["6379:6379"]
+        networks: [default]
 
     mailhog:
         image: mailhog/mailhog:latest
@@ -114,17 +94,13 @@ services:
             MH_API_BIND_ADDR: 0.0.0.0:1080
             MH_UI_BIND_ADDR: 0.0.0.0:1080
             MH_SMTP_BIND_ADDR: 0.0.0.0:1025
-        ports:
-            - "1080:1080"
-        networks:
-            - default
+        ports: ["1080:1080"]
+        networks: [default]
 
     selenium:
         image: selenium/hub
-        ports:
-            - "4444:4444"
-        networks:
-            - default
+        ports: ["4444:4444"]
+        networks: [default]
 
     chrome:
         image: selenium/node-chrome-debug
@@ -132,12 +108,9 @@ services:
         environment:
              HUB_PORT_4444_TCP_ADDR: selenium
              no_proxy: "*.local,169.254/16"
-        depends_on:
-            - selenium
-        ports:
-            - "15900:5900"
-        networks:
-            - default
+        depends_on: [selenium]
+        ports: ["15900:5900"]
+        networks: [default]
 
     firefox:
         image: selenium/node-firefox-debug
@@ -145,11 +118,9 @@ services:
         environment:
             HUB_PORT_4444_TCP_ADDR: selenium
             no_proxy: "*.local,169.254/16"
-        depends_on:
-            - selenium
-        ports:
-            - "15901:5900"
-        networks:
-            - default
+        depends_on: [selenium]
+        ports: ["15901:5900"]
+        networks: [default]
+
 networks:
     default: ~
