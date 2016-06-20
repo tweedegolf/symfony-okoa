@@ -21,39 +21,39 @@ services:
             # SYMFONY_OKOA_LOG_DIR: /tmp/symfony/logs
         networks:
             - default
-            
+
     gulp_watch:
         build:
             context: ./tasks/docker/app_debug
             args:
                 USER_ID: $USER_ID
-            volumes:
-                - ".:/app"
-                - "./tasks/files/php.ini:/usr/local/etc/php/php.ini"
-                - "~/.composer:/home/tg/.composer"
-            command: gulp watch
-            ports:
-                - "35729:35729"
-            environment:
-                USE_POLLING_WATCHES: 1
-                PGHOST: psql
-                SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache/__ENV__
-            networks:
-                - default
-                
+        volumes:
+            - ".:/app"
+            - "./tasks/files/php.ini:/usr/local/etc/php/php.ini"
+            - "~/.composer:/home/tg/.composer"
+        command: gulp watch
+        ports:
+            - "35729:35729"
+        environment:
+            USE_POLLING_WATCHES: 1
+            PGHOST: psql
+            SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache/__ENV__
+        networks:
+            - default
+
     sphinx:
         build:
             context: ./tasks/docker/app_debug
             args:
                 USER_ID: $USER_ID
-            volumes:
-                - ".:/app"
-            ports:
-                - "2080:2080"
-            command: sphinx-autobuild -H 0.0.0.0 -p 2080 --poll . _build/html
-            working_dir: /app/docs
-            networks:
-                - default
+        volumes:
+            - ".:/app"
+        ports:
+            - "2080:2080"
+        command: sphinx-autobuild -H 0.0.0.0 -p 2080 --poll . _build/html
+        working_dir: /app/docs
+        networks:
+            - default
 
     php:
         build:
