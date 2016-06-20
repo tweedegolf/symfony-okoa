@@ -40,6 +40,7 @@ services:
             SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache/__ENV__
         networks:
             - default
+        stop_signal: SIGKILL
 
     sphinx:
         build:
@@ -50,10 +51,10 @@ services:
             - ".:/app"
         ports:
             - "2080:2080"
-        command: sphinx-autobuild -H 0.0.0.0 -p 2080 --poll . _build/html
-        working_dir: /app/docs
+        command: /usr/local/bin/sphinx-autobuild -H 0.0.0.0 -p 2080 --poll /app/docs /app/docs/_build/html
         networks:
             - default
+        stop_signal: SIGINT
 
     php:
         build:
