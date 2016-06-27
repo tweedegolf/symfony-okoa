@@ -14,7 +14,7 @@ parameters:
 framework:
     #esi:             ~
     translator:      { fallbacks: ["%locale%"] }
-    secret:          %secret%
+    secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
@@ -37,27 +37,27 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
     form_themes:
-        - 'bootstrap_3_layout.html.twig'
+        - "bootstrap_3_layout.html.twig"
     globals:
-        sitename: %sitename%
+        sitename: "%sitename%"
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        user:     %database_user%
-        password: %database_password%
-        path:     %database_path%
-        memory:   %database_memory%
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        path:     "%database_path%"
+        memory:   "%database_memory%"
         charset:  UTF8
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
+        auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore
         mappings:
@@ -88,7 +88,7 @@ doctrine:
 
 # Migrations for Doctrine
 doctrine_migrations:
-    dir_name: %kernel.root_dir%/migrations
+    dir_name: "%kernel.root_dir%/migrations"
 
 # Friends of Symfony User config
 fos_user:
@@ -97,23 +97,23 @@ fos_user:
     user_class: AppBundle\Entity\User
     from_email:
         address: noreply@example.com # You may want to change this
-        sender_name: %sitename%
+        sender_name: "%sitename%"
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport:  %mailer_transport%
-    host:       %mailer_host%
-    port:       %mailer_port%
-    username:   %mailer_user%
-    password:   %mailer_password%
-    encryption: %mailer_encryption%
-    auth_mode:  %mailer_auth_mode%
+    transport:  "%mailer_transport%"
+    host:       "%mailer_host%"
+    port:       "%mailer_port%"
+    username:   "%mailer_user%"
+    password:   "%mailer_password%"
+    encryption: "%mailer_encryption%"
+    auth_mode:  "%mailer_auth_mode%"
     spool:     { type: memory }
 
 # Flysystem Configuration
 oneup_flysystem:
     adapters:
-        media: %media.oneup_adapter_params%
+        media: "%media.oneup_adapter_params%"
     filesystems:
         media:
             adapter: media
@@ -136,7 +136,7 @@ snc_redis:
         session:
             type: predis
             alias: session
-            dsn: %redis_session_url%
+            dsn: "%redis_session_url%"
     session:
         client: session
         prefix: session
@@ -145,19 +145,19 @@ snc_redis:
 bravesheep_database_url:
     urls:
         default:
-            url: %database_url%
+            url: "%database_url%"
             prefix: database_
 
 # Mailer url config
 bravesheep_mailer_url:
     urls:
         default:
-            url: %mailer_url%
+            url: "%mailer_url%"
             prefix: mailer_
 
 # Flysystem url config
 bravesheep_flysystem_url:
     urls:
         default:
-            url: %media_url%
+            url: "%media_url%"
             prefix: media
