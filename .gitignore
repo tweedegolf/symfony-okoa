@@ -17,6 +17,7 @@
 /var/logs/*
 /var/sessions/*
 /var/run/*
+/*.log
 !/var/cache/.gitkeep
 !/var/sessions/.gitkeep
 !/var/logs/.gitkeep
