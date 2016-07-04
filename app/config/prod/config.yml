@@ -2,11 +2,15 @@ imports:
     - { resource: ../config.yml }
 
 services:
-    validator_mapping_cache:
+    validator_mapping_cache_impl:
         class: Doctrine\Common\Cache\ApcuCache
         calls:
             - [setNamespace, ["%validator.mapping.cache.prefix%"]]
 
+    validator_mapping_cache:
+        class: Symfony\Component\Validator\Mapping\Cache\DoctrineCache
+        arguments: ["@validator_mapping_cache_impl"]
+        
     serializer_mapping_cache:
         class: Doctrine\Common\Cache\ApcuCache
         calls:
