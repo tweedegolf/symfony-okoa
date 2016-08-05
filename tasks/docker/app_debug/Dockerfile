@@ -12,4 +12,7 @@ RUN groupadd nopwsudo \
 VOLUME /app
 
 USER tg
+
+RUN echo "alias sf='bin/symfony '" >> /home/tg/.bashrc
+
 WORKDIR /app

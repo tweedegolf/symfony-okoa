@@ -130,17 +130,6 @@ stof_doctrine_extensions:
         default:
             timestampable: true
 
-# Redis configuration
-snc_redis:
-    clients:
-        session:
-            type: predis
-            alias: session
-            dsn: "%redis_session_url%"
-    session:
-        client: session
-        prefix: session
-
 # Database url config
 bravesheep_database_url:
     urls:

@@ -83,11 +83,6 @@ services:
         ports: ["5432:5432"]
         networks: [default]
 
-    redis:
-        image: redis:3.2
-        ports: ["6379:6379"]
-        networks: [default]
-
     mailhog:
         image: mailhog/mailhog:latest
         environment:
