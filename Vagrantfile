@@ -6,7 +6,7 @@ Vagrant.configure('2') do |config|
     node.vm.synced_folder Dir.home, mount_homedir_location, type: "nfs", mount_options: mount_options
 
     node.vm.network :private_network, type: "dhcp"
-    ode.vm.network :forwarded_port, guest: 2375, host: 2375
+    node.vm.network :forwarded_port, guest: 2375, host: 2375
     node.vm.network :forwarded_port, guest: 80, host: 8880
     node.vm.network :forwarded_port, guest: 8080, host: 8080
     node.vm.network :forwarded_port, guest: 1080, host: 1080
