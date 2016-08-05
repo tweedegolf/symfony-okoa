@@ -29,7 +29,7 @@ framework:
     trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id: snc_redis.session.handler
+        handler_id: session.handler.dbal
         save_path: "%session_path%"
     fragments:       ~
     http_method_override: true
