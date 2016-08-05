@@ -15,20 +15,14 @@ monolog:
     use_microseconds: false
     handlers:
         main:
-            type: error_log
-            message_type: 0
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
             channels: [!event]
         console:
             type:   console
             bubble: false
             channels: [!event, !doctrine]
-        # uncomment to log to a file in the logs dir
-        # main:
-        #     type:  stream
-        #     path:  %kernel.logs_dir%/%kernel.environment%.log
-        #     level: debug
-        #     channels: [!event]
 
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
