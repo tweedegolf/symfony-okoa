@@ -13,6 +13,7 @@ services:
         environment:
             USE_POLLING_WATCHES: 1
             PGHOST: psql
+            TZ: Europe/Amsterdam
             SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache/__ENV__
             # SYMFONY_OKOA_LOG_DIR: /tmp/symfony/logs
         networks: [default]
@@ -30,6 +31,7 @@ services:
         environment:
             USE_POLLING_WATCHES: 1
             PGHOST: psql
+            TZ: Europe/Amsterdam
             SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache/__ENV__
         networks: [default]
         stop_signal: SIGKILL
@@ -40,6 +42,8 @@ services:
             args: {USER_ID: $USER_ID}
         volumes:
             - ".:/app"
+        environment:
+            TZ: Europe/Amsterdam
         ports: ["2080:2080"]
         command: /usr/local/bin/sphinx-autobuild -H 0.0.0.0 -p 2080 --poll /app/docs /app/docs/_build/html
         networks: [default]
@@ -57,6 +61,7 @@ services:
             - "~/.composer:/home/tg/.composer"
         command: /usr/local/sbin/php-fpm
         environment:
+            TZ: Europe/Amsterdam
             SYMFONY_OKOA_CACHE_DIR: /tmp/symfony/cache/__ENV__
             # SYMFONY_OKOA_LOG_DIR: /tmp/symfony/logs
         networks: [default]
@@ -68,6 +73,8 @@ services:
             - ".:/app"
             - "./tasks/files/nginx.dev.conf:/etc/nginx/conf.d/dev.conf"
             - "./tasks/files/nginx.prod.conf:/etc/nginx/conf.d/default.conf"
+        environment:
+            TZ: Europe/Amsterdam
         ports: ["80:80", "8080:8080"]
         networks:
             default:
@@ -80,6 +87,7 @@ services:
         image: postgres:9.4
         environment:
             POSTGRES_USER: tg
+            TZ: Europe/Amsterdam
         ports: ["5432:5432"]
         networks: [default]
 
@@ -89,20 +97,24 @@ services:
             MH_API_BIND_ADDR: 0.0.0.0:1080
             MH_UI_BIND_ADDR: 0.0.0.0:1080
             MH_SMTP_BIND_ADDR: 0.0.0.0:1025
+            TZ: Europe/Amsterdam
         ports: ["1080:1080"]
         networks: [default]
 
     selenium:
         image: selenium/hub
         ports: ["4444:4444"]
+        environment:
+            TZ: Europe/Amsterdam
         networks: [default]
 
     chrome:
         image: selenium/node-chrome-debug
         # See: https://github.com/SeleniumHQ/docker-selenium/issues/91
         environment:
-             HUB_PORT_4444_TCP_ADDR: selenium
-             no_proxy: "*.local,169.254/16"
+            TZ: Europe/Amsterdam
+            HUB_PORT_4444_TCP_ADDR: selenium
+            no_proxy: "*.local,169.254/16"
         depends_on: [selenium]
         ports: ["15900:5900"]
         networks: [default]
@@ -111,6 +123,7 @@ services:
         image: selenium/node-firefox-debug
         # See: https://github.com/SeleniumHQ/docker-selenium/issues/91
         environment:
+            TZ: Europe/Amsterdam
             HUB_PORT_4444_TCP_ADDR: selenium
             no_proxy: "*.local,169.254/16"
         depends_on: [selenium]
