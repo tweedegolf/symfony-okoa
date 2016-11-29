@@ -3,3 +3,5 @@ parameters:
     mailer_url: smtp://mailhog:1025
     media_url: 'local://%kernel.root_dir%/../web/media'
     secret: "__secret__"
+    graylog_hostname: localhost
+    graylog_port: 12201

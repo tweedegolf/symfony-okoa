@@ -9,3 +9,16 @@ services:
         public: false
         arguments:
             - "@database_connection"
+
+    gelf.transport:
+        class: Gelf\Transport\UdpTransport
+        arguments: ["%graylog_hostname%", "%graylog_port%"]
+
+    gelf.publisher:
+        class: Gelf\Publisher
+        arguments: ["@gelf.transport"]
+
+    monolog.processor.web_processor:
+        class: Monolog\Processor\WebProcessor
+        tags:
+          - { name: monolog.processor, method: __invoke }

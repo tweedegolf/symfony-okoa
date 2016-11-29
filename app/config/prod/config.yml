@@ -34,7 +34,11 @@ monolog:
         main:
             type:         fingers_crossed
             action_level: error
-            handler:      nested_errorlog
+            handler:      chain
+
+        chain:
+            type:    group
+            members: [gelf, nested_errorlog]
 
         # uses PHP error log
         nested_errorlog:
@@ -47,5 +51,11 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
+
         console:
             type: console
+
+        gelf:
+            type: gelf
+            publisher: gelf.publisher
+            level: error
