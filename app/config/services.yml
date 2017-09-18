@@ -17,8 +17,3 @@ services:
     gelf.publisher:
         class: Gelf\Publisher
         arguments: ["@gelf.transport"]
-
-    monolog.processor.web_processor:
-        class: Monolog\Processor\WebProcessor
-        tags:
-          - { name: monolog.processor, method: __invoke }

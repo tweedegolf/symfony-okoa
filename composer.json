@@ -1,46 +1,48 @@
 {
-    "name": "tweedegolf/symfony-okoa",
-    "description": "Symfony okoa base project",
+    "name": "tg/app",
+    "description": "test",
     "license": "MIT",
     "autoload": {
         "psr-4": {
             "": "src/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
     },
     "autoload-dev": {
-      "psr-4": {
-        "Test\\": "tests/"
-      }
+        "psr-4": {
+            "Test\\": "tests/"
+        }
     },
     "require": {
-        "php": ">=5.6.0",
-        "symfony/symfony": "^3.1",
+        "php": ">=7.0.19",
+        "symfony/symfony": "^3.3.4",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
-        "twig/extensions": "^1.3",
-        "symfony/swiftmailer-bundle": "^2.3",
-        "symfony/monolog-bundle": "^2.11",
+        "doctrine/doctrine-migrations-bundle": "^1.2",
+        "twig/extensions": "^1.5",
+        "symfony/swiftmailer-bundle": "^3.0",
         "sensio/distribution-bundle": "^5.0",
-        "sensio/framework-extra-bundle": "^3.0.16",
+        "sensio/framework-extra-bundle": "^3.0",
         "incenteev/composer-parameter-handler": "^2.1",
-        "stof/doctrine-extensions-bundle": "^1.2.2",
-        "vich/uploader-bundle": "^1.2",
-        "doctrine/doctrine-migrations-bundle": "^1.1",
-        "doctrine/migrations": "^1.4",
+        "vich/uploader-bundle": "^1.6",
         "friendsofsymfony/user-bundle": "^2.0@dev",
         "bravesheep/database-url-bundle": "^0.1.3",
         "bravesheep/mailer-url-bundle": "^0.1.1",
-        "oneup/flysystem-bundle": "^1.4",
-        "bravesheep/flysystem-url-bundle": "^0.1.0",
-        "graylog2/gelf-php": "^1.5"
+        "oneup/flysystem-bundle": "^2.0",
+        "bravesheep/flysystem-url-bundle": "^0.1.1",
+        "graylog2/gelf-php": "^1.5",
+        "stof/doctrine-extensions-bundle": "^1.2"
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "fzaninotto/faker": "^1.6",
-        "doctrine/data-fixtures": "^1.2",
-        "phpunit/phpunit": "^5.5",
-        "phpunit/phpunit-selenium": "^3.0"
+        "behat/mink": "^1.7",
+        "fabpot/goutte": "^3.2",
+        "friendsofphp/php-cs-fixer": "^2.4",
+        "kahlan/kahlan": "^3.1",
+        "mockery/mockery": "^0.9.9",
+        "sensio/generator-bundle": "^3.0"
     },
     "scripts": {
         "post-install-cmd": [
@@ -58,9 +60,6 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-        ],
-        "post-root-package-install": [
-            "ScriptHandler::createProject"
         ]
     },
     "extra": {
@@ -74,7 +73,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "3.1-dev"
+            "dev-master": "3.3-dev"
         }
     },
     "config": {

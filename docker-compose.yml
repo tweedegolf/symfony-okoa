@@ -1,10 +1,10 @@
-version: '2'
+version: '3.3'
 services:
     app:
         build:
             context: ./tasks/docker/app_debug
             args: {USER_ID: $USER_ID}
-        depends_on: [psql, mailhog, selenium]
+        depends_on: [psql, mailhog]
         volumes:
             - ".:/app"
             - "./tasks/files/php.ini:/usr/local/etc/php/php.ini"
@@ -99,35 +99,6 @@ services:
             MH_SMTP_BIND_ADDR: 0.0.0.0:1025
             TZ: Europe/Amsterdam
         ports: ["1080:1080"]
-        networks: [default]
-
-    selenium:
-        image: selenium/hub
-        ports: ["4444:4444"]
-        environment:
-            TZ: Europe/Amsterdam
-        networks: [default]
-
-    chrome:
-        image: selenium/node-chrome-debug
-        # See: https://github.com/SeleniumHQ/docker-selenium/issues/91
-        environment:
-            TZ: Europe/Amsterdam
-            HUB_PORT_4444_TCP_ADDR: selenium
-            no_proxy: "*.local,169.254/16"
-        depends_on: [selenium]
-        ports: ["15900:5900"]
-        networks: [default]
-
-    firefox:
-        image: selenium/node-firefox-debug
-        # See: https://github.com/SeleniumHQ/docker-selenium/issues/91
-        environment:
-            TZ: Europe/Amsterdam
-            HUB_PORT_4444_TCP_ADDR: selenium
-            no_proxy: "*.local,169.254/16"
-        depends_on: [selenium]
-        ports: ["15901:5900"]
         networks: [default]
 
 networks:
